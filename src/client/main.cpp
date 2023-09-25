@@ -7,7 +7,7 @@ void testSFML() {
     sf::Texture texture;
 }
 
-// Fin test SFML
+// Fin test SFML 
 
 #include <state.h>
 
