@@ -3,9 +3,9 @@
 [![Actions Status](https://github.com/cbares/plt/workflows/PLT%20build/badge.svg)](https://github.com/cbares/plt/actions)
 
 This project is a school project lead by a group of 4 students at the [ENSEA]([https://www.ensea.fr/en) :
-- [Karl Lubos](https://github.com/KarlLubbos)
-- [Simon Tristan](https://github.com/Cinortas)
-- [Nordine Laoudj](https://github.com/LNordine)
+- [Karl Lubbos](https://github.com/KarlLubbos)
+- [Simon TristanT](https://github.com/Cinortas)
+- [Nordine Laouedj](https://github.com/LNordine)
 - Guillaume Champtoussel (me)
 
 The goal is to reproduce a board game using Cpp. We also use [SFML](https://www.sfml-dev.org/index-fr.php) for the graphic part.
