@@ -23,16 +23,16 @@ int main(int argc, char *argv[]) {
     
     if (argc >= 2) {
        
-        if (std::strcmp(argv[1], "hello") == 0) { //comparaisons des string
-           std::cout << "Coucou mon petit " << std::endl;
+        if (std::strcmp(argv[1], "hello") == 0) { //comparaison of strings
+           std::cout << "hello my dear" << std::endl;
 
         } else {
-            // erreur si mauvaise commande
-            std::cout << "Commande invalide. La seule commande est  ../bin/client hello" << std::endl;
+            // error if wrong command
+            std::cout << "Wrong command. the correct command is  ../bin/client hello" << std::endl;
         }
     } else {
-        // Si aucun argument n'est fourni, affichez un message d'erreur
-        std::cout << "Commande invalide. La seule commande est  ../bin/client hello" << std::endl;
+        // error if no argument
+        std::cout << "Wrong command. the correct command is  ../bin/client hello" << std::endl;
     }
 
     return 0;
