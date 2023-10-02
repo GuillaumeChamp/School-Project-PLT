@@ -4,7 +4,7 @@
 
 This project is a school project lead by a group of 4 students at the [ENSEA]([https://www.ensea.fr/en) :
 - [Karl Lubbos](https://github.com/KarlLubbos)
-- [Simon TristanT](https://github.com/Cinortas)
+- [Simon Tristant](https://github.com/Cinortas)
 - [Nordine Laouedj](https://github.com/LNordine)
 - Guillaume Champtoussel (me)
 
