@@ -28,11 +28,11 @@ int main(int argc, char *argv[]) {
 
         } else {
             // erreur si mauvaise commande
-            std::cout << "Commande invalide. La seule commande est  ./bin/client hello" << std::endl;
+            std::cout << "Commande invalide. La seule commande est  ../bin/client hello" << std::endl;
         }
     } else {
         // Si aucun argument n'est fourni, affichez un message d'erreur
-        std::cout << "Commande invalide. La seule commande est  ./bin/client hello" << std::endl;
+        std::cout << "Commande invalide. La seule commande est  ../bin/client hello" << std::endl;
     }
 
     return 0;
