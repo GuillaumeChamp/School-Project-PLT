@@ -5,7 +5,7 @@ By [Karl Lubbos](https://github.com/KarlLubbos), [Simon Tristant](https://github
 
 ### Archétype
 **Type de jeu:**
-Citadelle est un jeu de plateau au tour par tour avec gestion de ressources. Il implémente aussi un aspect à identité secret.
+Citadelles est un jeu de plateau au tour par tour avec gestion de ressources. Il implémente aussi un aspect à identité secret.
 
 **Nombre de joueurs:** 
 Le jeu se joue de 2 à 7 joueurs. Les règles n'étant pas les même selon le nombre de joueur, nous fixons la taille de la partie à 4 joueurs.
