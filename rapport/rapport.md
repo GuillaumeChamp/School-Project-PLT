@@ -65,7 +65,7 @@ Les joueurs jouent donc à tour de rôle, non pas dans le sens horaire habituel 
 
 **Exemple:** 
 
-Supposons que le joueur 1 à choisi le Voleur, le joueur 2 à choisi le l'Architecte, le joueur 3 a choisi le Marchand et le joueur 4 a choisi le Roi.
+Supposons que le joueur 1 à choisi le Voleur, le joueur 2 à choisi l'Architecte, le joueur 3 a choisi le Marchand et le joueur 4 a choisi le Roi.
 
 Les personnages sont alors appelés selon leur ordre:
 
