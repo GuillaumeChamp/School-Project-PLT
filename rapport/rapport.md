@@ -11,7 +11,7 @@ Citadelles est un jeu de plateau au tour par tour avec gestion de ressources. Il
 Le jeu se joue de 2 à 7 joueurs. Les règles n'étant pas les même selon le nombre de joueur, nous fixons la taille de la partie à 4 joueurs.
 
 **But du jeu:**
-Le but du jeu est d'accumuler le plus de points de jeu en construisant des bâtiments dans sa cité. Le jeu s'arrête lorsqu'un des joueurs bâtit le 8e quartier de sa cité.
+Le but du jeu est d'accumuler le plus de points de jeu en construisant des bâtiments dans sa cité. Le jeu s'arrête lorsqu'un des joueurs bâtit le 8e quartier de sa cité (on finit tout de même ce tour).
 
 **Principe général:** 
 Chaque joueur est à la tête d’une cité qu’il doit développer pour la rendre plus riche et plus prestigieuse. Les quartiers des cités sont représentés par des cartes. A chaque tour, le joueur incarne un personnage différent ayant son propre pouvoir, qui se révéle selon un ordre défini. A la fin du tour, tout le monde rend sa carte personnage puis on recommence.
@@ -37,7 +37,7 @@ Il existe 8 personnages ayant chacun un pouvoir et un ordre:
 8-Condottière
 
 **Les cartes quartier :**
-Chaque quartier a une gemme de couleur qui indique sa catégorie (Religion = bleu, Noblesse = jaune, Commerce = vert, Militaire = rouge, Merveille = violet). Chaque quartier a un coût de construction égal au nombre de pièces d’or figurant en haut à gauche de la carte. Chaque quartier violet, ou Merveille, a un effet sur le jeu, en faveur du joueur dans la cité duquel il est construit, qui est décrit sur la carte.
+Chaque quartier a une gemme de couleur qui indique sa catégorie (Religion = bleu, Noblesse = jaune, Commerce = vert, Militaire = rouge, Merveille = violet). Chaque quartier a un coût de construction égal au nombre de pièces d’or figurant en haut à gauche de la carte. Chaque quartier violet (appelé Merveille) a un effet sur le jeu, en faveur du joueur dans la cité duquel il est construit, qui est décrit sur la carte.
 
 **Les pièces d'or:**
 Il s'agit de la monnaie du jeu. Chaque joueur en reçoit 2 en début de partie. Il n'y a pas de limite de pièce d'or pouvant être possédé par un joueur, et la banque en possède une infinité.
