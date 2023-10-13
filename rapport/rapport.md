@@ -5,7 +5,7 @@ By [Karl Lubbos](https://github.com/KarlLubbos), [Simon Tristant](https://github
 
 ### Archétype
 **Type de jeu:**
-Combinaison entre un jeu de gestion (type 7 Wonders) et un jeu de cartes à identité secrète (type Loups Garous de Thiercelieux)
+Citadelle est un jeu de plateau au tour par tour avec gestion de ressources. Il implémente aussi un aspect à identité secret.
 
 **Nombre de joueurs:** 
 Le jeu se joue de 2 à 7 joueurs. Les règles n'étant pas les même selon le nombre de joueur, nous fixons la taille de la partie à 4 joueurs.
@@ -59,7 +59,7 @@ Le joueur choisit ensuite un personnage, puis il passe le paquet de cartes au jo
 
 **II - Tours des joueurs:**
 
-Les personnages sont appelés dans l'ordre de leur numéro. Chaque fois qu’un personnage est appelé, le joueur qui l’avait choisi révèle sa carte de personnage et joue son tour.  Si aucun joueur n’avait choisi ce personnage, on appelle le personnage suivant.
+Les personnages sont appelés dans l'ordre de leur numéro. Chaque fois qu’un personnage est appelé, le joueur qui l’avait choisi révèle sa carte de personnage et joue son tour. Si aucun joueur n’avait choisi ce personnage, on appelle le personnage suivant.
 Lorsque tous les joueurs ont joué, on reprend les huit cartes de personnages et on les mélange pour passer au tour suivant.
 Les joueurs jouent donc à tour de rôle, non pas dans le sens horaire habituel mais dans un ordre qui dépend des cartes de personnages qu’ils ont choisies.
 
