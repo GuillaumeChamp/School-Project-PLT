@@ -234,7 +234,7 @@ Nous avons utilisé les énumérations pour décrire les différents type de "Ch
 
 
 
-![StateDia](https://github.com/LNordine/PLT/assets/106609367/31597c0f-7bc4-4fc1-b5d9-a23d52610038)
+![StateDia](images/StateDia.png)
 
 
 
