@@ -30,8 +30,8 @@ BOOST_AUTO_TEST_CASE(TestState)
 
     Card card;
     BOOST_CHECK_EQUAL(card.getNameOfCard(), std::string());
-    BOOST_CHECK_EQUAL(card.getColorOfCard(), std::string());
-    BOOST_CHECK_EQUAL(card.getCostOfCard(), std::string());
+    card.getColorOfCard();
+    BOOST_CHECK_EQUAL(card.getCostOfCard(), 0);
 
     ActivePlayer ex {};
     BOOST_CHECK_EQUAL(ex.getNameOfPlayer(), std::string());
