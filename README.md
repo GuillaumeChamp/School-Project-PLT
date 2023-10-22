@@ -1,4 +1,4 @@
-# PLT 2023-2004 - Citadelles
+# PLT 2023-2024 - Citadelles
 
 [![Actions Status](https://github.com/cbares/plt/workflows/PLT%20build/badge.svg)](https://github.com/cbares/plt/actions)
 
