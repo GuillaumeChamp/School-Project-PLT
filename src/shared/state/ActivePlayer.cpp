@@ -6,7 +6,7 @@
 namespace state {
 
     std::vector<Card> ActivePlayer::getHand(){
-        return this->PlayerHand;
+        return this->playerHand;
     }
 
 }
