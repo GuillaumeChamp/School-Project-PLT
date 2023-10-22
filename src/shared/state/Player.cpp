@@ -3,10 +3,39 @@
 //
 
 #include "Player.h"
+
 class Player{
 
 };
 
-std::string state::Player::getNameOfPlayer() {
+namespace state {
+
+std::string Player::getNameOfPlayer() {
     return this->nameOfPlayer;
+}
+
+std::vector<Card> Player::getBoardOfPlayer() {
+    return this->board;
+}
+
+int Player::getNumberOfCoins() {
+    return this->numberOfCoins;
+}
+
+int Player::getNumberOfCards() {
+    return this->numberOfCards;
+}
+
+void Player::setBoardOfPlayer(const std::vector<Card> board) {
+    this->board = board;
+}
+
+void Player::setNumberOfCards (int nbOfCards) {
+    this->numberOfCards = nbOfCards;
+}
+
+void Player::setNumberOfCoins (int nbOfCoins) {
+    this->numberOfCoins = nbOfCoins;
+}
+
 }
