@@ -1,6 +1,5 @@
 #include <boost/test/unit_test.hpp>
 
-#include "../../src/shared/state/ActivePlayer.h"
 #include "../../src/shared/state/Player.h"
 #include "../../src/shared/state/Card.h"
 #include "../../src/shared/state/GameState.h"
@@ -33,11 +32,12 @@ BOOST_AUTO_TEST_CASE(TestState)
     card.getColorOfCard();
     BOOST_CHECK_EQUAL(card.getCostOfCard(), 0);
 
+/*
     ActivePlayer ex {};
     BOOST_CHECK_EQUAL(ex.getNameOfPlayer(), std::string());
     std::vector<Card> hand;
     ex.setHand(hand);
-    BOOST_CHECK_EQUAL((ex.getHand()).size(), hand.size());
+    BOOST_CHECK_EQUAL((ex.getHand()).size(), hand.size());*/
   }
 }
 

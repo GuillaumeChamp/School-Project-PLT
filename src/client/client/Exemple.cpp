@@ -1,3 +1,4 @@
+/*
 #include <state/ActivePlayer.h>  // Included from library shared_static
 #include "Exemple.h"
 
@@ -13,3 +14,4 @@ void Exemple::setX (int x) {
 
 }
 
+*/

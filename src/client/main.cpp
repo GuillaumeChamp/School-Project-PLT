@@ -22,7 +22,6 @@ void test(){
     Card card {};
     Player player {};
     GameState gamestate {};
-    ActivePlayer activeplayer {};
 }
     
 
