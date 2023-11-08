@@ -19,8 +19,8 @@ using namespace std;
 using namespace state;
 
 void test(){
-    Card card {};
-    Player player {};
+    Card card {"card1", CardType::Military, 2};
+    Player player {"player1", PlayerId::playerA};
     GameState gamestate {};
 }
     

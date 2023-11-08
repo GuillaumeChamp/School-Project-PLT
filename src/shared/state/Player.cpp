@@ -10,6 +10,15 @@ class Player{
 
 namespace state {
 
+Player::Player(std::string name, state::PlayerId id){
+    this->nameOfPlayer = name;
+    this->playerId = id;
+}
+
+Player::~Player(){
+    delete &nameOfPlayer;
+}
+
 std::string Player::getNameOfPlayer() {
     return this->nameOfPlayer;
 }

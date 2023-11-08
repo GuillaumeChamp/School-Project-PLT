@@ -11,7 +11,7 @@ using namespace ::state;
 BOOST_AUTO_TEST_CASE(TestState)
 {
   {
-    Player plr ;
+    Player plr {"player1", PlayerId::playerA};
     plr.setNumberOfCards(4);
     BOOST_CHECK_EQUAL(plr.getNumberOfCards(),4);
     plr.setNumberOfCoins(5);
@@ -23,12 +23,11 @@ BOOST_AUTO_TEST_CASE(TestState)
     GameState gamestate;
     gamestate.setNbCardToDraw(3);
     BOOST_CHECK_EQUAL(gamestate.getNbCardToDraw(),3);
-    Player player;
-    gamestate.setCrownOwner(player);
-    BOOST_CHECK_EQUAL((gamestate.getCrownOwner()).getNameOfPlayer(),player.getNameOfPlayer());
+    gamestate.setCrownOwner(&plr);
+    BOOST_CHECK_EQUAL((gamestate.getCrownOwner())->getNameOfPlayer(),plr.getNameOfPlayer());
 
-    Card card;
-    BOOST_CHECK_EQUAL(card.getNameOfCard(), std::string());
+    Card card{"card1", CardType::Military, 2};
+    BOOST_CHECK_EQUAL(card.getNameOfCard(), std::string("card1"));
     card.getColorOfCard();
     BOOST_CHECK_EQUAL(card.getCostOfCard(), 0);
 
