@@ -13,6 +13,8 @@ namespace state {
 Player::Player(std::string name, state::PlayerId id){
     this->nameOfPlayer = name;
     this->playerId = id;
+    this->numberOfCoins = 2;
+    this->character = CharacterType::NoCharacter;
 }
 
 Player::~Player(){
@@ -32,19 +34,36 @@ int Player::getNumberOfCoins() {
 }
 
 int Player::getNumberOfCards() {
-    return this->numberOfCards;
+    return this->hand.size();
 }
 
 void Player::setBoardOfPlayer(const std::vector<Card> board) {
     this->board = board;
 }
 
-void Player::setNumberOfCards (int nbOfCards) {
-    this->numberOfCards = nbOfCards;
-}
 
 void Player::setNumberOfCoins (int nbOfCoins) {
     this->numberOfCoins = nbOfCoins;
 }
+
+    PlayerId Player::getIdOfPlayer() {
+        return this->playerId;
+    }
+
+    CharacterType Player::getCharacter() {
+        return this->character;
+    }
+
+    void Player::setCharacter(CharacterType character) {
+        this->character=character;
+    }
+
+    void Player::setHand(std::vector<Card> hand) {
+        this->hand=hand;
+    }
+
+    std::vector<Card> Player::getHand() {
+        return this->hand;
+    }
 
 }
