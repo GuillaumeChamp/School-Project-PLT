@@ -14,7 +14,7 @@ namespace state {
         return this->nbOfCardToDraw;
     }
 
-    Player GameState::getCrownOwner (){
+    Player* GameState::getCrownOwner (){
         return this->CrownOwner;
     }
 
@@ -22,7 +22,7 @@ namespace state {
         this->nbOfCardToDraw = nbCard;
     }
 
-    void GameState::setCrownOwner (Player player){
+    void GameState::setCrownOwner (Player* player){
         this->CrownOwner = player;
     }
 }

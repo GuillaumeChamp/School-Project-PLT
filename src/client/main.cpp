@@ -19,10 +19,9 @@ using namespace std;
 using namespace state;
 
 void test(){
-    Card card {};
-    Player player {};
+    Card card {"card1", CardType::Military, 2};
+    Player player {"player1", PlayerId::playerA};
     GameState gamestate {};
-    ActivePlayer activeplayer {};
 }
     
 
@@ -32,15 +31,19 @@ int main(int argc, char *argv[]) {
        
         if (std::strcmp(argv[1], "hello") == 0) { //comparaison of strings
            std::cout << "hello my dear" << std::endl;
-
         } 
-        if (std::strcmp(argv[1], "state") == 0) { //comparaison of strings
+
+        else if (std::strcmp(argv[1], "state") == 0) { //comparaison of strings
            std::cout << "lancement des tests" << std::endl;
            test();
            std::cout << "everything is fine" << std::endl;
+        } 
+
+        else if (std::strcmp(argv[1], "engine") == 0) {
            
-        
-    } else {
+        }
+
+        else {
         // error if no argument
         std::cout << "Wrong command. the correct command is  ../bin/client hello" << std::endl;
     }

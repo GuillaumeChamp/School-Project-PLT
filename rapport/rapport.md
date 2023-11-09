@@ -1,6 +1,6 @@
 # Rapport de PLT
 Exclusively in french
-By [Karl Lubbos](https://github.com/KarlLubbos), [Simon Tristant](https://github.com/Cinortas), [Nordine Laouedj](https://github.com/LNordine) et [Guillaume Champtoussel](https://github.com/GuillaumeChamptoussel).
+By [Karl Lubbos](https://github.com/KarlLbs), [Simon Tristant](https://github.com/Cinortas), [Nordine Laouedj](https://github.com/LNordine) et [Guillaume Champtoussel](https://github.com/GuillaumeChamptoussel).
 ## Présentation Générale
 
 ### Archétype

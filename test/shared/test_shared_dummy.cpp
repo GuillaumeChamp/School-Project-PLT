@@ -1,6 +1,5 @@
 #include <boost/test/unit_test.hpp>
 
-#include "../../src/shared/state/ActivePlayer.h"
 #include "../../src/shared/state/Player.h"
 #include "../../src/shared/state/Card.h"
 #include "../../src/shared/state/GameState.h"
@@ -12,7 +11,7 @@ using namespace ::state;
 BOOST_AUTO_TEST_CASE(TestState)
 {
   {
-    Player plr ;
+    Player plr {"player1", PlayerId::playerA};
     plr.setNumberOfCards(4);
     BOOST_CHECK_EQUAL(plr.getNumberOfCards(),4);
     plr.setNumberOfCoins(5);
@@ -24,20 +23,14 @@ BOOST_AUTO_TEST_CASE(TestState)
     GameState gamestate;
     gamestate.setNbCardToDraw(3);
     BOOST_CHECK_EQUAL(gamestate.getNbCardToDraw(),3);
-    Player player;
-    gamestate.setCrownOwner(player);
-    BOOST_CHECK_EQUAL((gamestate.getCrownOwner()).getNameOfPlayer(),player.getNameOfPlayer());
+    gamestate.setCrownOwner(&plr);
+    BOOST_CHECK_EQUAL((gamestate.getCrownOwner())->getNameOfPlayer(),plr.getNameOfPlayer());
 
-    Card card;
-    BOOST_CHECK_EQUAL(card.getNameOfCard(), std::string());
+    Card card{"card1", CardType::Military, 2};
+    BOOST_CHECK_EQUAL(card.getNameOfCard(), std::string("card1"));
     card.getColorOfCard();
-    BOOST_CHECK_EQUAL(card.getCostOfCard(), 0);
+    BOOST_CHECK_EQUAL(card.getCostOfCard(), 2);
 
-    ActivePlayer ex {};
-    BOOST_CHECK_EQUAL(ex.getNameOfPlayer(), std::string());
-    std::vector<Card> hand;
-    ex.setHand(hand);
-    BOOST_CHECK_EQUAL((ex.getHand()).size(), hand.size());
   }
 }
 
