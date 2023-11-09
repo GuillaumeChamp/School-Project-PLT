@@ -33,13 +33,13 @@ int main(int argc, char *argv[]) {
            std::cout << "hello my dear" << std::endl;
         } 
 
-        if (std::strcmp(argv[1], "state") == 0) { //comparaison of strings
+        else if (std::strcmp(argv[1], "state") == 0) { //comparaison of strings
            std::cout << "lancement des tests" << std::endl;
            test();
            std::cout << "everything is fine" << std::endl;
         } 
 
-        if (std::strcmp(argv[1], "engine") == 0) {
+        else if (std::strcmp(argv[1], "engine") == 0) {
            
         }
 

@@ -16,7 +16,7 @@ Player::Player(std::string name, state::PlayerId id){
 }
 
 Player::~Player(){
-    delete &nameOfPlayer;
+    //delete &nameOfPlayer;
 }
 
 std::string Player::getNameOfPlayer() {

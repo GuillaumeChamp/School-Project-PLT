@@ -29,14 +29,8 @@ BOOST_AUTO_TEST_CASE(TestState)
     Card card{"card1", CardType::Military, 2};
     BOOST_CHECK_EQUAL(card.getNameOfCard(), std::string("card1"));
     card.getColorOfCard();
-    BOOST_CHECK_EQUAL(card.getCostOfCard(), 0);
+    BOOST_CHECK_EQUAL(card.getCostOfCard(), 2);
 
-/*
-    ActivePlayer ex {};
-    BOOST_CHECK_EQUAL(ex.getNameOfPlayer(), std::string());
-    std::vector<Card> hand;
-    ex.setHand(hand);
-    BOOST_CHECK_EQUAL((ex.getHand()).size(), hand.size());*/
   }
 }
 

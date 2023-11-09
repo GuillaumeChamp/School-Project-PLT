@@ -12,7 +12,7 @@ Card::Card(std::string name, state::CardType color, int cost){
 }
 
 Card::~Card(){
-    delete &nameOfCard;
+    //delete &nameOfCard;
 }
 
 std::string Card::getNameOfCard() {
