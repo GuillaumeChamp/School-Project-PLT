@@ -1,8 +1,6 @@
 #include "GameState.h"
 
-class GameState{
-
-};
+#include <utility>
 
 namespace state {
 
@@ -14,15 +12,57 @@ namespace state {
         return this->nbOfCardToDraw;
     }
 
-    Player* GameState::getCrownOwner (){
-        return this->CrownOwner;
-    }
 
     void GameState::setNbCardToDraw (int nbCard){
         this->nbOfCardToDraw = nbCard;
     }
 
-    void GameState::setCrownOwner (Player* player){
-        this->CrownOwner = player;
+    void GameState::setCurrentCharacter(CharacterType character) {
+        this->currentCharacter=character;
     }
+
+    CharacterType GameState::getCurrentCharacter() {
+        return this->currentCharacter;
+    }
+
+
+
+    GameState::GameState(std::vector<Player> listOfPlayer) {
+        this->listOfPlayers=std::move(listOfPlayer);
+        this->nbOfCardToDraw=52;
+        this->currentCharacter= CharacterType::NoCharacter;
+        this->crownOwner = PlayerA;
+        this->gamePhase = GamePhase::DrawCharacters;
+    }
+
+    void GameState::nextGamePhase() {
+        switch (gamePhase) {
+            case GamePhase::DrawCharacters :
+                this->gamePhase = GamePhase::PlayTurn;
+                break;
+            case GamePhase::EndOfGame:
+                break;
+            case GamePhase::PlayTurn :
+                this->gamePhase = GamePhase::DrawCharacters;
+                break;
+        }
+    }
+
+    GamePhase GameState::getGamePhase() {
+        return this->gamePhase;
+    }
+
+    void GameState::endGame() {
+        this->gamePhase=GamePhase::EndOfGame;
+    }
+
+    PlayerId GameState::getCrownOwner() {
+        return this->crownOwner;
+    }
+
+    void GameState::setCrownOwner(PlayerId player) {
+        this->crownOwner =player;
+    }
+
+
 }

@@ -1,19 +1,17 @@
 #include "Card.h"
 
-class Card{
+#include <utility>
 
-};
+
 namespace state {
 
 Card::Card(std::string name, state::CardType color, int cost){
-    this->nameOfCard = name;
+    this->nameOfCard = std::move(name);
     this->colorOfCard = color;
     this->costOfCard = cost;
 }
 
-Card::~Card(){
-    //delete &nameOfCard;
-}
+Card::~Card()=default;
 
 std::string Card::getNameOfCard() {
     return this->nameOfCard;
