@@ -4,10 +4,6 @@
 
 #include "Player.h"
 
-class Player{
-
-};
-
 namespace state {
 
 Player::Player(std::string name, state::PlayerId id){

@@ -2,9 +2,7 @@
 
 #include <utility>
 
-class Card{
 
-};
 namespace state {
 
 Card::Card(std::string name, state::CardType color, int cost){

@@ -2,10 +2,6 @@
 
 #include <utility>
 
-class GameState{
-
-};
-
 namespace state {
 
     std::vector<Player> GameState::getListOfPlayer (){
