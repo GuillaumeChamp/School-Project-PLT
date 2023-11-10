@@ -208,7 +208,9 @@ Elle sert à regrouper tous les Players au sein d'une même classe afin de pouvo
 **La classe Player** : Elle contient les données liés aux différents joueurs. C'est une classe générique pour représenter toutes les données auxquels tous les joueurs ont accès.
 
 
-Nous avons utilisé les énumérations pour décrire les différents type de "GamePhase" (qui permet d'identifier les moments de la partie), "Character", "PlayerId" et de "couleur de bâtiments" car cela permet de rendre notre code plus lisible en donnant des noms significatifs aux valeurs possibles. Les énumérations limitent les valeurs possibles à celles que nous avons définies, offrant ainsi un meilleur contrôle sur les données que l'on manipule. Si on ajoute ou modifie un type de caractère ou une couleur de bâtiment, on devra simplement le faire dans l'énumération sans avoir à rechercher et à modifier chaque occurrence dans le code. Nous ajoutons aussi l'équivalent de nul pour ces énumérations qui servent pour les initialisations et netralisations.
+Nous avons utilisé les énumérations pour décrire les différents type de "GamePhase" (qui permet d'identifier les moments de la partie), "Character", "PlayerId" et de "couleur de bâtiments" car cela permet de rendre notre code plus lisible en donnant des noms significatifs aux valeurs possibles. 
+
+Les énumérations limitent les valeurs possibles à celles que nous avons définies, offrant ainsi un meilleur contrôle sur les données que l'on manipule. Si on ajoute ou modifie un type de caractère ou une couleur de bâtiment, on devra simplement le faire dans l'énumération sans avoir à rechercher et à modifier chaque occurrence dans le code. Nous ajoutons aussi l'équivalent de nul pour ces énumérations qui servent pour les initialisations et netralisations.
 
 
 
@@ -218,10 +220,74 @@ Nous avons utilisé les énumérations pour décrire les différents type de "Ga
 
 ## Rendu: Stratégie et Conception
 
+
 ### Stratégie de rendu d'un état
 
 
+Pour le rendu d'un état, nous créons un module dédié à l'affichage graphique à destination des utilisateurs (joueurs).
+Notre statégie de rendu est classique pour une application.
+En effet, nous allons "peindre" à une fréquence fixe notre écran. Nous ne cherchons pas à peindre uniquement ce qui bouge ou déplacer des éléments car les processeurs graphiques sont fait pour tavailler avec des images et de repeindre systématique l'écran.
+A ce stade, l'interface est fixe et des animations ne sont pas prévues.
+
+
+Nous définissons notre écran d'abord uniquement graphiquement sous forme d'esquisse (sans échelle).
+
+![Esquisse d'interface](images/esquisse.png)
+
+Nous prenons ensuite le temps de définir plus précisément notre interface.
+Cette étape n'est toutefois pas encore un cahier des charges mais une ligne conductrice.
+
+**Une description plus formelle**
+
+Nous choisissons de garder les proportions 16/9 (standard des écrans moderne) donc nous aurons une fenêtre rectangulaire.
+Nous choisissons ainsi une fenêtre de 1600x900.
+Une image de fond n’est pas nécessaire pour le fonctionnement du jeu mais sera présente pour des raisons esthétiques.
+
+
+SFML n'ayant pas de police par défaut, nous en choisissont des cohérentes.
+ 
+La police d’écriture est [Old London](https://www.dafont.com/fr/old-london.font).
+C’est notre police dite de titre car elle rend tous les textes courts.
+Notre police de texte est [Garet](https://www.dafont.com/fr/garet.font).
+
+Elles sont toutes les deux libres de droit et d’utilisation commerciale ou non.
+
+***Les éléments visuels***
+
+Les proportions des cartes semblent être du 11*17.
+L’écran doit pouvoir tenir au moins 15 cartes sur une même ligne, nous souhaitons les afficher convenablement et avec des espaces donc nous décidons que l’écran doit pouvoir afficher 20 cartes côte à côte horizontalement.
+Donc les cartes affichées le seront en 80*124.
+Cette taille peut sembler faible mais elles peuvent être agrandi en passant la souris dessus.
+
+
+Les logos seront en 40*40 par conséquence du choix de la taille de la carte (un peu moins d’un tiers de carte).
+Les autres éléments ont une taille devant s’inscrire dans une carte.
+
+
+Les boards sont simplement des formes simples. Les cartes non présentes sont affichées par des rectangles en pointillé.
+
+Le bouton fin de tour est une forme circulaire rendue interactive.
+
+***Les Popup***
+Nous avons des affichages ponctuels qui seront utilisé dans l'application pour afficher des informations supplémentaires.
+Nous en avons deux, un bouton d'aide pour afficher des informations sur l'application et un pour afficher la main d'un joueur qui prendrais tout l'écran sinon.
+Enfin, le centre de l'écran est utilisé pour afficher les cartes en grand quand on passe la sourie sur une carte.
+
+
 ### Conception logiciel
+
+Pour le code, les boutons n’existant pas dans SMFL, nous proposons de les créer nous même.
+Nous concevons alors les éléments suivants :
+- Une classe abstraite élément interactif qui tient la partie graphique de l'élément ainsi que les méthodes de base pour l'interaction.
+- Une classe concrète bouton qui hérite de la précédente pour les boutons de type pioche, aide …
+- Une classe concrète carte qui hérite également pour implémenter le onHoverAction() pour zoomer sur la carte.
+- Il existe deux types de boutons, les boutons moteurs communiquent des informations au moteur du jeu, les boutons afficheur qui déclenche l’affichage.
+- Une classe d'état de l'interface pour permettre de déclancher les mises à jour graphique dù à l'interaction avec un élément interactif.
+- Une classe utilitaire playerRender qui s’occupe de l’affichage des données joueurs.
+- Des Enumérations pour permettre de gérer les valeurs limitées.
+- Une classe principale appelé Scène qui est le point d'entré de ce module.
+
+
 
 ## Règles de changement d'états et moteur de jeu
 
