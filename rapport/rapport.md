@@ -154,58 +154,39 @@ Lorsqu’un joueur construit son huitième et dernier quartier, on termine le to
 ## Description et conception des états
 
 ### Description des états
-Un état du jeu est formée par des éléments communs à tous les Players et des élémnts propre à chaque Players.
+Un état du jeu est formée par des éléments communs à tous les Players. Il est le même pour chaque joueur.
+Un unique état est créer et tient toutes les données de la partie.
 
-**2.1 Elements visbles par tous les Players**
+**2.1 Elements définissant les états**
 
 Tous les Players ont accès à une pioche. Cette pioche est représentée par un nombre de cartes piochées. Le server se chargera de traiter cette information afin d'ajouter le nombre de cartes correspondant à la main du Player qui pioche.
 
-Chaque joueur possède les éléments suivants, qui sont visibles pour tous les joueurs:
+Chaque joueur possède les éléments suivants.
 
-- Un nom, afin que l'on puisse l'identifier.
-
+- Un nom qui est cosmétique.
+- Une playerId qui est unique et permet de différencier les joueurs au niceau de la partie.
 - Un board qui est une liste de cartes représentant les bâtiments construits.
-
 - Des pièces d'or.
-
-- Le nombre de cartes des adversaires.
-
-- Un personnage, lui permettant certaines interactions.
-
-Attention : une fois appellé, le Player devra révéler son personnage qui sera alors visible par tous les players.
+- Le personnage qu'il incarne pendant ce tour, lui permettant certaines interactions.
+- Une main qui correspond aux cartes en main.
 
 Voici la liste des différents personnages que le joueur peut incarner à chaque tour :
 
 - Assassin
-
 - Thief
-
 - Magician
-
 - King
-
 - Bishop
-
 - Merchant
-
 - Architect
-
 - Warlord
 
-**2.2 Elements visbles par le Player qui joue son tour**
 
-La classe ActivePlayer représente le point de vue du Player qui est en train de jouer.
-
-L'ActivePlayer peut voir :
-
-- Sa main qui est constituée de cartes.
 
 Une carte est décrite par :
 
 - Son nom
-
 - Son coût (en pièce d'or)
-
 - Sa couleur, voici la liste des couleurs :
 
 	- Religious
@@ -226,11 +207,8 @@ Elle sert à regrouper tous les Players au sein d'une même classe afin de pouvo
 
 **La classe Player** : Elle contient les données liés aux différents joueurs. C'est une classe générique pour représenter toutes les données auxquels tous les joueurs ont accès.
 
-Or, il nous faut pouvoir différencier les éléments visibles par tous les Players et ceux visibles par le Player jouant son tour. Il faut pouvoir décrire les deux points de vue possibles. Nous avons donc introduit la classe ActivePlayer qui est un Player particulier.
 
-**La classe ActivePlayer** : Cette classe hérite en effet de la classe Player car elle est une spécialisation de celle-ci. Elle représente le point de vue du Player qui joue. La classe hérite donc de tous les attributs d'un Player mais peut en plus afficher des informations propres au point de vue du Player qui joue.
-
-Nous avons utilisé les énumérations pour décrire les différents type de "Character" et de "couleur de bâtiments" car cela permet de rendre notre code plus lisible en donnant des noms significatifs aux valeurs possibles. Les énumérations limitent les valeurs possibles à celles que nous avons définies, offrant ainsi un meilleur contrôle sur les données que l'on manipule. Si on ajoute ou modifie un type de caractère ou une couleur de bâtiment, on devra simplement le faire dans l'énumération sans avoir à rechercher et à modifier chaque occurrence dans le code.
+Nous avons utilisé les énumérations pour décrire les différents type de "GamePhase" (qui permet d'identifier les moments de la partie), "Character", "PlayerId" et de "couleur de bâtiments" car cela permet de rendre notre code plus lisible en donnant des noms significatifs aux valeurs possibles. Les énumérations limitent les valeurs possibles à celles que nous avons définies, offrant ainsi un meilleur contrôle sur les données que l'on manipule. Si on ajoute ou modifie un type de caractère ou une couleur de bâtiment, on devra simplement le faire dans l'énumération sans avoir à rechercher et à modifier chaque occurrence dans le code. Nous ajoutons aussi l'équivalent de nul pour ces énumérations qui servent pour les initialisations et netralisations.
 
 
 
