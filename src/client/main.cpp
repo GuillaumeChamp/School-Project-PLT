@@ -4,6 +4,7 @@
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 #include <state.h>
+#include "render.h"
 
 void testSFML() {
     sf::Texture texture;
@@ -35,6 +36,37 @@ int main(int argc, char *argv[]) {
            std::cout << "everything is fine" << std::endl;
         } 
 
+        else if (std::strcmp(argv[1], "render") == 0) {
+           
+             sf::RenderWindow window(sf::VideoMode(1600, 900), "Citadelles");
+
+            GameState gamestate=generateSampleState();
+            render::Scene sceneA(render::SceneId::playerA, gamestate);
+            render::Scene sceneB(render::SceneId::playerB, gamestate);
+            render::Scene sceneC(render::SceneId::playerC, gamestate);
+            render::Scene sceneD(render::SceneId::playerD, gamestate);
+
+
+             while (window.isOpen()) {
+                sf::Event event;
+                while (window.pollEvent(event)) {
+                    sceneA.handleEvent(event);
+                    sceneB.handleEvent(event);
+                    sceneC.handleEvent(event);
+                    sceneD.handleEvent(event);
+
+                    if (event.type == sf::Event::Closed) {
+                        window.close();
+                    }
+                }
+            window.clear();
+
+            sceneA.draw(window);  
+            window.display();
+    }
+}
+
+        
         else if (std::strcmp(argv[1], "engine") == 0) {
            
         }

@@ -1,22 +1,19 @@
 #include "IHMState.h"
 
 namespace render {
+  IHMState::IHMState() :
+    isHandDisplayed(false),
+    isHelpDisplayed(false),
+    hoverCard(nullptr),
+    hoverButton(nullptr) {
+  }
 
-IHMState* IHMState::INSTANCE = nullptr;
-
-// Constructor
-IHMState::IHMState() : hoverCard(nullptr), hoverButton(nullptr) {
-    
-}
-
-
-IHMState* IHMState::GetInstance(const std::string& value) {
-    if (INSTANCE == nullptr) {
-        INSTANCE = new IHMState();
+  IHMState* IHMState::GetInstance() {
+    if (!INSTANCE) {
+      INSTANCE = new IHMState();
     }
-
-
     return INSTANCE;
-}
+  }
 
-} 
+  IHMState* IHMState::INSTANCE = nullptr;
+}
