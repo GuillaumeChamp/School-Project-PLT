@@ -225,7 +225,7 @@ Nous ajoutons aussi dans tous les énums une valeur par défaut qui sert pour le
 
 Pour le rendu d'un état, nous créons un module dédié à l'affichage graphique à destination des utilisateurs (joueurs).
 Notre statégie de rendu est classique pour une application.
-En effet, nous allons "peindre" à une fréquence fixe notre écran. Nous ne cherchons pas à peindre uniquement ce qui bouge ou déplacer des éléments car les processeurs graphiques sont fait pour tavailler avec des images et de repeindre systématique l'écran.
+En effet, nous allons "peindre" à une fréquence fixe notre écran. Nous ne cherchons pas à peindre uniquement ce qui bouge ou déplacer des éléments car les processeurs graphiques sont fait pour tavailler avec des images et repeindre systématiquement l'écran.
 A ce stade, l'interface est fixe et des animations ne sont pas prévues.
 
 
@@ -243,7 +243,7 @@ Nous choisissons ainsi une fenêtre de 1600x900.
 Une image de fond n’est pas nécessaire pour le fonctionnement du jeu mais sera présente pour des raisons esthétiques.
 
 
-SFML n'ayant pas de police par défaut, nous en choisissont des cohérentes.
+SFML n'ayant pas de police par défaut, nous en choisissons des cohérentes avec le style de la version physique de notre jeu.
  
 La police d’écriture est [Old London](https://www.dafont.com/fr/old-london.font).
 C’est notre police dite de titre car elle rend tous les textes courts.
@@ -267,9 +267,9 @@ Les boards sont simplement des formes simples. Les cartes non présentes sont af
 
 Le bouton fin de tour est une forme circulaire rendue interactive.
 
-***Les Popup***
-Nous avons des affichages ponctuels qui seront utilisé dans l'application pour afficher des informations supplémentaires.
-Nous en avons deux, un bouton d'aide pour afficher des informations sur l'application et un pour afficher la main d'un joueur qui prendrais tout l'écran sinon.
+***Les Popups***
+Nous avons des affichages ponctuels qui seront utilisés dans l'application pour afficher des informations supplémentaires.
+Nous en avons deux, un bouton d'aide pour afficher des informations sur l'application et un pour afficher la main d'un joueur qui prendrait tout l'écran sinon.
 Enfin, le centre de l'écran est utilisé pour afficher les cartes en grand quand on passe la sourie sur une carte.
 
 
@@ -277,14 +277,14 @@ Enfin, le centre de l'écran est utilisé pour afficher les cartes en grand quan
 
 Pour le code, les boutons n’existant pas dans SMFL, nous proposons de les créer nous même.
 Nous concevons alors les éléments suivants :
-- Une classe abstraite élément interactif qui tient la partie graphique de l'élément ainsi que les méthodes de base pour l'interaction.
+- Une classe abstraite élément interactif qui contient la partie graphique de l'élément ainsi que les méthodes de base pour l'interaction.
 - Une classe concrète bouton qui hérite de la précédente pour les boutons de type pioche, aide …
 - Une classe concrète carte qui hérite également pour implémenter le onHoverAction() pour zoomer sur la carte.
-- Il existe deux types de boutons, les boutons moteurs communiquent des informations au moteur du jeu, les boutons afficheur qui déclenche l’affichage.
-- Une classe d'état de l'interface pour permettre de déclancher les mises à jour graphique dù à l'interaction avec un élément interactif.
+- Il existe deux types de boutons, les boutons moteurs communiquent des informations au moteur du jeu, les boutons afficheurs qui déclenchent l’affichage.
+- Une classe d'état de l'interface pour permettre de déclencher les mises à jour graphiques dues à l'interaction avec un élément interactif.
 - Une classe utilitaire playerRender qui s’occupe de l’affichage des données joueurs.
 - Des Enumérations pour permettre de gérer les valeurs limitées.
-- Une classe principale appelé Scène qui est le point d'entré de ce module.
+- Une classe principale appelée Scène qui est le point d'entrée de ce module.
 
 
 
