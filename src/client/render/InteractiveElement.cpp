@@ -1,13 +1,12 @@
 #include "InteractiveElement.h"
-#include <SFML/Graphics.hpp>
 
 namespace render {
-    sf::RectangleShape InteractiveElement::surface;
     
     InteractiveElement::InteractiveElement (int posX, int posY){
-        surface.setPosition(posX, posY);
-
+        this->surface = sf::RectangleShape();
+        this->surface.setPosition(posX, posY);
     }
+
     sf::RectangleShape InteractiveElement::getSurface (){
         return this->surface;
     }

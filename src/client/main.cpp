@@ -39,21 +39,18 @@ int main(int argc, char *argv[]) {
         else if (std::strcmp(argv[1], "render") == 0) {
            
              sf::RenderWindow window(sf::VideoMode(1600, 900), "Citadelles");
+            window.setVerticalSyncEnabled(true);
 
             GameState gamestate=generateSampleState();
-            render::Scene sceneA(render::SceneId::playerA, gamestate);
-            render::Scene sceneB(render::SceneId::playerB, gamestate);
-            render::Scene sceneC(render::SceneId::playerC, gamestate);
-            render::Scene sceneD(render::SceneId::playerD, gamestate);
+            render::Scene sceneA(render::SceneId::playerA, &gamestate);
+            
 
 
              while (window.isOpen()) {
                 sf::Event event;
                 while (window.pollEvent(event)) {
                     sceneA.handleEvent(event);
-                    sceneB.handleEvent(event);
-                    sceneC.handleEvent(event);
-                    sceneD.handleEvent(event);
+               
 
                     if (event.type == sf::Event::Closed) {
                         window.close();

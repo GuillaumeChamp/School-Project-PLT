@@ -2,8 +2,9 @@
 
 namespace render {
 
-    void PlayerRender::drawPlayer(sf::RenderWindow& render, state::Player* playerToRender, int positionId, bool isCrownOwner, bool isRevealed) {
+    std::vector<Card> PlayerRender::drawPlayer(sf::RenderWindow& render, state::Player* playerToRender, int positionId, bool isCrownOwner, bool isRevealed) {
         
+        std::vector<Card> boardCards;
         std::vector<std::pair<int, int>> coordinatesList = {
             {615,622}, //en bas
             {0,311},  //a gauche
@@ -54,7 +55,7 @@ namespace render {
     "NoCharacter" };
             std::string characterName = CharacterTypeString[playerToRender->getCharacter()];
             Card character = Card(characterName, crownX, crownY+150);
-            render.draw(character);
+            render.draw(character.getSurface());
         }
         
         //dessin nombre pièces + nombre cartes
@@ -82,6 +83,14 @@ namespace render {
         playerName.setFillColor(sf::Color::White);
         render.draw(playerName);
 
+        //Board
+        int nbOfCard =0;
+        for (auto& card : playerToRender->getBoardOfPlayer()){
+                //Creation des cartes des boards
+                std::string filename=card.getNameOfCard ();
+                boardCards.push_back(Card(filename, boardX+10 + (nbOfCard%4)*80, boardY+10+ 124*(nbOfCard/4)));
+            }
+            
+    return boardCards;
     }
-
 } 

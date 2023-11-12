@@ -3,7 +3,7 @@
 
 namespace render {
 
-    Scene::Scene(SceneId sceneId, const state::GameState *state) {
+    Scene::Scene(SceneId sceneId, state::GameState* state) {
         this->sceneId=sceneId;
         this->state=state;
         this->height= 900; 
@@ -107,7 +107,7 @@ namespace render {
 
 
         // Affichage des boutons
-        for (const auto& button : listOfButtons) {
+        for (auto& button : listOfButtons) {
             window.draw(button.getSurface());
         }
         
@@ -138,19 +138,8 @@ namespace render {
                             listOfPlayerOrder.push_back(player2);
                         }
                     }}
-            }}
-
-        int index=0;
-        for (auto& player : listOfPlayerOrder) {
-            float currentX = static_cast<float>(coordinatesList[index].first);
-            float currentY = static_cast<float>(coordinatesList[index].second);
-            int nbOfCard =0;
-            for (auto& card : player.getBoardOfPlayer()){
-                //Creation des cartes des boards
-                std::string filename=card.getNameOfCard ();
-                displayedCard.push_back(Card(filename, currentX+10 + (nbOfCard%4)*80, currentY+10+ 124*(nbOfCard/4)));
             }
-            index++;
+
         }
         
         
@@ -161,7 +150,7 @@ namespace render {
             
             bool isCrownOwner = false;
             bool isRevealed = false;
-            if (player.getIdOfPlayer() == (*state).getCrownOwner()){
+            if (player.getIdOfPlayer() == state->getCrownOwner()){
                 isCrownOwner=true;}
             int indexCurrentCharacter, indexCharacterPlayer;
 
@@ -169,12 +158,14 @@ namespace render {
                 if (static_cast<state::CharacterType>(k) == player.getCharacter()) {
                     indexCharacterPlayer=k;
                     }
-                if (static_cast<state::CharacterType>(k) == state*->getCurrentCharacter() ) {
+                if (static_cast<state::CharacterType>(k) == state->getCurrentCharacter() ) {
                     indexCurrentCharacter =k;
                     }
                 }
             if (indexCharacterPlayer>=indexCurrentCharacter){isRevealed=true;}
-            PlayerRender::drawPlayer(window, player* ,  i, isCrownOwner, isRevealed);
+
+            std::vector<render::Card> temp = PlayerRender::drawPlayer(window, &player, i, isCrownOwner, isRevealed);
+            displayedCard.insert(std::end(displayedCard), std::begin(temp), std::end(temp));
             i++;
             }
         
@@ -226,7 +217,7 @@ namespace render {
         boardBackground.setFillColor(sf::Color::Blue);
         window.draw(boardBackground);
 
-        std::vector<state::Player> listOfPlayer = state*->getListOfPlayer();
+        std::vector<state::Player> listOfPlayer = state->getListOfPlayer();
         for (auto& player : listOfPlayer) {
             if (player.getIdOfPlayer() == sceneId ) {
 
@@ -241,9 +232,9 @@ namespace render {
                     i++;
 
                 }
-    }}
-    
     }
+    
+    }}
 
 
     void Scene::drawHelp(sf::RenderWindow& window) {
