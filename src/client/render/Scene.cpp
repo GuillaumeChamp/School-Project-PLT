@@ -54,8 +54,8 @@ namespace render {
             sf::RectangleShape cardsLocation(sf::Vector2f(80,124));
             cardsLocation.setFillColor(sf::Color::Cyan);
             
-            for (int i = 0; i++; i<4){
-                for (int j=0; j++; j<2){
+            for (int i = 0; i<4; i++){
+                for (int j=0; j<2; j++){
                     cardsLocation.setPosition(x+10+90*i, y+10+134*j);
                     window.draw(cardsLocation);
                 }
@@ -67,7 +67,7 @@ namespace render {
             sf::RectangleShape characterBackgroundShape(sf::Vector2f(80,124));
             characterBackgroundShape.setTexture(&characterBackgroundTexture);
 
-            for (int i=0; i++; i<4){
+            for (int i=0; i<4; i++){
                 characterBackgroundShape.setPosition(x+370, y+152);
                 window.draw(characterBackgroundShape);
             }
@@ -130,7 +130,7 @@ namespace render {
                 }
                 listOfPlayerOrder.push_back(player);
                 
-                for (int i=0; i++; i<3){
+                for (int i=0; i<3; i++){
                     currentIndex++;
                     currentIndex=currentIndex%4;
                     for (auto& player2 : listOfPlayer){
