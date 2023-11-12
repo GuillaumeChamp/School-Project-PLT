@@ -4,6 +4,7 @@
 
 namespace render {
     Card::Card(std::string filename, int posX, int posY):InteractiveElement(posX, posY)  {
+        this->name = filename;
         sf::Texture texture;
         std::string Path = "../res/" + filename + ".jpg";
         texture.loadFromFile(Path);

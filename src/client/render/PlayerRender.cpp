@@ -28,12 +28,15 @@ namespace render {
 
         //logo couronne
         if (isCrownOwner){
-        sf::Texture crown;
-        crown.loadFromFile("");
-        sf::Sprite crownSprite(crown);
-        crownSprite.setPosition(crownX,crownY);
+        sf::RectangleShape crown(sf::Vector2f(40,40));
+        sf::Texture crownTexture;
+        crownTexture.loadFromFile("../res/crown.png");
+        crown.setTexture(&crownTexture);
+
+        crown.setPosition(crownX,crownY);
+
         
-        render.draw(crownSprite);
+        render.draw(crown);
         }
 
         //Personnage secret si révélé
@@ -59,11 +62,10 @@ namespace render {
             sf::RectangleShape characterBackgroundShape(sf::Vector2f(80,124));
             characterBackgroundShape.setTexture(&characterBackgroundTexture);
 
-            for (int i=0; i<4; i++){
-                characterBackgroundShape.setPosition(boardX+370, boardY+152);
-                render.draw(characterBackgroundShape);
+            characterBackgroundShape.setPosition(boardX+370, boardY+152);
+            render.draw(characterBackgroundShape);
             }
-        }
+        
         //dessin nombre pièces + nombre cartes
         sf::Text nbOfCoins, nbOfCards;
         nbOfCards.setString(std::to_string(playerToRender->getNumberOfCards()));
