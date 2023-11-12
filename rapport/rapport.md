@@ -164,7 +164,7 @@ Tous les Players ont accès à une pioche. Cette pioche est représentée par un
 Chaque joueur possède les éléments suivants.
 
 - Un nom qui est cosmétique.
-- Une playerId qui est unique et permet de différencier les joueurs au niceau de la partie.
+- Une playerId qui est unique et permet de différencier les joueurs au niveau de la partie.
 - Un board qui est une liste de cartes représentant les bâtiments construits.
 - Des pièces d'or.
 - Le personnage qu'il incarne pendant ce tour, lui permettant certaines interactions.
@@ -208,9 +208,8 @@ Elle sert à regrouper tous les Players au sein d'une même classe afin de pouvo
 **La classe Player** : Elle contient les données liés aux différents joueurs. C'est une classe générique pour représenter toutes les données auxquels tous les joueurs ont accès.
 
 
-Nous avons utilisé les énumérations pour décrire les différents type de "GamePhase" (qui permet d'identifier les moments de la partie), "Character", "PlayerId" et de "couleur de bâtiments" car cela permet de rendre notre code plus lisible en donnant des noms significatifs aux valeurs possibles. 
-
-Les énumérations limitent les valeurs possibles à celles que nous avons définies, offrant ainsi un meilleur contrôle sur les données que l'on manipule. Si on ajoute ou modifie un type de caractère ou une couleur de bâtiment, on devra simplement le faire dans l'énumération sans avoir à rechercher et à modifier chaque occurrence dans le code. Nous ajoutons aussi l'équivalent de nul pour ces énumérations qui servent pour les initialisations et netralisations.
+Nous avons utilisé les énumérations pour décrire les différents type de "GamePhase" (qui permet d'identifier les moments de la partie), "Character", "PlayerId" et de "couleur de bâtiments" car cela permet de rendre notre code plus lisible en donnant des noms significatifs aux valeurs possibles. Les énumérations limitent les valeurs possibles à celles que nous avons définies, offrant ainsi un meilleur contrôle sur les données que l'on manipule. Si on ajoute ou modifie un type de personnage ou une couleur de bâtiment, on devra simplement le faire dans l'énumération sans avoir à rechercher et à modifier chaque occurrence dans le code. 
+Nous ajoutons aussi dans tous les énums une valeur par défaut qui sert pour les initialisations et neutralisations.
 
 
 
