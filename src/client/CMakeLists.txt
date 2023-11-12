@@ -29,5 +29,7 @@ if(BUILD_CODE_COVERAGE)
   add_dependencies(code-coverage ${client_target})
 endif()
 
+set(RESOURCE_FILES ../../res)
+file(GLOB_RECURSE RESOURCE_FILES ../../res/*.jpg)
 # vim: set sw=2 sts=2 et:
 
