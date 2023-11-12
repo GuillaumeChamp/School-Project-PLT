@@ -9,13 +9,13 @@ namespace render {
         switch (buttonType){
             case bank:
                 surface.setPosition(posX,posY);
-                texture1.loadFromFile("../res/1.jpg");
+                texture1.loadFromFile("/res/chest.jpg");
                 surface.setTexture(&texture1);
                 surface.setSize(sf::Vector2f(40, 40));
                 break;
             case draw:
                 surface.setPosition(posX,posY);
-                texture2.loadFromFile("");
+                texture2.loadFromFile("../res/dos_rouge");
                 surface.setTexture(&texture2);
                 surface.setSize(sf::Vector2f(40, 40));
                 break;
