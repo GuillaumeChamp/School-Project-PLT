@@ -8,12 +8,46 @@ namespace render {
         this->state=state;
         this->height= 900; 
         this->width=1600;
+        this->fontText.loadFromFile("../res/Garet-Book.ttf");
+        this->fontTitle.loadFromFile("../res/OldLondon.ttf");
 
         listOfButtons.push_back(Button(bank, 700,350));
         listOfButtons.push_back(Button(buttonType::draw, 900,350));
         listOfButtons.push_back(Button(endOfTurn, 780,500));
         listOfButtons.push_back(Button(hand, 1500,850));
         listOfButtons.push_back(Button(help, 1500,50));
+
+        //Background
+        this-> background = sf::RectangleShape();
+        background.setSize(sf::Vector2f(width, height));
+        background.setFillColor(sf::Color(21,25,29));
+
+        //logo crown + gold + cartes
+        sf::Texture crown, gold, cardLogo;
+        crown.loadFromFile("../res/crown.png");
+        gold.loadFromFile("../res/coin.png");
+        cardLogo.loadFromFile("../res/coin.png");
+        this->crownTexture = sf::RectangleShape(); 
+        this->goldTexture = sf::RectangleShape(); 
+        this->cardLogoTexture=sf::RectangleShape();
+        crownTexture.setSize(sf::Vector2f(40,40));
+        goldTexture.setSize(sf::Vector2f(40,40));
+        cardLogoTexture.setSize(sf::Vector2f(40,40));
+        crownTexture.setTexture(&crown);
+        goldTexture.setTexture(&gold);
+        cardLogoTexture.setTexture(&cardLogo);
+
+        // Texte pour le helpMenu
+
+        this->helpMenuText= sf::Text();
+        helpMenuText.setFont(fontText);
+        helpMenuText.setString("Règles du jeu.\n\n"
+                        "Voici les règles du début du jeu\nLigne 2\nLigne 3\nLigne 4\nLigne 5\n"
+                        "Ligne 6\nLigne 7\nLigne 8\nLigne 9\nLigne 10\n"
+                        "Ligne 11\nLigne 12\nLigne 13\nLigne 14\nLigne 15");
+        helpMenuText.setCharacterSize(20);
+        helpMenuText.setFillColor(sf::Color::Black);
+        helpMenuText.setPosition(370, 220); 
 
         }
 
@@ -24,8 +58,6 @@ namespace render {
         // dessine les éléments communs à toutes les scènes
 
         //Background
-        sf::RectangleShape background(sf::Vector2f(width, height));
-        background.setFillColor(sf::Color::Black);
         window.draw(background);
 
 
@@ -46,13 +78,13 @@ namespace render {
             float y = static_cast<float>(coordinates.second);
 
             board.setPosition(x, y);
-            board.setFillColor(sf::Color::Blue);
+            board.setFillColor(sf::Color(165,134,105));
 
             window.draw(board);
 
             //Cards location
             sf::RectangleShape cardsLocation(sf::Vector2f(80,124));
-            cardsLocation.setFillColor(sf::Color::Cyan);
+            cardsLocation.setFillColor(sf::Color(233,220,205));
             
             for (int i = 0; i<4; i++){
                 for (int j=0; j<2; j++){
@@ -61,29 +93,12 @@ namespace render {
                 }
             }
 
-            //Personnage secret
-            sf::Texture characterBackgroundTexture;
-            characterBackgroundTexture.loadFromFile("../res/dos_rouge.jpg");
-            sf::RectangleShape characterBackgroundShape(sf::Vector2f(80,124));
-            characterBackgroundShape.setTexture(&characterBackgroundTexture);
-
-            for (int i=0; i<4; i++){
-                characterBackgroundShape.setPosition(x+370, y+152);
-                window.draw(characterBackgroundShape);
-            }
+            
         }
 
-        //logo crown + gold + cartes
-        sf::Texture crown, gold, cardLogo;
-        crown.loadFromFile("");
-        gold.loadFromFile("");
-        cardLogo.loadFromFile("");
+        
 
-        sf::Sprite crownSprite(crown);
-        sf::Sprite goldSprite(gold);
-        sf::Sprite cardLogoSprite(cardLogo);
-
-        std::vector<std::pair<int, int>> posLogo = {
+        std::vector<std::pair<float, float>> posLogo = {
             //Coordonné du pixel en haut a gauche du logo couronne de chaqe board
                 {985,624}, //en bas
                 {370,313},  //a gauche
@@ -92,16 +107,16 @@ namespace render {
              };
 
         for (const auto& coordinates : posLogo){
-            float pos_x = static_cast<float>(coordinates.first);
-            float pos_y = static_cast<float>(coordinates.second);
+            float pos_x = coordinates.first;
+            float pos_y = coordinates.second;
             
-            crownSprite.setPosition(pos_x, pos_y);
-            goldSprite.setPosition(pos_x+40, pos_y+50);     //Emplacement réfléchis pour garder la place pour le texte
-            cardLogoSprite.setPosition(pos_x+40, pos_y+100);
+            crownTexture.setPosition(pos_x, pos_y);
+            goldTexture.setPosition(pos_x+40, pos_y+50);     //Emplacement réfléchis pour garder la place pour le texte
+            cardLogoTexture.setPosition(pos_x+40, pos_y+100);
 
-            window.draw(crownSprite);
-            window.draw(goldSprite);
-            window.draw(cardLogoSprite);
+            window.draw(crownTexture);
+            window.draw(goldTexture);
+            window.draw(cardLogoTexture);
             }
         
 
@@ -164,7 +179,7 @@ namespace render {
                 }
             if (indexCharacterPlayer>=indexCurrentCharacter){isRevealed=true;}
 
-            std::vector<render::Card> temp = PlayerRender::drawPlayer(window, &player, i, isCrownOwner, isRevealed);
+            std::vector<render::Card> temp = PlayerRender::drawPlayer(window, &player, i, isCrownOwner, isRevealed, fontTitle);
             displayedCard.insert(std::end(displayedCard), std::begin(temp), std::end(temp));
             i++;
             }
@@ -241,22 +256,7 @@ namespace render {
 
     sf::RectangleShape helpMenu(sf::Vector2f(900,500));
     helpMenu.setPosition(350, 200);
-    helpMenu.setFillColor(sf::Color(200, 200, 200));
-
-
-    // Texte pour le helpMenu
-    sf::Font font;
-    font.loadFromFile("../res/Caret-Book.ttf");
-
-    sf::Text helpMenuText;
-    helpMenuText.setFont(font);
-    helpMenuText.setString("Règles du jeu.\n\n"
-                        "Voici les règles du début du jeu\nLigne 2\nLigne 3\nLigne 4\nLigne 5\n"
-                        "Ligne 6\nLigne 7\nLigne 8\nLigne 9\nLigne 10\n"
-                        "Ligne 11\nLigne 12\nLigne 13\nLigne 14\nLigne 15");
-    helpMenuText.setCharacterSize(20);
-    helpMenuText.setFillColor(sf::Color::Black);
-    helpMenuText.setPosition(370, 220); 
+    helpMenu.setFillColor(sf::Color::Red);
 
     window.draw(helpMenu);
     window.draw(helpMenuText);

@@ -2,7 +2,7 @@
 
 namespace render {
 
-    std::vector<Card> PlayerRender::drawPlayer(sf::RenderWindow& render, state::Player* playerToRender, int positionId, bool isCrownOwner, bool isRevealed) {
+    std::vector<Card> PlayerRender::drawPlayer(sf::RenderWindow& render, state::Player* playerToRender, int positionId, bool isCrownOwner, bool isRevealed, sf::Font font) {
         
         std::vector<Card> boardCards;
         std::vector<std::pair<int, int>> coordinatesList = {
@@ -25,11 +25,6 @@ namespace render {
 
         float crownX = static_cast<float>(posCrown[positionId].first);
         float crownY = static_cast<float>(posCrown[positionId].second);
-
-        sf::Font fontTitre, fontText;
-        fontTitre.loadFromFile("../res/OldLondon.ttf");
-
-        fontText.loadFromFile("../res/Caret-Book.ttf");
 
         //logo couronne
         if (isCrownOwner){
@@ -57,13 +52,24 @@ namespace render {
             Card character = Card(characterName, crownX, crownY+150);
             render.draw(character.getSurface());
         }
-        
+        if (!isRevealed){
+            //Personnage secret
+            sf::Texture characterBackgroundTexture;
+            characterBackgroundTexture.loadFromFile("../res/dos_rouge.jpg");
+            sf::RectangleShape characterBackgroundShape(sf::Vector2f(80,124));
+            characterBackgroundShape.setTexture(&characterBackgroundTexture);
+
+            for (int i=0; i<4; i++){
+                characterBackgroundShape.setPosition(boardX+370, boardY+152);
+                render.draw(characterBackgroundShape);
+            }
+        }
         //dessin nombre pièces + nombre cartes
         sf::Text nbOfCoins, nbOfCards;
         nbOfCards.setString(std::to_string(playerToRender->getNumberOfCards()));
         nbOfCoins.setString(std::to_string(playerToRender->getNumberOfCoins()));
-        nbOfCoins.setFont(fontTitre);
-        nbOfCards.setFont(fontTitre);
+        nbOfCoins.setFont(font);
+        nbOfCards.setFont(font);
         nbOfCards.setCharacterSize(20);
         nbOfCoins.setCharacterSize(20);
         nbOfCards.setPosition(crownX, crownY+50);
@@ -76,7 +82,7 @@ namespace render {
 
         // Ecriture nom joueur
         sf::Text playerName;
-        playerName.setFont(fontTitre);
+        playerName.setFont(font);
         playerName.setString(playerToRender->getNameOfPlayer());
         playerName.setCharacterSize(20);
         playerName.setPosition(boardX+1, boardY+1);

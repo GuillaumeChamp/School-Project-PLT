@@ -7,7 +7,11 @@ namespace render {
         this->surface.setPosition(posX, posY);
     }
 
-    sf::RectangleShape InteractiveElement::getSurface (){
+    InteractiveElement::~InteractiveElement(){
+        
+    }
+
+    sf::RectangleShape InteractiveElement::getSurface(){
         return this->surface;
     }
 
