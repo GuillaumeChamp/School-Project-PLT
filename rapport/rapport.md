@@ -286,7 +286,7 @@ Nous concevons alors les éléments suivants :
 - Des Enumérations pour permettre de gérer les valeurs limitées.
 - Une classe principale appelée Scène qui est le point d'entrée de ce module.
 
-
+![RenderDia](images/RenderDia.png)
 
 ## Règles de changement d'états et moteur de jeu
 
