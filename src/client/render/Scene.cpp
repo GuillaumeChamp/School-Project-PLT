@@ -133,29 +133,19 @@ namespace render {
         std::vector<state::Player> listOfPlayer = state->getListOfPlayer();
         std::vector<state::Player> listOfPlayerOrder;
 
-        for (auto& player : listOfPlayer) {
+        int idOfSceneOwner = sceneId;        
+        listOfPlayerOrder.push_back(listOfPlayer[sceneId - 1]);                          
             
-            if (player.getIdOfPlayer() == sceneId ) {
-                //Ordre des joueurs
-                int currentIndex;
-                for (int i = 0; i < 4; ++i) {
-                    if (static_cast<SceneId>(i) == sceneId) {
-                        currentIndex= i;
+        for (int i=0; i<3; i++){             
+                idOfSceneOwner++;             
+                idOfSceneOwner > 4 ? 1 : idOfSceneOwner;             
+                for (auto& player2 : listOfPlayer){                 
+                    if (player2.getIdOfPlayer() == idOfSceneOwner){                     
+                        listOfPlayerOrder.push_back(player2);                     
+                        break;                 
+                        }             
                     }
                 }
-                listOfPlayerOrder.push_back(player);
-                
-                for (int i=0; i<3; i++){
-                    currentIndex++;
-                    currentIndex=currentIndex%4;
-                    for (auto& player2 : listOfPlayer){
-                        if (player2.getIdOfPlayer()== static_cast<SceneId>(currentIndex)){
-                            listOfPlayerOrder.push_back(player2);
-                        }
-                    }}
-            }
-
-        }
         
         
 
@@ -199,6 +189,7 @@ namespace render {
         for (auto& card : displayedCard){
             window.draw(card.getSurface());
         }
+        displayedCard.clear();
 
     }
 

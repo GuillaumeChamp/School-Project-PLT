@@ -72,8 +72,8 @@ namespace render {
         nbOfCoins.setString(std::to_string(playerToRender->getNumberOfCoins()));
         nbOfCoins.setFont(font);
         nbOfCards.setFont(font);
-        nbOfCards.setCharacterSize(20);
-        nbOfCoins.setCharacterSize(20);
+        nbOfCards.setCharacterSize(50);
+        nbOfCoins.setCharacterSize(50);
         nbOfCards.setPosition(crownX, crownY+50);
         nbOfCoins.setPosition(crownX, crownY+100);
         nbOfCards.setFillColor(sf::Color::White);
@@ -97,8 +97,9 @@ namespace render {
                 //Creation des cartes des boards
                 std::string filename=card.getNameOfCard ();
                 boardCards.push_back(Card(filename, boardX+10 + (nbOfCard%4)*80, boardY+10+ 124*(nbOfCard/4)));
+                nbOfCard++;
             }
             
-    return boardCards;
+        return boardCards;
     }
 } 

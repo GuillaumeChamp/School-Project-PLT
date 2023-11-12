@@ -89,6 +89,19 @@ GameState generateSampleState() {
     Player playerC {"player3", PlayerId::PlayerC};
     Player playerD {"player4", PlayerId::PlayerD};
 
+    Card card1{"1",Commercial,2};
+    Card card2{"2",Commercial,2};
+
+    playerA.setCharacter(Warlord);
+    playerB.setCharacter(Bishop);
+    playerC.setCharacter(Merchant);
+    playerD.setCharacter(King);
+
+    playerA.setBoardOfPlayer(std::vector<Card>{card1});
+    playerB.setBoardOfPlayer(std::vector<Card>{card2});
+    playerC.setBoardOfPlayer(std::vector<Card>{card2,card1});
+    playerD.setBoardOfPlayer(std::vector<Card>{card1,card2});
+
     GameState gameState {std::vector<Player>{playerA,playerB,playerC,playerD}};
     return gameState;
 }
