@@ -3,12 +3,19 @@
 
 namespace render {
 
-    Scene::Scene(SceneId sceneId, const state::GameState& state) :
-        sceneId(sceneId),
-        state(state),
-        height(900), 
-        width(1600)  
-    {    }
+    Scene::Scene(SceneId sceneId, const state::GameState *state) {
+        this->sceneId=sceneId;
+        this->state=state;
+        this->height= 900; 
+        this->width=1600;
+
+        listOfButtons.push_back(Button(bank, 700,350));
+        listOfButtons.push_back(Button(buttonType::draw, 900,350));
+        listOfButtons.push_back(Button(endOfTurn, 780,500));
+        listOfButtons.push_back(Button(hand, 1500,850));
+        listOfButtons.push_back(Button(help, 1500,50));
+
+        }
 
     Scene::~Scene() {
     }
@@ -100,12 +107,6 @@ namespace render {
 
 
         // Affichage des boutons
-
-        listOfButtons.push_back(Button(bank, 700,350));
-        listOfButtons.push_back(Button(buttonType::draw, 900,350));
-        listOfButtons.push_back(Button(endOfTurn, 780,500));
-        listOfButtons.push_back(Button(hand, 1500,850));
-        listOfButtons.push_back(Button(help, 1500,50));
         for (const auto& button : listOfButtons) {
             window.draw(button.getSurface());
         }
@@ -160,7 +161,7 @@ namespace render {
             
             bool isCrownOwner = false;
             bool isRevealed = false;
-            if (player.getIdOfPlayer() == state->getCrownOwner()){
+            if (player.getIdOfPlayer() == (*state).getCrownOwner()){
                 isCrownOwner=true;}
             int indexCurrentCharacter, indexCharacterPlayer;
 
@@ -168,12 +169,12 @@ namespace render {
                 if (static_cast<state::CharacterType>(k) == player.getCharacter()) {
                     indexCharacterPlayer=k;
                     }
-                if (static_cast<state::CharacterType>(k) == state->getCurrentCharacter()) {
+                if (static_cast<state::CharacterType>(k) == state*->getCurrentCharacter() ) {
                     indexCurrentCharacter =k;
                     }
                 }
             if (indexCharacterPlayer>=indexCurrentCharacter){isRevealed=true;}
-            PlayerRender::drawPlayer(window, player,  i, isCrownOwner, isRevealed);
+            PlayerRender::drawPlayer(window, player* ,  i, isCrownOwner, isRevealed);
             i++;
             }
         
@@ -188,8 +189,9 @@ namespace render {
             drawHelp(window);
         }
 
+
         for (auto& card : displayedCard){
-            window.draw(card);
+            window.draw(card.getSurface());
         }
 
     }
@@ -224,7 +226,7 @@ namespace render {
         boardBackground.setFillColor(sf::Color::Blue);
         window.draw(boardBackground);
 
-        std::vector<state::Player> listOfPlayer = state->getListOfPlayer();
+        std::vector<state::Player> listOfPlayer = state*->getListOfPlayer();
         for (auto& player : listOfPlayer) {
             if (player.getIdOfPlayer() == sceneId ) {
 

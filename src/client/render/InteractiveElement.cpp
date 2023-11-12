@@ -12,9 +12,6 @@ namespace render {
         return this->surface;
     }
 
-    void InteractiveElement::setSurface (int posX, int posY){
-        surface.setPosition(posX, posY);
-    }
 
     bool InteractiveElement::checkClick(sf::Vector2f mousePos) {
         return surface.getGlobalBounds().contains(mousePos);
