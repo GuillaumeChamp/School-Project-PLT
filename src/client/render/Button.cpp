@@ -1,6 +1,6 @@
 #include "Button.h"
 #include <iostream>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 namespace render {
     Button::Button(ButtonType buttonType, int posX, int posY):InteractiveElement(posX, posY) {
