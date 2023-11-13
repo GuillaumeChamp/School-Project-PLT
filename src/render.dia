@@ -1493,7 +1493,7 @@
             <dia:string>#surface#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#RectangleShape#</dia:string>
+            <dia:string>#sf::RectangleShape#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
