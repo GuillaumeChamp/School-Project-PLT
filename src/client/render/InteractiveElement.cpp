@@ -1,5 +1,6 @@
 #include "InteractiveElement.h"
 
+
 namespace render {
     
     InteractiveElement::InteractiveElement (int posX, int posY){
@@ -11,24 +12,22 @@ namespace render {
         
     }
 
-    sf::RectangleShape InteractiveElement::getSurface(){
+    sf::RectangleShape InteractiveElement::getSurface() const{
         return this->surface;
     }
 
 
-    bool InteractiveElement::checkClick(sf::Vector2f mousePos) {
-        return surface.getGlobalBounds().contains(mousePos);
+    bool InteractiveElement::checkClick(int x,int y) {
+        return surface.getGlobalBounds().contains(x,y);
     }
 
-    void InteractiveElement::checkHover(sf::Vector2f mousePos) {
-        if (surface.getGlobalBounds().contains(mousePos)) {
-            onHoverAction();
-        }
+    bool InteractiveElement::checkHover(int x,int y) {
+        return (surface.getGlobalBounds().contains(x,y));
     }
 
     void InteractiveElement::onClickEvent() {
     }
 
-    void InteractiveElement::onHoverAction() {
+    void InteractiveElement::onHoverEvent() {
     }
 }

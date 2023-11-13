@@ -6,16 +6,6 @@
 #include <state.h>
 #include "render.h"
 
-void testSFML() {
-    sf::Texture texture;
-}
-
-// Fin test SFML 
-
-
-
-
-
 using namespace std;
 using namespace state;
 
@@ -42,7 +32,7 @@ int main(int argc, char *argv[]) {
             window.setVerticalSyncEnabled(true);
 
             GameState gamestate=generateSampleState();
-            render::Scene sceneA(render::SceneId::playerA, &gamestate);
+            render::Scene sceneA(render::SceneId::PlayerA, &gamestate);
             
 
 

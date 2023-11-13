@@ -3,8 +3,9 @@
 #include <SFML/Graphics.hpp>
 
 namespace render {
-    Button::Button(buttonType buttonType, int posX, int posY):InteractiveElement(posX, posY) {
+    Button::Button(ButtonType buttonType, int posX, int posY):InteractiveElement(posX, posY) {
         sf::Texture  texture1, texture2, texture3, texture4, texture5;
+        this->name=buttonType;
 
         switch (buttonType){
             case bank:
@@ -40,40 +41,31 @@ namespace render {
         }
     }
 
-    Button::~Button() {
-    }
+    Button::~Button() = default;
 
-    void Button::onHoverAction() {
-        IHMState::GetInstance() -> hoverButton = this;
+    void Button::onHoverEvent() {
+        IHMState::getInstance() -> hoverButton = this;
     }
 
     void Button::onClickEvent() {
         std::string buttonText;
         switch (name) {
-            case buttonType::bank:
+            case ButtonType::bank:
                 buttonText = "Recevez deux pièces d'or";
                 break;
-            case buttonType::draw:
+            case ButtonType::draw:
                 buttonText = "Piochez une carte parmis 2";
                 break;
-            case buttonType::endOfTurn:
+            case ButtonType::endOfTurn:
                 buttonText = "Fin du tour";
                 break;
-            case buttonType::hand:
+            case ButtonType::hand:
                 buttonText = "Ouvre la main du joueur";
                 break;
-            case buttonType::help:
+            case ButtonType::help:
                 buttonText = "Ouvre le menu d'aide";
                 break;
         }
         std::cout << "Clic sur le bouton : " << buttonText << std::endl;
-    }
-
-    bool Button::isButtonRender() {
-        return isAvailable;
-    }
-
-    void Button::setButtonRender(bool isAvailable) {
-        this->isAvailable = isAvailable;
     }
 }
