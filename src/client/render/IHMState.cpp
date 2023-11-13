@@ -8,7 +8,7 @@ namespace render {
     hoverButton(nullptr) {
   }
 
-  IHMState* IHMState::GetInstance() {
+  IHMState* IHMState::getInstance() {
     if (!INSTANCE) {
       INSTANCE = new IHMState();
     }
