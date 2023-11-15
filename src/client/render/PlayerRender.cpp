@@ -2,9 +2,9 @@
 
 namespace render {
 
-    std::vector<Card> PlayerRender::drawPlayer(sf::RenderWindow& render, state::Player* playerToRender, int positionId, bool isCrownOwner, bool isRevealed, sf::Font font) {
+    std::vector<VisualCard> PlayerRender::drawPlayer(sf::RenderWindow& window, state::Player* playerToRender, int positionId, bool isCrownOwner, bool isRevealed, sf::Font font) {
         
-        std::vector<Card> boardCards;
+        std::vector<VisualCard> boardCards;
         std::vector<std::pair<int, int>> coordinatesList = {
             {615,622}, //en bas
             {0,311},  //a gauche
@@ -20,11 +20,11 @@ namespace render {
                 {1150,313} // a droite
              };
         
-        float boardX = static_cast<float>(coordinatesList[positionId].first);
-        float boardY = static_cast<float>(coordinatesList[positionId].second);
+        auto boardX = static_cast<float>(coordinatesList[positionId].first);
+        auto boardY = static_cast<float>(coordinatesList[positionId].second);
 
-        float crownX = static_cast<float>(posCrown[positionId].first);
-        float crownY = static_cast<float>(posCrown[positionId].second);
+        auto crownX = static_cast<float>(posCrown[positionId].first);
+        auto crownY = static_cast<float>(posCrown[positionId].second);
 
         //logo couronne
         if (isCrownOwner){
@@ -36,7 +36,7 @@ namespace render {
         crown.setPosition(crownX,crownY);
 
         
-        render.draw(crown);
+        window.draw(crown);
         }
 
         //Personnage secret si révélé
@@ -52,8 +52,8 @@ namespace render {
     "Warlord" ,
     "NoCharacter" };
             std::string characterName = CharacterTypeString[playerToRender->getCharacter()];
-            Card character = Card(characterName, crownX, crownY+150);
-            render.draw(character.getSurface());
+            VisualCard character = VisualCard(characterName, crownX, crownY+150);
+            window.draw(character.getSurface());
         }
         if (!isRevealed){
             //Personnage secret
@@ -63,7 +63,7 @@ namespace render {
             characterBackgroundShape.setTexture(&characterBackgroundTexture);
 
             characterBackgroundShape.setPosition(boardX+370, boardY+152);
-            render.draw(characterBackgroundShape);
+            window.draw(characterBackgroundShape);
             }
         
         //dessin nombre pièces + nombre cartes
@@ -78,8 +78,8 @@ namespace render {
         nbOfCoins.setPosition(crownX, crownY+100);
         nbOfCards.setFillColor(sf::Color::White);
         nbOfCoins.setFillColor(sf::Color::White);
-        render.draw(nbOfCards);
-        render.draw(nbOfCoins);
+        window.draw(nbOfCards);
+        window.draw(nbOfCoins);
 
 
         // Ecriture nom joueur
@@ -89,17 +89,17 @@ namespace render {
         playerName.setCharacterSize(20);
         playerName.setPosition(boardX+1, boardY+1);
         playerName.setFillColor(sf::Color::White);
-        render.draw(playerName);
+        window.draw(playerName);
 
         //Board
         int nbOfCard =0;
         for (auto& card : playerToRender->getBoardOfPlayer()){
                 //Creation des cartes des boards
                 std::string filename=card.getNameOfCard ();
-                boardCards.push_back(Card(filename, boardX+10 + (nbOfCard%4)*90, boardY+10+ 134*(nbOfCard/4)));
+                boardCards.push_back(Card(filename, boardX+10 + (nbOfCard%4)*80, boardY+10+ 124*(nbOfCard/4)));
                 nbOfCard++;
             }
             
         return boardCards;
     }
-} 
+}
