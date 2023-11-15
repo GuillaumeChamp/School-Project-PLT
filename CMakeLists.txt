@@ -51,6 +51,7 @@ if(BUILD_CODE_COVERAGE)
     '/usr/*'
     '${PROJECT_SOURCE_DIR}/test/*'
     '${PROJECT_SOURCE_DIR}/extern/*')
+    
   set(COVERAGE_GCOVR_EXCLUDES
     /usr/
     "${PROJECT_SOURCE_DIR}/test/"

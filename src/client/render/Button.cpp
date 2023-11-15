@@ -9,31 +9,31 @@ namespace render {
         switch (buttonType){
             case bank:
                 surface.setPosition(posX,posY);
-                texture1.loadFromFile("../res/chest.png");
+                texture1.loadFromFile("./res/chest.png");
                 surface.setTexture(&texture1);
                 surface.setSize(sf::Vector2f(40, 40));
                 break;
-            case draw:
+            case buttonType::draw:
                 surface.setPosition(posX,posY);
-                texture2.loadFromFile("../res/dos_rouge.jpg");
+                texture2.loadFromFile("./res/dos_rouge.jpg");
                 surface.setTexture(&texture2);
                 surface.setSize(sf::Vector2f(40, 40));
                 break;
             case endOfTurn:
                 surface.setPosition(posX,posY);
-                texture3.loadFromFile("../res/chest.png");
+                texture3.loadFromFile("./res/chest.png");
                 surface.setTexture(&texture3);
                 surface.setSize(sf::Vector2f(40, 40));
                 break;
             case hand:
                 surface.setPosition(posX,posY);
-                texture4.loadFromFile("../res/chest.png");
+                texture4.loadFromFile("./res/chest.png");
                 surface.setTexture(&texture4);
                 surface.setSize(sf::Vector2f(40, 40));
                 break;
             case help:
                 surface.setPosition(posX,posY);
-                texture5.loadFromFile("../res/help.png");
+                texture5.loadFromFile("./res/help.png");
                 surface.setTexture(&texture5);
                 surface.setSize(sf::Vector2f(40, 40));
                 break;
@@ -75,5 +75,8 @@ namespace render {
 
     void Button::setButtonRender(bool isAvailable) {
         this->isAvailable = isAvailable;
+    }
+    void Button::draw(sf::RenderWindow& window){
+        window.draw(surface);
     }
 }

@@ -30,7 +30,7 @@ namespace render {
         if (isCrownOwner){
         sf::RectangleShape crown(sf::Vector2f(40,40));
         sf::Texture crownTexture;
-        crownTexture.loadFromFile("../res/crown.png");
+        crownTexture.loadFromFile("./res/crown.png");
         crown.setTexture(&crownTexture);
 
         crown.setPosition(crownX,crownY);
@@ -58,7 +58,7 @@ namespace render {
         if (!isRevealed){
             //Personnage secret
             sf::Texture characterBackgroundTexture;
-            characterBackgroundTexture.loadFromFile("../res/dos_rouge.jpg");
+            characterBackgroundTexture.loadFromFile("./res/dos_rouge.jpg");
             sf::RectangleShape characterBackgroundShape(sf::Vector2f(80,124));
             characterBackgroundShape.setTexture(&characterBackgroundTexture);
 
@@ -72,8 +72,8 @@ namespace render {
         nbOfCoins.setString(std::to_string(playerToRender->getNumberOfCoins()));
         nbOfCoins.setFont(font);
         nbOfCards.setFont(font);
-        nbOfCards.setCharacterSize(50);
-        nbOfCoins.setCharacterSize(50);
+        nbOfCards.setCharacterSize(35);
+        nbOfCoins.setCharacterSize(35);
         nbOfCards.setPosition(crownX, crownY+50);
         nbOfCoins.setPosition(crownX, crownY+100);
         nbOfCards.setFillColor(sf::Color::White);
@@ -96,7 +96,7 @@ namespace render {
         for (auto& card : playerToRender->getBoardOfPlayer()){
                 //Creation des cartes des boards
                 std::string filename=card.getNameOfCard ();
-                boardCards.push_back(Card(filename, boardX+10 + (nbOfCard%4)*80, boardY+10+ 124*(nbOfCard/4)));
+                boardCards.push_back(Card(filename, boardX+10 + (nbOfCard%4)*90, boardY+10+ 134*(nbOfCard/4)));
                 nbOfCard++;
             }
             

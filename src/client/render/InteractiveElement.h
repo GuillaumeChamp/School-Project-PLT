@@ -3,6 +3,7 @@
 #define RENDER__INTERACTIVEELEMENT__H
 
 #include "SFML/Graphics.hpp"
+
 namespace render {
   class IHMState;
 }
@@ -25,6 +26,8 @@ namespace render {
     virtual void onHoverAction ();
     sf::RectangleShape getSurface ();
     virtual ~InteractiveElement ();
+    // Setters and Getters
+    void setSurface(const sf::RectangleShape& surface);
   };
 
 };
