@@ -27,15 +27,15 @@ namespace render {
         crown.loadFromFile("./res/crown.png");
         gold.loadFromFile("./res/coin.png");
         cardLogo.loadFromFile("./res/coin.png");
-        this->crownTexture = sf::RectangleShape(); 
-        this->goldTexture = sf::RectangleShape(); 
-        this->cardLogoTexture=sf::RectangleShape();
-        crownTexture.setSize(sf::Vector2f(40,40));
-        goldTexture.setSize(sf::Vector2f(40,40));
-        cardLogoTexture.setSize(sf::Vector2f(40,40));
-        crownTexture.setTexture(&crown);
-        goldTexture.setTexture(&gold);
-        cardLogoTexture.setTexture(&cardLogo);
+        this->crownIcon = sf::RectangleShape(); 
+        this->goldIcon = sf::RectangleShape(); 
+        this->cardIcon=sf::RectangleShape();
+        crownIcon.setSize(sf::Vector2f(40,40));
+        goldIcon.setSize(sf::Vector2f(40,40));
+        cardIcon.setSize(sf::Vector2f(40,40));
+        crownIcon.setTexture(&crown);
+        goldIcon.setTexture(&gold);
+        cardIcon.setTexture(&cardLogo);
 
         // Texte pour le helpMenu
 
@@ -123,8 +123,8 @@ namespace render {
 
         // Affichage des boutons
         for (auto& button : listOfButtons) {
-            //window.draw(button.getSurface());
-            button.draw(window);
+            window.draw(button.getSurface());
+            //button.draw(window);
         }
         
 

@@ -96,7 +96,7 @@ namespace render {
         for (auto& card : playerToRender->getBoardOfPlayer()){
                 //Creation des cartes des boards
                 std::string filename=card.getNameOfCard ();
-                boardCards.push_back(Card(filename, boardX+10 + (nbOfCard%4)*80, boardY+10+ 124*(nbOfCard/4)));
+                boardCards.push_back(VisualCard(filename, boardX+10 + (nbOfCard%4)*80, boardY+10+ 124*(nbOfCard/4)));
                 nbOfCard++;
             }
             

@@ -14,7 +14,7 @@ namespace render {
                 surface.setTexture(&texture1);
                 surface.setSize(sf::Vector2f(40, 40));
                 break;
-            case buttonType::draw:
+            case ButtonType::draw:
                 surface.setPosition(posX,posY);
                 texture2.loadFromFile("./res/dos_rouge.jpg");
                 surface.setTexture(&texture2);
@@ -69,11 +69,5 @@ namespace render {
         std::cout << "Clic sur le bouton : " << buttonText << std::endl;
     }
 
-    bool Button::isButtonRender() {
-        return isAvailable;
-    }
 
-    void Button::setButtonRender(bool isAvailable) {
-        this->isAvailable = isAvailable;
-    }
 }
