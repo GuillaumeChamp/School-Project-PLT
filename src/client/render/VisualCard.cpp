@@ -1,9 +1,9 @@
-#include "Card.h"
+#include "VisualCard.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
 namespace render {
-    Card::Card(std::string filename, int posX, int posY):InteractiveElement(posX, posY)  {
+    VisualCard::VisualCard(std::string filename, int posX, int posY):InteractiveElement(posX, posY)  {
         this->name = filename;
         sf::Texture texture;
         std::string Path = "../res/" + filename + ".jpg";
@@ -13,15 +13,15 @@ namespace render {
         surface.setSize(sf::Vector2f(80, 124));
     }
 
-    Card::~Card() {
+    VisualCard::~VisualCard() {
     }
 
-    void Card::onHoverAction() {
-        IHMState::GetInstance()->hoverCard = this;
+    void VisualCard::onHoverEvent() {
+        IHMState::getInstance()->hoverCard = this;
 
     }
 
-    void Card::onClickEvent() {
+    void VisualCard::onClickEvent() {
         std::cout << "Clic sur la carte : " << name << std::endl;
     }
 }

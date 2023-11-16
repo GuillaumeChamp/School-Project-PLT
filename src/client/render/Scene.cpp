@@ -11,11 +11,11 @@ namespace render {
         this->fontText.loadFromFile("../res/Garet-Book.ttf");
         this->fontTitle.loadFromFile("../res/OldLondon.ttf");
 
-        listOfButtons.push_back(Button(bank, 700,350));
-        listOfButtons.push_back(Button(buttonType::draw, 900,350));
-        listOfButtons.push_back(Button(endOfTurn, 780,500));
-        listOfButtons.push_back(Button(hand, 1500,850));
-        listOfButtons.push_back(Button(help, 1500,50));
+        listOfButtons.push_back(Button(ButtonType::bank, 700,350));
+        listOfButtons.push_back(Button(ButtonType::draw, 900,350));
+        listOfButtons.push_back(Button(ButtonType::endOfTurn, 780,500));
+        listOfButtons.push_back(Button(ButtonType::hand, 1500,850));
+        listOfButtons.push_back(Button(ButtonType::help, 1500,50));
 
         //Background
         this-> background = sf::RectangleShape();
@@ -27,15 +27,17 @@ namespace render {
         crown.loadFromFile("../res/crown.png");
         gold.loadFromFile("../res/coin.png");
         cardLogo.loadFromFile("../res/coin.png");
-        this->crownTexture = sf::RectangleShape(); 
-        this->goldTexture = sf::RectangleShape(); 
-        this->cardLogoTexture=sf::RectangleShape();
-        crownTexture.setSize(sf::Vector2f(40,40));
-        goldTexture.setSize(sf::Vector2f(40,40));
-        cardLogoTexture.setSize(sf::Vector2f(40,40));
-        crownTexture.setTexture(&crown);
-        goldTexture.setTexture(&gold);
-        cardLogoTexture.setTexture(&cardLogo);
+        this->crownIcon = sf::RectangleShape();
+        crownIcon.setSize(sf::Vector2f(40,40));
+        crownIcon.setTexture(&crown);
+
+        this->goldIcon = sf::RectangleShape();
+        goldIcon.setSize(sf::Vector2f(40,40));
+        goldIcon.setTexture(&gold);
+
+        this->cardIcon=sf::RectangleShape();
+        cardIcon.setSize(sf::Vector2f(40,40));
+        cardIcon.setTexture(&cardLogo);
 
         // Texte pour le helpMenu
 
@@ -110,13 +112,13 @@ namespace render {
             float pos_x = coordinates.first;
             float pos_y = coordinates.second;
             
-            crownTexture.setPosition(pos_x, pos_y);
-            goldTexture.setPosition(pos_x+40, pos_y+50);     //Emplacement réfléchis pour garder la place pour le texte
-            cardLogoTexture.setPosition(pos_x+40, pos_y+100);
+            crownIcon.setPosition(pos_x, pos_y);
+            goldIcon.setPosition(pos_x+40, pos_y+50);     //Emplacement réfléchis pour garder la place pour le texte
+            cardIcon.setPosition(pos_x+40, pos_y+100);
 
-            window.draw(crownTexture);
-            window.draw(goldTexture);
-            window.draw(cardLogoTexture);
+            window.draw(crownIcon);
+            window.draw(goldIcon);
+            window.draw(cardIcon);
             }
         
 
@@ -169,7 +171,7 @@ namespace render {
                 }
             if (indexCharacterPlayer>=indexCurrentCharacter){isRevealed=true;}
 
-            std::vector<render::Card> temp = PlayerRender::drawPlayer(window, &player, i, isCrownOwner, isRevealed, fontTitle);
+            std::vector<VisualCard> temp = PlayerRender::drawPlayer(window, &player, i, isCrownOwner, isRevealed, fontTitle);
             displayedCard.insert(std::end(displayedCard), std::begin(temp), std::end(temp));
             i++;
             }
@@ -177,11 +179,11 @@ namespace render {
         //IDF
 
          //Hand
-        if (IHMState::GetInstance()->isHandDisplayed){
+        if (IHMState::getInstance()->isHandDisplayed){
             drawPlayerHand(window);
             }
         //HelpMenu
-        if (IHMState::GetInstance()->isHelpDisplayed){
+        if (IHMState::getInstance()->isHelpDisplayed){
             drawHelp(window);
         }
 
@@ -199,18 +201,18 @@ namespace render {
     void Scene::handleEvent(sf::Event event) {
         if (event.type == sf::Event::MouseMoved){
             for (auto& cards:displayedCard){
-                cards.checkHover(sf::Vector2f(event.mouseMove.x,event.mouseMove.y)); 
+                cards.checkHover(event.mouseMove.x,event.mouseMove.y);
             }
             for (auto& button:listOfButtons){
-                button.checkHover(sf::Vector2f(event.mouseMove.x,event.mouseMove.y)); 
+                button.checkHover(event.mouseMove.x,event.mouseMove.y);
             }
         }
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
             for (auto& cards:displayedCard){
-                cards.checkClick(sf::Vector2f(event.mouseButton.x,event.mouseButton.y)); 
+                cards.checkClick(event.mouseButton.x,event.mouseButton.y);
             }
             for (auto& button:listOfButtons){
-                button.checkClick(sf::Vector2f(event.mouseButton.x,event.mouseButton.y)); 
+                button.checkClick(event.mouseButton.x,event.mouseButton.y);
             }
         }
     }
@@ -234,7 +236,7 @@ namespace render {
                 for (auto& card : player.getHand()){
                     
                     std::string filename=card.getNameOfCard();
-                    displayedCard.push_back(Card(filename,posFirstCardHandX + 90*i, posFirstCardHandY));
+                    displayedCard.push_back(VisualCard(filename,posFirstCardHandX + 90*i, posFirstCardHandY));
                     i++;
 
                 }
