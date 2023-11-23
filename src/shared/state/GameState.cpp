@@ -32,28 +32,28 @@ namespace state {
         this->nbOfCardToDraw=52;
         this->currentCharacter= CharacterType::NoCharacter;
         this->crownOwner = PlayerA;
-        this->gamePhase = GamePhase::DrawCharacters;
+        this->gamePhase = Phase::CHOOSECHARACTER;
     }
 
     void GameState::nextGamePhase() {
         switch (gamePhase) {
-            case GamePhase::DrawCharacters :
-                this->gamePhase = GamePhase::PlayTurn;
+            case Phase::CHOOSECHARACTER :
+                this->gamePhase = Phase::CALLCHARACTER;
                 break;
-            case GamePhase::EndOfGame:
+            case Phase::ENDGAME:
                 break;
-            case GamePhase::PlayTurn :
-                this->gamePhase = GamePhase::DrawCharacters;
+            case Phase::CALLCHARACTER :
+                this->gamePhase = Phase::CHOOSECHARACTER;
                 break;
         }
     }
 
-    GamePhase GameState::getGamePhase() {
+    Phase GameState::getGamePhase() {
         return this->gamePhase;
     }
 
     void GameState::endGame() {
-        this->gamePhase=GamePhase::EndOfGame;
+        this->gamePhase=Phase::ENDGAME;
     }
 
     PlayerId GameState::getCrownOwner() {
