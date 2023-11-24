@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
                 }
             window.clear();
 
-            sceneA.draw(window);  
+            sceneA.draw(window);
             window.display();
     }
 }

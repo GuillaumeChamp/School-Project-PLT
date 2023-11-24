@@ -12,7 +12,7 @@ namespace render {
             {1240,311} // a droite
         };
 
-        std::vector<std::pair<int, int>> posCrown = {
+        std::vector<std::pair<float, float>> posCrown = {
             //Coordonné du pixel en haut a gauche du logo couronne de chaqe board
                 {985,624}, //en bas
                 {370,313},  //a gauche
@@ -72,8 +72,8 @@ namespace render {
         nbOfCoins.setString(std::to_string(playerToRender->getNumberOfCoins()));
         nbOfCoins.setFont(font);
         nbOfCards.setFont(font);
-        nbOfCards.setCharacterSize(50);
-        nbOfCoins.setCharacterSize(50);
+        nbOfCards.setCharacterSize(35);
+        nbOfCoins.setCharacterSize(35);
         nbOfCards.setPosition(crownX, crownY+50);
         nbOfCoins.setPosition(crownX, crownY+100);
         nbOfCards.setFillColor(sf::Color::White);

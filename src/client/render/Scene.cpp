@@ -27,16 +27,14 @@ namespace render {
         crown.loadFromFile("../res/crown.png");
         gold.loadFromFile("../res/coin.png");
         cardLogo.loadFromFile("../res/coin.png");
-        this->crownIcon = sf::RectangleShape();
-        crownIcon.setSize(sf::Vector2f(40,40));
-        crownIcon.setTexture(&crown);
-
-        this->goldIcon = sf::RectangleShape();
-        goldIcon.setSize(sf::Vector2f(40,40));
-        goldIcon.setTexture(&gold);
-
+        this->crownIcon = sf::RectangleShape(); 
+        this->goldIcon = sf::RectangleShape(); 
         this->cardIcon=sf::RectangleShape();
+        crownIcon.setSize(sf::Vector2f(40,40));
+        goldIcon.setSize(sf::Vector2f(40,40));
         cardIcon.setSize(sf::Vector2f(40,40));
+        crownIcon.setTexture(&crown);
+        goldIcon.setTexture(&gold);
         cardIcon.setTexture(&cardLogo);
 
         // Texte pour le helpMenu
@@ -58,6 +56,7 @@ namespace render {
 
     void Scene::draw(sf::RenderWindow& window) {
         // dessine les éléments communs à toutes les scènes
+        displayedCard.clear();
 
         //Background
         window.draw(background);
@@ -126,6 +125,7 @@ namespace render {
         // Affichage des boutons
         for (auto& button : listOfButtons) {
             window.draw(button.getSurface());
+            //button.draw(window);
         }
         
 
@@ -186,13 +186,17 @@ namespace render {
         if (IHMState::getInstance()->isHelpDisplayed){
             drawHelp(window);
         }
+        if (IHMState::getInstance()->hoverButton != nullptr){
+            std::cout<<"you are hover a button : " << IHMState::getInstance()->hoverButton->name <<std::endl;
+        }
+        if (IHMState::getInstance()->hoverCard != nullptr){
+            std::cout<<"you are hover a card : " <<std::endl;
+        }
 
 
         for (auto& card : displayedCard){
             window.draw(card.getSurface());
         }
-        displayedCard.clear();
-
     }
 
 
@@ -200,19 +204,33 @@ namespace render {
 
     void Scene::handleEvent(sf::Event event) {
         if (event.type == sf::Event::MouseMoved){
+            IHMState::getInstance()->hoverCard = nullptr;
             for (auto& cards:displayedCard){
-                cards.checkHover(event.mouseMove.x,event.mouseMove.y);
+                if (cards.checkHover(event.mouseMove.x,event.mouseMove.y)){
+                    cards.onHoverEvent();
+                    break;
+                }
             }
+            IHMState::getInstance()->hoverButton = nullptr;
             for (auto& button:listOfButtons){
-                button.checkHover(event.mouseMove.x,event.mouseMove.y);
+                if(button.checkHover(event.mouseMove.x,event.mouseMove.y)){
+                    button.onHoverEvent();
+                    break;
+                }
             }
         }
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
             for (auto& cards:displayedCard){
-                cards.checkClick(event.mouseButton.x,event.mouseButton.y);
+                if(cards.checkClick(event.mouseButton.x,event.mouseButton.y)){
+                    cards.onClickEvent();
+                    break;
+                }
             }
             for (auto& button:listOfButtons){
-                button.checkClick(event.mouseButton.x,event.mouseButton.y);
+                if (button.checkClick(event.mouseButton.x,event.mouseButton.y)){
+                    button.onClickEvent();
+                    break;
+                }
             }
         }
     }
