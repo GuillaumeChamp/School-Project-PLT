@@ -1,5 +1,6 @@
+// Engine.cpp
 #include "Engine.h"
-#include "Command.h"
+
 
 namespace engine {
 
@@ -16,7 +17,7 @@ namespace engine {
 
   // Initialization method
   void Engine::init() {
-    std::vector<std::shared_ptr<Command>> commandList;
+    // Perform initialization tasks here
   }
 
   // Getter for the current game state
@@ -24,12 +25,13 @@ namespace engine {
     return currentState;
   }
 
-  // Method to add a command to the engine
-  void Engine::addCommand(std::shared_ptr<Command> cmd) {
-
+  // Add a command to the list of commands
+  void Engine::addCommand(std::unique_ptr<Command> cmd) {
+    // Add the unique command to the list
     listOfCommands.push_back(cmd);
-    
-    
   }
+
+  // Setters and Getters
+  // You can add setters and getters for other attributes as needed
 
 } // namespace engine
