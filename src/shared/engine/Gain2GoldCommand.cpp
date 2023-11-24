@@ -1,10 +1,14 @@
 // Gain2GoldCommand.cpp
 #include "Gain2GoldCommand.h"
+#include <iostream>
+
 
 namespace engine {
 
   // Constructor
-  Gain2GoldCommand::Gain2GoldCommand(state::Playing playing, int nbOfGolds) : nbofGolds(nbOfGolds) {
+  Gain2GoldCommand::Gain2GoldCommand(state::Playing playing,int nbOfGolds) : Command(){
+    this->playing=playing;
+    this->nbOfGolds=nbOfGolds;
   }
 
   // Destructor
@@ -12,13 +16,37 @@ namespace engine {
   }
 
   // Execute method
-  void Gain2GoldCommand::execute(state::GameState state) {
-    // state.gainGold(playing, nbofGolds);
+  void Gain2GoldCommand::execute(state::GameState state){
+    
+    switch (playing) {
+
+        case state::Playing::PLAYERA:
+            std::cout <<"A : + "<<nbOfGolds<< std::endl;
+            break;
+
+        case state::Playing::PLAYERB:
+            std::cout <<"B : + "<<nbOfGolds<< std::endl;
+            break;
+          
+          case state::Playing::PLAYERC:
+            std::cout <<"C : + "<<nbOfGolds<< std::endl;
+            break;
+          
+          case state::Playing::PLAYERD:
+            std::cout <<"D : + "<<nbOfGolds<< std::endl;
+            break;
+
+        default:
+            // Default case if the enumeration value is not recognized
+            break;
+    }
+
   }
 
   // Serialize method
   void Gain2GoldCommand::serialize() {
 
+    
   }
 
 
