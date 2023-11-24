@@ -56,7 +56,9 @@ int main(int argc, char *argv[]) {
 
         
         else if (std::strcmp(argv[1], "engine") == 0) {
-            
+            GameState gameState=generateSampleState();
+            engine::Engine gameEngine(gameState);
+
            
         }
 
