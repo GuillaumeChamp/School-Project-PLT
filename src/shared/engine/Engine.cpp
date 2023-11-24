@@ -26,10 +26,7 @@ namespace engine {
   }
 
   // Add a command to the list of commands
-  void Engine::addCommand(std::unique_ptr<Command> cmd) {
-    // Add the unique command to the list
-    listOfCommands.push_back(cmd);
-  }
+  void addCommand (std::vector<std::unique_ptr<Command>> cmd){}
 
   // Setters and Getters
   // You can add setters and getters for other attributes as needed
