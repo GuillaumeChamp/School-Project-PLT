@@ -186,6 +186,12 @@ namespace render {
         if (IHMState::getInstance()->isHelpDisplayed){
             drawHelp(window);
         }
+        if (IHMState::getInstance()->hoverButton != nullptr){
+            std::cout<<"you are hover a button : " << IHMState::getInstance()->hoverButton->name <<std::endl;
+        }
+        if (IHMState::getInstance()->hoverCard != nullptr){
+            std::cout<<"you are hover a card : " <<std::endl;
+        }
 
 
         for (auto& card : displayedCard){
@@ -198,12 +204,14 @@ namespace render {
 
     void Scene::handleEvent(sf::Event event) {
         if (event.type == sf::Event::MouseMoved){
+            IHMState::getInstance()->hoverCard = nullptr;
             for (auto& cards:displayedCard){
                 if (cards.checkHover(event.mouseMove.x,event.mouseMove.y)){
                     cards.onHoverEvent();
                     break;
                 }
             }
+            IHMState::getInstance()->hoverButton = nullptr;
             for (auto& button:listOfButtons){
                 if(button.checkHover(event.mouseMove.x,event.mouseMove.y)){
                     button.onHoverEvent();
