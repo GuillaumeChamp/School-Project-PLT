@@ -8,8 +8,8 @@ namespace render {
         this->state=state;
         this->height= 900; 
         this->width=1600;
-        this->fontText.loadFromFile("./res/Garet-Book.ttf");
-        this->fontTitle.loadFromFile("./res/OldLondon.ttf");
+        this->fontText.loadFromFile("../res/Garet-Book.ttf");
+        this->fontTitle.loadFromFile("../res/OldLondon.ttf");
 
         listOfButtons.push_back(Button(ButtonType::bank, 700,350));
         listOfButtons.push_back(Button(ButtonType::draw, 900,350));
@@ -24,9 +24,9 @@ namespace render {
 
         //logo crown + gold + cartes
         sf::Texture crown, gold, cardLogo;
-        crown.loadFromFile("./res/crown.png");
-        gold.loadFromFile("./res/coin.png");
-        cardLogo.loadFromFile("./res/coin.png");
+        crown.loadFromFile("../res/crown.png");
+        gold.loadFromFile("../res/coin.png");
+        cardLogo.loadFromFile("../res/coin.png");
         this->crownIcon = sf::RectangleShape(); 
         this->goldIcon = sf::RectangleShape(); 
         this->cardIcon=sf::RectangleShape();

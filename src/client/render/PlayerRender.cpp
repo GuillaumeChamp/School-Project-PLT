@@ -12,7 +12,7 @@ namespace render {
             {1240,311} // a droite
         };
 
-        std::vector<std::pair<int, int>> posCrown = {
+        std::vector<std::pair<float, float>> posCrown = {
             //Coordonné du pixel en haut a gauche du logo couronne de chaqe board
                 {985,624}, //en bas
                 {370,313},  //a gauche
@@ -30,7 +30,7 @@ namespace render {
         if (isCrownOwner){
         sf::RectangleShape crown(sf::Vector2f(40,40));
         sf::Texture crownTexture;
-        crownTexture.loadFromFile("./res/crown.png");
+        crownTexture.loadFromFile("../res/crown.png");
         crown.setTexture(&crownTexture);
 
         crown.setPosition(crownX,crownY);
@@ -58,7 +58,7 @@ namespace render {
         if (!isRevealed){
             //Personnage secret
             sf::Texture characterBackgroundTexture;
-            characterBackgroundTexture.loadFromFile("./res/dos_rouge.jpg");
+            characterBackgroundTexture.loadFromFile("../res/dos_rouge.jpg");
             sf::RectangleShape characterBackgroundShape(sf::Vector2f(80,124));
             characterBackgroundShape.setTexture(&characterBackgroundTexture);
 

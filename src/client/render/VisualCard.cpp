@@ -6,7 +6,7 @@ namespace render {
     VisualCard::VisualCard(std::string filename, int posX, int posY):InteractiveElement(posX, posY)  {
         this->name = filename;
         sf::Texture texture;
-        std::string Path = "./res/" + filename + ".jpg";
+        std::string Path = "../res/" + filename + ".jpg";
         texture.loadFromFile(Path);
         surface.setTexture(&texture);
         surface.setPosition(posX, posY);

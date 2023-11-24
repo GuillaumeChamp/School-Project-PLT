@@ -4,7 +4,7 @@
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 #include <state.h>
-//#include "render.h"
+#include "render.h"
 
 using namespace std;
 using namespace state;
@@ -32,14 +32,14 @@ int main(int argc, char *argv[]) {
             window.setVerticalSyncEnabled(true);
 
             GameState gamestate=generateSampleState();
-            //render::Scene sceneA(render::SceneId::PlayerA, &gamestate);
+            render::Scene sceneA(render::SceneId::PlayerA, &gamestate);
             
 
 
              while (window.isOpen()) {
                 sf::Event event;
                 while (window.pollEvent(event)) {
-                    //sceneA.handleEvent(event);
+                    sceneA.handleEvent(event);
                
 
                     if (event.type == sf::Event::Closed) {
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
                 }
             window.clear();
 
-           // sceneA.draw(window);  
+            sceneA.draw(window);
             window.display();
     }
 }
