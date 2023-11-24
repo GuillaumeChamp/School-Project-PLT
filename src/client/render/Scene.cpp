@@ -56,6 +56,7 @@ namespace render {
 
     void Scene::draw(sf::RenderWindow& window) {
         // dessine les éléments communs à toutes les scènes
+        displayedCard.clear();
 
         //Background
         window.draw(background);
@@ -190,8 +191,6 @@ namespace render {
         for (auto& card : displayedCard){
             window.draw(card.getSurface());
         }
-        displayedCard.clear();
-
     }
 
 
@@ -200,18 +199,30 @@ namespace render {
     void Scene::handleEvent(sf::Event event) {
         if (event.type == sf::Event::MouseMoved){
             for (auto& cards:displayedCard){
-                cards.checkHover(event.mouseMove.x,event.mouseMove.y);
+                if (cards.checkHover(event.mouseMove.x,event.mouseMove.y)){
+                    cards.onHoverEvent();
+                    break;
+                }
             }
             for (auto& button:listOfButtons){
-                button.checkHover(event.mouseMove.x,event.mouseMove.y);
+                if(button.checkHover(event.mouseMove.x,event.mouseMove.y)){
+                    button.onHoverEvent();
+                    break;
+                }
             }
         }
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
             for (auto& cards:displayedCard){
-                cards.checkClick(event.mouseButton.x,event.mouseButton.y);
+                if(cards.checkClick(event.mouseButton.x,event.mouseButton.y)){
+                    cards.onClickEvent();
+                    break;
+                }
             }
             for (auto& button:listOfButtons){
-                button.checkClick(event.mouseButton.x,event.mouseButton.y);
+                if (button.checkClick(event.mouseButton.x,event.mouseButton.y)){
+                    button.onClickEvent();
+                    break;
+                }
             }
         }
     }
