@@ -1,5 +1,6 @@
 // Engine.cpp
 #include "Engine.h"
+#include "Command.h"
 
 #include "Command.h"
 
@@ -29,11 +30,15 @@ namespace engine {
 
   // Add a command to the list of commands
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 20f2d65 (MERCILESPTR)
   void Engine::addCommand (std::unique_ptr<Command> cmd){
 
     listOfCommands.push_back(std::move(cmd));
 
   }
+<<<<<<< HEAD
 =======
   void addCommand (std::vector<std::unique_ptr<Command>> cmd){}
 >>>>>>> 6cf1432 (ComprendsRien)
@@ -45,6 +50,8 @@ namespace engine {
   }
   // Setters and Getters
   // You can add setters and getters for other attributes as needed
+=======
+>>>>>>> 20f2d65 (MERCILESPTR)
 
   // Setters and Getters
   // You can add setters and getters for other attributes as needed
