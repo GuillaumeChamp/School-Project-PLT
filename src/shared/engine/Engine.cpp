@@ -1,5 +1,6 @@
 // Engine.cpp
 #include "Engine.h"
+#include "Command.h"
 
 
 namespace engine {
@@ -26,7 +27,11 @@ namespace engine {
   }
 
   // Add a command to the list of commands
-  void addCommand (std::vector<std::unique_ptr<Command>> cmd){}
+  void Engine::addCommand (std::unique_ptr<Command> cmd){
+
+    listOfCommands.push_back(std::move(cmd));
+
+  }
 
   // Setters and Getters
   // You can add setters and getters for other attributes as needed
