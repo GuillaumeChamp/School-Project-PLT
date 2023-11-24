@@ -28,11 +28,15 @@ namespace engine {
   }
 
   // Add a command to the list of commands
+<<<<<<< HEAD
   void Engine::addCommand (std::unique_ptr<Command> cmd){
 
     listOfCommands.push_back(std::move(cmd));
 
   }
+=======
+  void addCommand (std::vector<std::unique_ptr<Command>> cmd){}
+>>>>>>> 6cf1432 (ComprendsRien)
 
   void Engine::executeAllCommands(state::GameState state){
     for (auto& cmd : listOfCommands) {
