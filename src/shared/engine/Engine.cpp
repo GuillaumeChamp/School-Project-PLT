@@ -1,5 +1,6 @@
 // Engine.cpp
 #include "Engine.h"
+
 #include "Command.h"
 
 
@@ -38,6 +39,9 @@ namespace engine {
     cmd->execute(state);
   }
   }
+  // Setters and Getters
+  // You can add setters and getters for other attributes as needed
+
   // Setters and Getters
   // You can add setters and getters for other attributes as needed
 
