@@ -20,11 +20,7 @@ namespace engine {
 
   // Serialize method
   void Command::serialize() {
-<<<<<<< HEAD
-=======
-    // Implement the logic to serialize the command
-    // You may want to output information about 'commandTypeId', 'playing', and 'card'
->>>>>>> 20f2d65 (MERCILESPTR)
+
   }
 
   

@@ -30,29 +30,20 @@ namespace engine {
   }
 
   // Add a command to the list of commands
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 20f2d65 (MERCILESPTR)
+  
   void Engine::addCommand (std::unique_ptr<Command> cmd){
 
     listOfCommands.push_back(std::move(cmd));
 
   }
-<<<<<<< HEAD
-=======
-  void addCommand (std::vector<std::unique_ptr<Command>> cmd){}
->>>>>>> 6cf1432 (ComprendsRien)
+
 
   void Engine::executeAllCommands(state::GameState state){
     for (auto& cmd : listOfCommands) {
     cmd->execute(state);
   }
   }
-  // Setters and Getters
-  // You can add setters and getters for other attributes as needed
-=======
->>>>>>> 20f2d65 (MERCILESPTR)
+
 
   // Setters and Getters
   // You can add setters and getters for other attributes as needed
