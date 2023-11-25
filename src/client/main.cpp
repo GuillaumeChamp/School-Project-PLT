@@ -59,11 +59,23 @@ int main(int argc, char *argv[]) {
             GameState gameState=generateSampleState();
             engine::Engine gameEngine(gameState);
             
-            std::unique_ptr<engine::Command> cmd(new engine::Gain2GoldCommand(Playing::PLAYERA,2));
+            /*std::unique_ptr<engine::Command> cmd(new engine::Gain2GoldCommand(Playing::PLAYERA,2));
             std::unique_ptr<engine::Command> cmd1(new engine::Gain2GoldCommand(Playing::PLAYERB,3));
             std::unique_ptr<engine::Command> cmd2(new engine::Gain2GoldCommand(Playing::PLAYERC,5));
             std::unique_ptr<engine::Command> cmd3(new engine::Gain2GoldCommand(Playing::PLAYERD,8));
             
+
+            gameEngine.addCommand(std::move(cmd));
+            gameEngine.addCommand(std::move(cmd1));
+            gameEngine.addCommand(std::move(cmd2));
+            gameEngine.addCommand(std::move(cmd3));
+
+            gameEngine.executeAllCommands(gameState);*/
+
+            std::unique_ptr<engine::Command> cmd(new engine::ChooseCharacterCommand(Playing::PLAYERA,CharacterType::Assassin));
+            std::unique_ptr<engine::Command> cmd1(new engine::ChooseCharacterCommand(Playing::PLAYERB,CharacterType::Thief));
+            std::unique_ptr<engine::Command> cmd2(new engine::ChooseCharacterCommand(Playing::PLAYERC,CharacterType::Magician));
+            std::unique_ptr<engine::Command> cmd3(new engine::ChooseCharacterCommand(Playing::PLAYERD,CharacterType::Warlord));
 
             gameEngine.addCommand(std::move(cmd));
             gameEngine.addCommand(std::move(cmd1));
