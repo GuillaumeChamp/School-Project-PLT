@@ -2,6 +2,8 @@
 #include "Engine.h"
 #include "Command.h"
 
+#include "Command.h"
+
 
 namespace engine {
 
@@ -18,6 +20,7 @@ namespace engine {
 
   // Initialization method
   void Engine::init() {
+    
     // Perform initialization tasks here
   }
 
@@ -27,17 +30,21 @@ namespace engine {
   }
 
   // Add a command to the list of commands
+  
   void Engine::addCommand (std::unique_ptr<Command> cmd){
 
     listOfCommands.push_back(std::move(cmd));
 
   }
 
+
   void Engine::executeAllCommands(state::GameState state){
     for (auto& cmd : listOfCommands) {
     cmd->execute(state);
   }
   }
+
+
   // Setters and Getters
   // You can add setters and getters for other attributes as needed
 

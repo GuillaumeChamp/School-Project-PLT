@@ -20,8 +20,8 @@ namespace engine {
 
   // Serialize method
   void Command::serialize() {
+
   }
 
   
-
 } // namespace engine
