@@ -294,6 +294,7 @@ Nous concevons alors les éléments suivants :
 
 ### Conception logiciel
 
+![EngineDia](images/Engine.png)
 
 ## Intelligence Artificielle
 
