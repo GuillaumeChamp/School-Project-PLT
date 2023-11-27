@@ -4,7 +4,7 @@
 namespace engine {
 
   // Constructor
-  BuildCommand::BuildCommand(state::Playing player, state::Card card) {}
+  BuildCommand::BuildCommand(state::PlayerId authorPlayer, state::Card card) {}
 
   // Destructor
   BuildCommand::~BuildCommand() {
@@ -12,6 +12,7 @@ namespace engine {
 
   // Execute method
   void BuildCommand::execute(state::GameState state) {
+    
   }
 
   // Serialize method

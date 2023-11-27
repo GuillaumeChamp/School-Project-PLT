@@ -4,7 +4,7 @@
 namespace engine {
 
   // Constructor
-  Command::Command() {
+  Command<T>::Command() {
   }
   // Destructor
   Command::~Command() {}

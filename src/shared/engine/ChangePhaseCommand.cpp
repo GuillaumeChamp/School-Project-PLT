@@ -4,7 +4,7 @@
 namespace engine {
 
   // Constructor
-  ChangePhaseCommand::ChangePhaseCommand(state::Phase phase, state::Playing playing) {
+  ChangePhaseCommand::ChangePhaseCommand(state::Phase phase, state::PlayerId authorPlayer) {
 
   }
 

@@ -1,12 +1,12 @@
 // Gain2GoldCommand.cpp
-#include "Gain2GoldCommand.h"
+#include "GainGoldCommand.h"
 #include <iostream>
 
 
 namespace engine {
 
   // Constructor
-  Gain2GoldCommand::Gain2GoldCommand(state::Playing playing,int nbOfGolds) : Command(){
+  Gain2GoldCommand::Gain2GoldCommand(state::PlayerId authorPlayer,int nbOfGolds) : Command(){
     this->playing=playing;
     this->nbOfGolds=nbOfGolds;
   }

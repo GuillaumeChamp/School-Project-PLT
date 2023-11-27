@@ -4,7 +4,7 @@
 namespace engine {
 
   // Constructor
-  EndOfTurnCommand::EndOfTurnCommand(state::Playing playing) {
+  EndOfTurnCommand::EndOfTurnCommand(state::PlayerId authorPlayer) {
   }
 
   // Destructor

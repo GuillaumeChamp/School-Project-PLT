@@ -4,7 +4,7 @@
 namespace engine {
 
   // Constructor
-  DrawCommand::DrawCommand(state::Playing playing, int nbOfCards) : nbOfCards(nbOfCards) {
+  DrawCommand::DrawCommand(state::PlayerId authorPlayer, int nbOfCards) : nbOfCards(nbOfCards) {
   }
 
   // Destructor

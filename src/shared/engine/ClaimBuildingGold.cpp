@@ -4,7 +4,7 @@
 namespace engine {
 
   // Constructor
-  ClaimBuildingGold::ClaimBuildingGold(state::Playing playing) {
+  ClaimBuildingGold::ClaimBuildingGold(state::PlayerId authorPlayer) {
   }
 
   // Destructor
