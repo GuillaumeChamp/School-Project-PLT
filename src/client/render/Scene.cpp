@@ -8,14 +8,14 @@ namespace render {
         this->state=state;
         this->height= 900; 
         this->width=1600;
-        this->fontText.loadFromFile("../res/Garet-Book.ttf");
-        this->fontTitle.loadFromFile("../res/OldLondon.ttf");
+        this->fontText.loadFromFile("./../res/Garet-Book.ttf");
+        this->fontTitle.loadFromFile("./../res/OldLondon.ttf");
 
-        listOfButtons.push_back(Button(ButtonType::bank, 700,350));
-        listOfButtons.push_back(Button(ButtonType::draw, 900,350));
-        listOfButtons.push_back(Button(ButtonType::endOfTurn, 780,500));
-        listOfButtons.push_back(Button(ButtonType::hand, 1500,850));
-        listOfButtons.push_back(Button(ButtonType::help, 1500,50));
+        listOfButtons.emplace_back(ButtonType::bank, 700,350);
+        listOfButtons.emplace_back(ButtonType::draw, 900,350);
+        listOfButtons.emplace_back(ButtonType::endOfTurn, 780,500);
+        listOfButtons.emplace_back(ButtonType::hand, 1500,850);
+        listOfButtons.emplace_back(ButtonType::help, 1500,50);
 
         //Background
         this-> background = sf::RectangleShape();
@@ -23,19 +23,14 @@ namespace render {
         background.setFillColor(sf::Color(21,25,29));
 
         //logo crown + gold + cartes
-        sf::Texture crown, gold, cardLogo;
-        crown.loadFromFile("../res/crown.png");
-        gold.loadFromFile("../res/coin.png");
-        cardLogo.loadFromFile("../res/coin.png");
-        this->crownIcon = sf::RectangleShape(); 
-        this->goldIcon = sf::RectangleShape(); 
-        this->cardIcon=sf::RectangleShape();
-        crownIcon.setSize(sf::Vector2f(40,40));
-        goldIcon.setSize(sf::Vector2f(40,40));
-        cardIcon.setSize(sf::Vector2f(40,40));
-        crownIcon.setTexture(&crown);
-        goldIcon.setTexture(&gold);
-        cardIcon.setTexture(&cardLogo);
+
+        sf::Texture crown, gold, card;
+        crown.loadFromFile("./../res/crown.png");
+        gold.loadFromFile("./../res/coin.png");
+        card.loadFromFile("./../res/coin.png");
+        this->crownTexture = crown;
+        this->goldTexture = gold;
+        this->cardTexture =card;
 
         // Texte pour le helpMenu
 
@@ -75,8 +70,8 @@ namespace render {
             //Board background
             sf::RectangleShape board(sf::Vector2f(360, 278));
 
-            float x = static_cast<float>(coordinates.first);
-            float y = static_cast<float>(coordinates.second);
+            int x = coordinates.first;
+            int y = coordinates.second;
 
             board.setPosition(x, y);
             board.setFillColor(sf::Color(165,134,105));
@@ -110,10 +105,18 @@ namespace render {
         for (const auto& coordinates : posLogo){
             float pos_x = coordinates.first;
             float pos_y = coordinates.second;
-            
+
+            sf::RectangleShape crownIcon,goldIcon,cardIcon;
+            crownIcon.setSize(sf::Vector2f(40,40));
+            goldIcon.setSize(sf::Vector2f(40,40));
+            cardIcon.setSize(sf::Vector2f(40,40));
+
             crownIcon.setPosition(pos_x, pos_y);
+            crownIcon.setTexture(&crownTexture);
             goldIcon.setPosition(pos_x+40, pos_y+50);     //Emplacement réfléchis pour garder la place pour le texte
+            goldIcon.setTexture(&goldTexture);
             cardIcon.setPosition(pos_x+40, pos_y+100);
+            cardIcon.setTexture(&cardTexture);
 
             window.draw(crownIcon);
             window.draw(goldIcon);
@@ -124,8 +127,7 @@ namespace render {
 
         // Affichage des boutons
         for (auto& button : listOfButtons) {
-            window.draw(button.getSurface());
-            //button.draw(window);
+            button.draw(window);
         }
         
 
@@ -188,14 +190,11 @@ namespace render {
         }
         if (IHMState::getInstance()->hoverButton != nullptr){
             std::cout<<"you are hover a button : " << IHMState::getInstance()->hoverButton->name <<std::endl;
+            //Todo add highlight
+
         }
         if (IHMState::getInstance()->hoverCard != nullptr){
             std::cout<<"you are hover a card : " <<std::endl;
-        }
-
-
-        for (auto& card : displayedCard){
-            window.draw(card.getSurface());
         }
     }
 
@@ -254,7 +253,7 @@ namespace render {
                 for (auto& card : player.getHand()){
                     
                     std::string filename=card.getNameOfCard();
-                    displayedCard.push_back(VisualCard(filename,posFirstCardHandX + 90*i, posFirstCardHandY));
+                    displayedCard.emplace_back(filename,posFirstCardHandX + 90*i, posFirstCardHandY);
                     i++;
 
                 }
