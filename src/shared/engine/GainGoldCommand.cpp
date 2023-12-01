@@ -6,19 +6,17 @@
 namespace engine {
 
   // Constructor
-  Gain2GoldCommand::Gain2GoldCommand(state::PlayerId authorPlayer,int nbOfGolds) : Command(){
-    this->playing=playing;
-    this->nbOfGolds=nbOfGolds;
+  GainGoldCommand::GainGoldCommand(state::PlayerId authorPlayer,int nbOfGolds) : Command(){
   }
 
   // Destructor
-  Gain2GoldCommand::~Gain2GoldCommand() {
+  GainGoldCommand::~GainGoldCommand() {
   }
 
   // Execute method
-  void Gain2GoldCommand::execute(state::GameState state){
+  void GainGoldCommand::execute(state::GameState state){
     
-    switch (playing) {
+    /*switch (playing) {
 
         case state::Playing::PLAYERA:
             std::cout <<"A : + "<<nbOfGolds<< std::endl;
@@ -39,12 +37,12 @@ namespace engine {
         default:
             // Default case if the enumeration value is not recognized
             break;
-    }
+    }*/
 
   }
 
   // Serialize method
-  void Gain2GoldCommand::serialize() {
+  void GainGoldCommand::serialize() {
 
     
   }

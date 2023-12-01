@@ -16,7 +16,7 @@ namespace engine {
 
   // Execute method
   void ChooseCharacterCommand::execute(state::GameState state) {
-    switch (playing) {
+    /*switch (playing) {
 
         case state::Playing::PLAYERA:
             std::cout <<"A is a "<< characterType << std::endl;
@@ -37,7 +37,7 @@ namespace engine {
         default:
             
             break;
-    }
+    }*/
 
   }
 

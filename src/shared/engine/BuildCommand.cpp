@@ -4,7 +4,9 @@
 namespace engine {
 
   // Constructor
-  BuildCommand::BuildCommand(state::PlayerId authorPlayer, state::Card card) {}
+  BuildCommand::BuildCommand(state::PlayerId authorPlayer, state::Card card) {
+    this->card = card;
+  }
 
   // Destructor
   BuildCommand::~BuildCommand() {
