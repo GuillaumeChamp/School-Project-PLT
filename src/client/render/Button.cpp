@@ -4,38 +4,27 @@
 
 namespace render {
     Button::Button(ButtonType buttonType, int posX, int posY):InteractiveElement(posX, posY) {
-        sf::Texture  texture1, texture2, texture3, texture4, texture5;
         this->name=buttonType;
 
         switch (buttonType){
             case bank:
                 surface.setPosition(posX,posY);
-                texture1.loadFromFile("../res/chest.png");
-                surface.setTexture(&texture1);
                 surface.setSize(sf::Vector2f(40, 40));
                 break;
             case ButtonType::draw:
                 surface.setPosition(posX,posY);
-                texture2.loadFromFile("../res/dos_rouge.jpg");
-                surface.setTexture(&texture2);
                 surface.setSize(sf::Vector2f(40, 40));
                 break;
             case endOfTurn:
                 surface.setPosition(posX,posY);
-                texture3.loadFromFile("../res/chest.png");
-                surface.setTexture(&texture3);
                 surface.setSize(sf::Vector2f(40, 40));
                 break;
             case hand:
                 surface.setPosition(posX,posY);
-                texture4.loadFromFile("../res/chest.png");
-                surface.setTexture(&texture4);
                 surface.setSize(sf::Vector2f(40, 40));
                 break;
             case help:
                 surface.setPosition(posX,posY);
-                texture5.loadFromFile("../res/help.png");
-                surface.setTexture(&texture5);
                 surface.setSize(sf::Vector2f(40, 40));
                 break;
         }
@@ -61,13 +50,37 @@ namespace render {
                 break;
             case ButtonType::hand:
                 buttonText = "Ouvre la main du joueur";
+                IHMState::getInstance()->isHandDisplayed=!IHMState::getInstance()->isHandDisplayed;
                 break;
             case ButtonType::help:
                 buttonText = "Ouvre le menu d'aide";
+                IHMState::getInstance()->isHelpDisplayed=!IHMState::getInstance()->isHelpDisplayed;
                 break;
         }
         std::cout << "Clic sur le bouton : " << buttonText << std::endl;
     }
 
+    void Button::draw(sf::RenderWindow &render) {
+        sf::Texture texture;
+        switch (this->name){
+            case bank:
+                texture.loadFromFile("./../res/chest.png");
+                break;
+            case ButtonType::draw:
+                texture.loadFromFile("./../res/dos_rouge.jpg");
+                break;
+            case endOfTurn:
+                texture.loadFromFile("./../res/dos_vert.jpg");
+                break;
+            case hand:
+                texture.loadFromFile("./../res/dos_vert.jpg");
+                break;
+            case help:
+                texture.loadFromFile("./../res/help.png");
+                break;
+        }
+        surface.setTexture(&texture);
+        render.draw(surface);
+    }
 
 }
