@@ -8,15 +8,6 @@ namespace state {
         return this->listOfPlayers;
     }
 
-    int GameState::getNbCardToDraw (){
-        return this->nbOfCardToDraw;
-    }
-
-
-    void GameState::setNbCardToDraw (int nbCard){
-        this->nbOfCardToDraw = nbCard;
-    }
-
     void GameState::setCurrentCharacter(CharacterType character) {
         this->currentCharacter=character;
     }
@@ -28,8 +19,7 @@ namespace state {
 
 
     GameState::GameState(std::vector<Player> listOfPlayer) {
-        this->listOfPlayers=std::move(listOfPlayer);
-        this->nbOfCardToDraw=52;
+        this->listOfPlayers = std::move(listOfPlayer);
         this->currentCharacter= CharacterType::NoCharacter;
         this->crownOwner = PlayerA;
         this->gamePhase = Phase::CHOOSECHARACTER;
@@ -64,5 +54,11 @@ namespace state {
         this->crownOwner =player;
     }
 
+    std::vector<Card> drawCards (int nbToDraw) {
 
+    }
+
+    std::vector<Card> initStack (){
+        
+    }
 }
