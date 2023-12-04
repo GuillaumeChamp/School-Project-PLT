@@ -72,10 +72,10 @@ int main(int argc, char *argv[]) {
 
             gameEngine.executeAllCommands(gameState);*/
 
-            std::unique_ptr<engine::Command> cmd(new engine::ChooseCharacterCommand(Playing::PLAYERA,CharacterType::Assassin));
-            std::unique_ptr<engine::Command> cmd1(new engine::ChooseCharacterCommand(Playing::PLAYERB,CharacterType::Thief));
-            std::unique_ptr<engine::Command> cmd2(new engine::ChooseCharacterCommand(Playing::PLAYERC,CharacterType::Magician));
-            std::unique_ptr<engine::Command> cmd3(new engine::ChooseCharacterCommand(Playing::PLAYERD,CharacterType::Warlord));
+            std::unique_ptr<engine::Command> cmd(new engine::ChooseCharacterCommand(PlayerId::PlayerA,CharacterType::Assassin));
+            std::unique_ptr<engine::Command> cmd1(new engine::ChooseCharacterCommand(PlayerId::PlayerB,CharacterType::Thief));
+            std::unique_ptr<engine::Command> cmd2(new engine::ChooseCharacterCommand(PlayerId::PlayerC,CharacterType::Magician));
+            std::unique_ptr<engine::Command> cmd3(new engine::ChooseCharacterCommand(PlayerId::PlayerD,CharacterType::Warlord));
 
             gameEngine.addCommand(std::move(cmd));
             gameEngine.addCommand(std::move(cmd1));
