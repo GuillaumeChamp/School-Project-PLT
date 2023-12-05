@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <state.h>
 #include "render.h"
+#include "engine.h"
 
 using namespace std;
 using namespace state;
@@ -55,6 +56,35 @@ int main(int argc, char *argv[]) {
 
         
         else if (std::strcmp(argv[1], "engine") == 0) {
+            GameState gameState=generateSampleState();
+            engine::Engine gameEngine(gameState);
+            
+            /*std::unique_ptr<engine::Command> cmd(new engine::Gain2GoldCommand(Playing::PLAYERA,2));
+            std::unique_ptr<engine::Command> cmd1(new engine::Gain2GoldCommand(Playing::PLAYERB,3));
+            std::unique_ptr<engine::Command> cmd2(new engine::Gain2GoldCommand(Playing::PLAYERC,5));
+            std::unique_ptr<engine::Command> cmd3(new engine::Gain2GoldCommand(Playing::PLAYERD,8));
+            
+
+            gameEngine.addCommand(std::move(cmd));
+            gameEngine.addCommand(std::move(cmd1));
+            gameEngine.addCommand(std::move(cmd2));
+            gameEngine.addCommand(std::move(cmd3));
+
+            gameEngine.executeAllCommands(gameState);*/
+
+            std::unique_ptr<engine::Command> cmd(new engine::ChooseCharacterCommand(PlayerId::PlayerA,CharacterType::Assassin));
+            std::unique_ptr<engine::Command> cmd1(new engine::ChooseCharacterCommand(PlayerId::PlayerB,CharacterType::Thief));
+            std::unique_ptr<engine::Command> cmd2(new engine::ChooseCharacterCommand(PlayerId::PlayerC,CharacterType::Magician));
+            std::unique_ptr<engine::Command> cmd3(new engine::ChooseCharacterCommand(PlayerId::PlayerD,CharacterType::Warlord));
+
+            gameEngine.addCommand(std::move(cmd));
+            gameEngine.addCommand(std::move(cmd1));
+            gameEngine.addCommand(std::move(cmd2));
+            gameEngine.addCommand(std::move(cmd3));
+
+            gameEngine.executeAllCommands(gameState);
+
+
            
         }
 
