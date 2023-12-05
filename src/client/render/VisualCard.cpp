@@ -19,10 +19,15 @@ namespace render {
     void VisualCard::onClickEvent() {
         std::cout << "Clic sur la carte : " << name << std::endl;
     }
+
+    void VisualCard::zoomCard(){
+        this->surface.setPosition(680, 350);
+        this->surface.setSize(sf::Vector2f(240, 312));
+    }
     void VisualCard::draw(sf::RenderWindow& window){
 
         sf::Texture texture;
-        std::string Path = "./../res/" + name + ".jpg";
+        std::string Path = "./res/" + name + ".jpg";
         texture.loadFromFile(Path);
         this->surface.setTexture(&texture);
         window.draw(this->getSurface());

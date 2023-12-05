@@ -43,19 +43,19 @@ namespace render {
         sf::Texture texture;
         switch (this->name){
             case bank:
-                texture.loadFromFile("./../res/chest.png");
+                texture.loadFromFile("./res/chest.png");
                 break;
             case ButtonType::draw:
-                texture.loadFromFile("./../res/dos_rouge.jpg");
+                texture.loadFromFile("./res/dos_rouge.jpg");
                 break;
             case endOfTurn:
-                texture.loadFromFile("./../res/dos_vert.jpg");
+                texture.loadFromFile("./res/dos_vert.jpg");
                 break;
             case hand:
-                texture.loadFromFile("./../res/dos_vert.jpg");
+                texture.loadFromFile("./res/dos_vert.jpg");
                 break;
             case help:
-                texture.loadFromFile("./../res/help.png");
+                texture.loadFromFile("./res/help.png");
                 break;
         }
         this->surface.setTexture(&texture);

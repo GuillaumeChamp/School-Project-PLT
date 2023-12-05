@@ -34,6 +34,7 @@ int main(int argc, char *argv[]) {
             window.setVerticalSyncEnabled(true);
 
             GameState gamestate=generateSampleState();
+            gamestate.setCurrentCharacter(Architect);
             render::Scene sceneA(render::SceneId::PlayerA, &gamestate);
             
 
@@ -74,7 +75,7 @@ int main(int argc, char *argv[]) {
             displayState(gameState);
 
 
-           
+
         }
 
         else {
@@ -104,7 +105,7 @@ void displayState(const state::GameState& gameState) {
         for (auto& card : player.getHand()) {
             std::cout << " | Name : " << card.getNameOfCard()
                       << " | Color : " << card.getColorOfCard()
-                      << " | Cost : " << card.getCostOfCard()<<"\n---------------------------------"  
+                      << " | Cost : " << card.getCostOfCard()<<"\n---------------------------------"
                       << std::endl;
         }
 
@@ -131,6 +132,8 @@ GameState generateSampleState() {
 
     Card card1{"1",Commercial,2};
     Card card2{"2",Commercial,2};
+    Card card3{"25",Commercial,2};
+
 
     playerA.setCharacter(Warlord);
     playerB.setCharacter(Bishop);
@@ -139,7 +142,7 @@ GameState generateSampleState() {
 
     std::vector<Card> playerABoard{card1};
     std::vector<Card> playerBBoard{card2};
-    std::vector<Card> playerCBoard{card2,card1};
+    std::vector<Card> playerCBoard{card2,card1,card3};
     std::vector<Card> playerDBoard{card1,card2};
 
     playerA.setBoardOfPlayer(playerABoard);

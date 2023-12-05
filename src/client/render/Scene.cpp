@@ -8,13 +8,14 @@ namespace render {
         this->state=state;
         this->height= 900; 
         this->width=1600;
-        this->fontText.loadFromFile("./../res/Garet-Book.ttf");
-        this->fontTitle.loadFromFile("./../res/OldLondon.ttf");
+        this->fontText.loadFromFile("./res/Garet-Book.ttf");
+        this->fontTitle.loadFromFile("./res/OldLondon.ttf");
 
         listOfButtons.emplace_back(ButtonType::bank, 700,350);
         listOfButtons.emplace_back(ButtonType::draw, 900,350);
         listOfButtons.emplace_back(ButtonType::endOfTurn, 780,500);
-        listOfButtons.emplace_back(ButtonType::hand, 1500,850);
+        //listOfButtons.emplace_back(ButtonType::hand, 1500,850);
+                listOfButtons.emplace_back(ButtonType::hand, 600,300);
         listOfButtons.emplace_back(ButtonType::help, 1500,50);
 
         //Background
@@ -25,9 +26,9 @@ namespace render {
         //logo crown + gold + cartes
 
         sf::Texture crown, gold, card;
-        crown.loadFromFile("./../res/crown.png");
-        gold.loadFromFile("./../res/coin.png");
-        card.loadFromFile("./../res/coin.png");
+        crown.loadFromFile("./res/crown.png");
+        gold.loadFromFile("./res/coin.png");
+        card.loadFromFile("./res/coin.png");
         this->crownTexture = crown;
         this->goldTexture = gold;
         this->cardTexture =card;
@@ -36,21 +37,22 @@ namespace render {
 
         this->helpMenuText= sf::Text();
         helpMenuText.setFont(fontText);
-        helpMenuText.setString("Règles du jeu.\n\n"
-                        "Voici les règles du début du jeu\nLigne 2\nLigne 3\nLigne 4\nLigne 5\n"
+        helpMenuText.setString("Regles du jeu.\n\n"
+                        "Voici les regles de Citadelles\nLigne 2\nLigne 3\nLigne 4\nLigne 5\n"
                         "Ligne 6\nLigne 7\nLigne 8\nLigne 9\nLigne 10\n"
                         "Ligne 11\nLigne 12\nLigne 13\nLigne 14\nLigne 15");
         helpMenuText.setCharacterSize(20);
-        helpMenuText.setFillColor(sf::Color::Black);
+        helpMenuText.setFillColor(sf::Color(55,53,53));
         helpMenuText.setPosition(370, 220); 
 
+        
         }
 
     Scene::~Scene() {
     }
 
     void Scene::draw(sf::RenderWindow& window) {
-        // dessine les éléments communs à toutes les scènes
+        // dessine les éléments communs à toutes les scenes
         displayedCard.clear();
 
         //Background
@@ -155,13 +157,14 @@ namespace render {
 
         //Affichage info par joueur
         int i =0;
+        int indexCurrentCharacter, indexCharacterPlayer;
+
         for (auto& player : listOfPlayerOrder){
             
             bool isCrownOwner = false;
             bool isRevealed = false;
             if (player.getIdOfPlayer() == state->getCrownOwner()){
                 isCrownOwner=true;}
-            int indexCurrentCharacter, indexCharacterPlayer;
 
             for (int k = 0; k < 8; ++k) {
                 if (static_cast<state::CharacterType>(k) == player.getCharacter()) {
@@ -179,6 +182,28 @@ namespace render {
             }
         
         //IDF
+        const char* CharacterTypeString[] ={
+                    "Assassin",
+                    "Thief",
+                    "Magician",
+                    "King",
+                    "Bishop",
+                    "Merchant" ,
+                    "Architect",
+                    "Warlord" ,
+                    "NoCharacter"
+            };
+        std::string currentCharacterName = CharacterTypeString[state->getCurrentCharacter()];
+        VisualCard currentCharacterCard = VisualCard(currentCharacterName, 10, 10);
+        currentCharacterCard.draw(window);
+
+        sf::Text IDFText;
+        IDFText.setFont(fontTitle);
+        IDFText.setString(std::to_string(indexCurrentCharacter+1) + " / 8");
+        IDFText.setCharacterSize(20);
+        IDFText.setFillColor(sf::Color::White);
+        IDFText.setPosition(33, 140);
+        window.draw(IDFText);
 
          //Hand
         if (IHMState::getInstance()->isHandDisplayed){
@@ -195,6 +220,13 @@ namespace render {
         }
         if (IHMState::getInstance()->hoverCard != nullptr){
             std::cout<<"you are hover a card : " <<std::endl;
+        }
+
+        // Card Zoom
+        VisualCard * cardToZoom = (IHMState::getInstance()->hoverCard);
+        if (cardToZoom != nullptr){
+        (*cardToZoom).zoomCard();
+        (*cardToZoom).draw(window);
         }
     }
 
@@ -239,7 +271,7 @@ namespace render {
         // fond
         sf::RectangleShape boardBackground(sf::Vector2f(1360, 144));
         boardBackground.setPosition(120,600);
-        boardBackground.setFillColor(sf::Color::Blue);
+        boardBackground.setFillColor(sf::Color(76,68,53));
         window.draw(boardBackground);
 
         std::vector<state::Player> listOfPlayer = state->getListOfPlayer();
@@ -266,8 +298,9 @@ namespace render {
 
     sf::RectangleShape helpMenu(sf::Vector2f(900,500));
     helpMenu.setPosition(350, 200);
-    helpMenu.setFillColor(sf::Color::Red);
-
+    helpMenu.setFillColor(sf::Color(238,225,208));
+    helpMenu.setOutlineThickness(3.0f); 
+    helpMenu.setOutlineColor(sf::Color::Black);
     window.draw(helpMenu);
     window.draw(helpMenuText);
 }
