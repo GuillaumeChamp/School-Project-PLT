@@ -120,7 +120,7 @@ add_subdirectory(src/client)
 
 # Rapport generation
 add_subdirectory(rapport)
-configure_file(Config.h.in ${CMAKE_BINARY_DIR}/config.h)
+configure_file(config.h.in ${CMAKE_BINARY_DIR}/config.h)
 
 
 # Unit tests
