@@ -8,7 +8,7 @@ namespace state {
         return this->listOfPlayers;
     }
 
-    int GameState::getNbCardToDraw (){
+    int GameState::getNbCardToDraw () const{
         return this->nbOfCardToDraw;
     }
 
@@ -21,7 +21,7 @@ namespace state {
         this->currentCharacter=character;
     }
 
-    CharacterType GameState::getCurrentCharacter() {
+    CharacterType GameState::getCurrentCharacter() const{
         return this->currentCharacter;
     }
 
@@ -48,7 +48,7 @@ namespace state {
         }
     }
 
-    GamePhase GameState::getGamePhase() {
+    GamePhase GameState::getGamePhase() const{
         return this->gamePhase;
     }
 
@@ -56,7 +56,7 @@ namespace state {
         this->gamePhase=GamePhase::EndOfGame;
     }
 
-    PlayerId GameState::getCrownOwner() {
+    PlayerId GameState::getCrownOwner() const{
         return this->crownOwner;
     }
 

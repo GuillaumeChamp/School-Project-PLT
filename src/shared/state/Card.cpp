@@ -13,15 +13,15 @@ Card::Card(std::string name, state::CardType color, int cost){
 
 Card::~Card()=default;
 
-std::string Card::getNameOfCard() {
+std::string Card::getNameOfCard() const{
     return this->nameOfCard;
 }
 
-CardType Card::getColorOfCard(){
+CardType Card::getColorOfCard() const{
     return this->colorOfCard;
 }
 
-int Card::getCostOfCard(){
+int Card::getCostOfCard() const{
     return this->costOfCard;
 }
 }
