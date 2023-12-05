@@ -4,7 +4,7 @@
 
 namespace state {
 
-    std::vector<Player> GameState::getListOfPlayer (){
+    std::vector<Player> GameState::getListOfPlayer () const{
         return this->listOfPlayers;
     }
 
@@ -23,6 +23,7 @@ namespace state {
         this->currentCharacter= CharacterType::NoCharacter;
         this->crownOwner = PlayerA;
         this->gamePhase = Phase::CHOOSECHARACTER;
+        this->playing = NoPlayer;
     }
 
     void GameState::nextGamePhase() {
@@ -33,6 +34,7 @@ namespace state {
             case Phase::ENDGAME:
                 break;
             case Phase::CALLCHARACTER :
+            case STARTGAME:
                 this->gamePhase = Phase::CHOOSECHARACTER;
                 break;
         }
@@ -52,13 +54,5 @@ namespace state {
 
     void GameState::setCrownOwner(PlayerId player) {
         this->crownOwner =player;
-    }
-
-    std::vector<Card> drawCards (int nbToDraw) {
-
-    }
-
-    std::vector<Card> initStack (){
-
     }
 }
