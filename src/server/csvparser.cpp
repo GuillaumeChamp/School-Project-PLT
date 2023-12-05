@@ -26,7 +26,6 @@ std::vector<state::Card> initDeck() {
 
         if (!(iss >> id >> name >> multiplicity >> type >> cost)) {
             std::cerr << "Error reading line: " << line << std::endl;
-            // Gérer l'erreur selon vos besoins
             exit(EXIT_FAILURE);
         }
 
