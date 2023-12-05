@@ -289,11 +289,33 @@ Nous concevons alors les éléments suivants :
 ![RenderDia](images/RenderDia.png)
 
 ## Règles de changement d'états et moteur de jeu
+Les changements d’état ne suivent pas d’horloge globale, chaque état sera mis à jour à l’issu d'exécutions de commandes par le joueur vers l’engine ou par l’engine vers le joueur.
 
 ### Règles
 
+**4.1 Changements extérieurs**
+
+Les changements extérieurs sont provoqués par des commandes extérieures, comme la pression sur une touche ou un ordre provenant du réseau :
+
+Commande pioche (DrawCommand) : pioche de cartes par un joueur après clique sur le bouton pioche.
+Commande pièces (GainGoldCommand) : pioche de deux pièces par un joueur après clique sur le bouton pièces.
+Commande fin du tour (EndOfTurnCommand) : fin de tour du joueur après clique sur le bouton fin du tour.
+Commande de Choix de personnage (ChooseCharacterCommand): Le joueur doit choisir parmis les personnages qui lui sont proposé. Le premier joueur a 8 choix. Il choisit son personnage et discard un personnage. Le second joueur a 6 choix, le troisème en a 5 et le dernier 4.
+Commande Pouvoir du personnage (UseCharacterAbilityCommand) : Le joueur utilise la capacité spéciale de son personnage.
+Commande récupréation de Gold des building (ClaimBuildingGold) : La joueur (si son personnage le lui permet) peut récupérer des Golds des Batiment qu'il a posés.
+
+**4.2 Changements autonomes**
+
+Le jeu s'articule en 2 pahses prinipales une phase de choix de personnage (le momoent où les joueur selectionne leur personnage pour préarer leur tour) et une phase d'appel des personnages (le momment où les joueurs jouent leur tours)
+
+StartCommand : Cette command permet d'initialiser les parametre et veiller à ce que la connexion est bien établie.
+HandleChoosingCharacterPhaseCommand permet d'afficher à chaque joueur la liste des personnages qu'il peut selectionner.
+HandleCallingCharcaterPhaseCommand : L'engine va appeeler les personnages dans l'ordre. Si le personnage d'un joueur est appelé alors c'est à ce joueur de jouer son tour.
+ChangPhaseCommand : Une command de changemnt de phase.
+
 ### Conception logiciel
 
+![EngineDia](images/Engine.png)
 
 ## Intelligence Artificielle
 

@@ -17,11 +17,11 @@ GameState generateSampleState();
 int main(int argc, char *argv[]) {
 
     if (argc >= 2) {
-        if (std::strcmp(argv[1], "hello") == 0) { //comparaison of strings
+        if (std::strcmp(argv[1], "hello") == 0) {
            std::cout << "hello my dear" << std::endl;
         } 
 
-        else if (std::strcmp(argv[1], "state") == 0) { //comparaison of strings
+        else if (std::strcmp(argv[1], "state") == 0) {
            std::cout << "lancement des tests" << std::endl;
            test();
            std::cout << "everything is fine" << std::endl;
