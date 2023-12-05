@@ -12,6 +12,7 @@ using namespace state;
 
 void test();
 GameState generateSampleState();
+void displayState(state::GameState gameState);
 
 
 int main(int argc, char *argv[]) {
@@ -83,6 +84,7 @@ int main(int argc, char *argv[]) {
             gameEngine.addCommand(std::move(cmd3));
 
             gameEngine.executeAllCommands(gameState);
+            displayState(gameState);
 
 
            
@@ -102,6 +104,33 @@ void test(){
     Player player {"player1", PlayerId::PlayerA};
     GameState gameState {std::vector<Player>{player}};
 }
+
+void displayState(state::GameState gameState) {
+    for (auto& player : gameState.getListOfPlayer()) {
+        std::cout << " | Name: " << player.getNameOfPlayer()
+                  << " | Character: " << player.getCharacter()
+                  << " | Nb of cards: " << player.getNumberOfCards()
+                  << " | Nb of coins: " << player.getNumberOfCoins()
+                  << std::endl;
+
+        std::cout <<"---------------------------------\n Hand of "<<player.getNameOfPlayer() << std::endl;
+        for (auto& card : player.getHand()) {
+            std::cout << " | Name : " << card.getNameOfCard()
+                      << " | Color : " << card.getColorOfCard()
+                      << " | Cost : " << card.getCostOfCard()<<"\n---------------------------------"  
+                      << std::endl;
+        }
+
+        std::cout <<"---------------------------------\n Board of "<<player.getNameOfPlayer() << std::endl;
+        for (auto& card : player.getBoardOfPlayer()) {
+            std::cout << " | Name : " << card.getNameOfCard()
+                      << " | Color : " << card.getColorOfCard()
+                      << " | Cost : " << card.getCostOfCard()<<"\n---------------------------------"  // Corrected
+                      << std::endl;
+        }
+    }
+}
+
 
 GameState generateSampleState() {
     Player playerA {"player1", PlayerId::PlayerA};
