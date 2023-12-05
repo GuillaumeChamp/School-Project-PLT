@@ -1,6 +1,10 @@
 cmake_minimum_required (VERSION 3.18)
 project (plt)
 
+configure_file(Config.h.in ${CMAKE_BINARY_DIR}/config.h)
+
+include_directories(${CMAKE_BINARY_DIR})
+
 # CMP0074 policy enable find_* to use <PackageName>_ROOT variables to find
 # packages.
 if(POLICY CMP0074)

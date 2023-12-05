@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <sys/stat.h>
+#include "config.h"
 
 BOOST_AUTO_TEST_CASE(TestSFML)
 {
@@ -43,9 +44,10 @@ BOOST_AUTO_TEST_CASE(TestSFML)
         BOOST_CHECK_NO_THROW(render::PlayerRender::drawPlayer(render,&playerA,0,true,true,font));
 
         //Is file reachable
-        const char* dir = "./res/Garet-Book.ttf";
+        std::string path = RES_DIR;
+        path.append("Garet-Book.ttf");
         struct stat sb{};
-        BOOST_CHECK_EQUAL(stat(dir, &sb), 0);
+        BOOST_CHECK_EQUAL(stat(path.c_str(), &sb), 0);
 
     }
 }

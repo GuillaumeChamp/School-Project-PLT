@@ -1,6 +1,6 @@
 #include "VisualCard.h"
 #include <iostream>
-#include <SFML/Graphics.hpp>
+#include "config.h"
 
 namespace render {
     VisualCard::VisualCard(std::string filename, int posX, int posY):InteractiveElement(posX, posY)  {
@@ -27,8 +27,9 @@ namespace render {
     void VisualCard::draw(sf::RenderWindow& window){
 
         sf::Texture texture;
-        std::string Path = "./res/" + name + ".jpg";
-        texture.loadFromFile(Path);
+        std::string path = RES_DIR;
+        path.append(name).append(".jpg");
+        texture.loadFromFile(path);
         this->surface.setTexture(&texture);
         window.draw(this->getSurface());
     }

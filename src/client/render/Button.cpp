@@ -1,6 +1,7 @@
 #include "Button.h"
 #include <iostream>
 #include <SFML/Graphics/Texture.hpp>
+#include "config.h"
 
 namespace render {
     Button::Button(ButtonType buttonType, int posX, int posY):InteractiveElement(posX, posY) {
@@ -40,22 +41,23 @@ namespace render {
     }
 
     void Button::draw(sf::RenderWindow &render) {
+        std::string res = RES_DIR;
         sf::Texture texture;
         switch (this->name){
-            case bank:
-                texture.loadFromFile("./res/chest.png");
+            case ButtonType::bank:
+                texture.loadFromFile(res+"chest.png");
                 break;
-            case ButtonType::draw:
-                texture.loadFromFile("./res/dos_rouge.jpg");
+            case ButtonType::draw :
+                texture.loadFromFile(res+"dos_rouge.jpg");
                 break;
             case endOfTurn:
-                texture.loadFromFile("./res/dos_vert.jpg");
+                texture.loadFromFile(res+"dos_vert.jpg");
                 break;
             case hand:
-                texture.loadFromFile("./res/dos_vert.jpg");
+                texture.loadFromFile(res+"dos_vert.jpg");
                 break;
             case help:
-                texture.loadFromFile("./res/help.png");
+                texture.loadFromFile(res+"help.png");
                 break;
         }
         this->surface.setTexture(&texture);

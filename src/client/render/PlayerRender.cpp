@@ -1,7 +1,8 @@
 #include "PlayerRender.h"
+#include "config.h"
+
 
 namespace render {
-
     std::vector<VisualCard> PlayerRender::drawPlayer(sf::RenderWindow& window, state::Player* playerToRender, int positionId, bool isCrownOwner, bool isRevealed, sf::Font& font) {
         
         std::vector<VisualCard> boardCards;
@@ -30,7 +31,9 @@ namespace render {
         if (isCrownOwner){
         sf::RectangleShape crown(sf::Vector2f(40,40));
         sf::Texture crownTexture;
-        crownTexture.loadFromFile("./res/crown.png");
+
+        std::string res = RES_DIR;
+        crownTexture.loadFromFile(res.append("crown.png"));
         crown.setTexture(&crownTexture);
 
         crown.setPosition(crownX,crownY);
@@ -59,7 +62,8 @@ namespace render {
         if (isRevealed){
             //Personnage secret
             sf::Texture characterBackgroundTexture;
-            characterBackgroundTexture.loadFromFile("./res/dos_rouge.jpg");
+            std::string res = RES_DIR;
+            characterBackgroundTexture.loadFromFile(res+"dos_rouge.jpg");
             sf::RectangleShape characterBackgroundShape(sf::Vector2f(80,124));
             characterBackgroundShape.setTexture(&characterBackgroundTexture);
 

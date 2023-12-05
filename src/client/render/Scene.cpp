@@ -1,15 +1,18 @@
 #include "Scene.h"
-#include <iostream>  
+#include <iostream>
+#include "config.h"
+
 
 namespace render {
 
     Scene::Scene(SceneId sceneId, state::GameState* state) {
+        std::string res = RES_DIR;
         this->sceneId=sceneId;
         this->state=state;
         this->height= 900; 
         this->width=1600;
-        this->fontText.loadFromFile("./res/Garet-Book.ttf");
-        this->fontTitle.loadFromFile("./res/OldLondon.ttf");
+        this->fontText.loadFromFile(res+"Garet-Book.ttf" );
+        this->fontTitle.loadFromFile(res+"OldLondon.ttf");
 
         listOfButtons.emplace_back(ButtonType::bank, 700,350);
         listOfButtons.emplace_back(ButtonType::draw, 900,350);
@@ -26,9 +29,9 @@ namespace render {
         //logo crown + gold + cartes
 
         sf::Texture crown, gold, card;
-        crown.loadFromFile("./res/crown.png");
-        gold.loadFromFile("./res/coin.png");
-        card.loadFromFile("./res/coin.png");
+        crown.loadFromFile(res+"crown.png");
+        gold.loadFromFile(res+"coin.png");
+        card.loadFromFile(res+"coin.png");
         this->crownTexture = crown;
         this->goldTexture = gold;
         this->cardTexture =card;
