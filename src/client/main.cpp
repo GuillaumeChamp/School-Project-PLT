@@ -78,10 +78,10 @@ int main(int argc, char *argv[]) {
             std::unique_ptr<engine::Command> cmd2(new engine::ChooseCharacterCommand(PlayerId::PlayerC,CharacterType::Magician));
             std::unique_ptr<engine::Command> cmd3(new engine::ChooseCharacterCommand(PlayerId::PlayerD,CharacterType::Warlord));
 
-            gameEngine.addCommand(std::move(cmd));
-            gameEngine.addCommand(std::move(cmd1));
-            gameEngine.addCommand(std::move(cmd2));
-            gameEngine.addCommand(std::move(cmd3));
+            gameEngine.addCommand(*cmd);
+            gameEngine.addCommand(*cmd1);
+            gameEngine.addCommand(*cmd2);
+            gameEngine.addCommand(*cmd3);
 
             gameEngine.executeAllCommands(gameState);
             displayState(gameState);

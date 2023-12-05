@@ -31,16 +31,16 @@ namespace engine {
 
   // Add a command to the list of commands
   
-  void Engine::addCommand (std::unique_ptr<Command> cmd){
+  void Engine::addCommand (Command& cmd){
 
-    listOfCommands.push_back(std::move(cmd));
+    listOfCommands.push_back(cmd);
 
   }
 
 
   void Engine::executeAllCommands(state::GameState state){
     for (auto& cmd : listOfCommands) {
-    cmd->execute(state);
+    cmd.execute(state);
   }
   }
 
