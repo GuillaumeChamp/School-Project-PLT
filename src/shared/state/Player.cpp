@@ -13,9 +13,7 @@ Player::Player(std::string name, state::PlayerId id){
     this->character = CharacterType::NoCharacter;
 }
 
-Player::~Player(){
-    //delete &nameOfPlayer;
-}
+Player::~Player()= default;
 
 std::string Player::getNameOfPlayer() const{
     return this->nameOfPlayer;
@@ -30,10 +28,10 @@ int Player::getNumberOfCoins() const{
 }
 
 int Player::getNumberOfCards() const{
-    return this->hand.size();
+    return (int) this->hand.size();
 }
 
-void Player::setBoardOfPlayer(const std::vector<Card> board) {
+void Player::setBoardOfPlayer(std::vector<Card> board) {
     this->board = board;
 }
 

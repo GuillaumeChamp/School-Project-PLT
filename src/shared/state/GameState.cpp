@@ -4,17 +4,8 @@
 
 namespace state {
 
-    std::vector<Player> GameState::getListOfPlayer (){
+    std::vector<Player> GameState::getListOfPlayer () const{
         return this->listOfPlayers;
-    }
-
-    int GameState::getNbCardToDraw () const{
-        return this->nbOfCardToDraw;
-    }
-
-
-    void GameState::setNbCardToDraw (int nbCard){
-        this->nbOfCardToDraw = nbCard;
     }
 
     void GameState::setCurrentCharacter(CharacterType character) {
@@ -28,32 +19,33 @@ namespace state {
 
 
     GameState::GameState(std::vector<Player> listOfPlayer) {
-        this->listOfPlayers=std::move(listOfPlayer);
-        this->nbOfCardToDraw=52;
+        this->listOfPlayers = std::move(listOfPlayer);
         this->currentCharacter= CharacterType::NoCharacter;
         this->crownOwner = PlayerA;
-        this->gamePhase = GamePhase::DrawCharacters;
+        this->gamePhase = Phase::CHOOSECHARACTER;
+        this->playing = NoPlayer;
     }
 
     void GameState::nextGamePhase() {
         switch (gamePhase) {
-            case GamePhase::DrawCharacters :
-                this->gamePhase = GamePhase::PlayTurn;
+            case Phase::CHOOSECHARACTER :
+                this->gamePhase = Phase::CALLCHARACTER;
                 break;
-            case GamePhase::EndOfGame:
+            case Phase::ENDGAME:
                 break;
-            case GamePhase::PlayTurn :
-                this->gamePhase = GamePhase::DrawCharacters;
+            case Phase::CALLCHARACTER :
+            case STARTGAME:
+                this->gamePhase = Phase::CHOOSECHARACTER;
                 break;
         }
     }
 
-    GamePhase GameState::getGamePhase() const{
+    Phase GameState::getGamePhase() const{
         return this->gamePhase;
     }
 
     void GameState::endGame() {
-        this->gamePhase=GamePhase::EndOfGame;
+        this->gamePhase=Phase::ENDGAME;
     }
 
     PlayerId GameState::getCrownOwner() const{
@@ -64,5 +56,20 @@ namespace state {
         this->crownOwner =player;
     }
 
+    Player GameState::getPlayer(PlayerId playerId) const {
+        for(const Player& player : this->listOfPlayers){
+            if (player.getIdOfPlayer()==playerId){
+                return player;
+            }
+        }
+        throw std::exception();
+    }
 
+    PlayerId GameState::getPlaying() const {
+        return this->playing;
+    }
+
+    void GameState::setPlaying(PlayerId playerId) {
+        this->playing=playerId;
+    }
 }

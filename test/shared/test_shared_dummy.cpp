@@ -48,25 +48,23 @@ BOOST_AUTO_TEST_CASE(TestState)
 
       GameState gameState{std::vector<Player>{plr}};
       BOOST_CHECK_EQUAL(gameState.getListOfPlayer().size(),1);
-      BOOST_CHECK_EQUAL(gameState.getNbCardToDraw(), 52);
       BOOST_CHECK_EQUAL(gameState.getCurrentCharacter(),CharacterType::NoCharacter);
-      BOOST_CHECK_EQUAL(gameState.getGamePhase(),GamePhase::DrawCharacters);
+      BOOST_CHECK_EQUAL(gameState.getGamePhase(),Phase::CHOOSECHARACTER);
 
       gameState.setCrownOwner(PlayerId::PlayerA);
       BOOST_CHECK_EQUAL((gameState.getCrownOwner()), plr.getIdOfPlayer());
-
-      gameState.setNbCardToDraw(48);
-      BOOST_CHECK_EQUAL(gameState.getNbCardToDraw(),48);
 
       gameState.setCurrentCharacter(CharacterType::King);
       BOOST_CHECK_EQUAL(gameState.getCurrentCharacter(),CharacterType::King);
 
       gameState.nextGamePhase();
-      BOOST_CHECK_EQUAL(gameState.getGamePhase(),GamePhase::PlayTurn);
+      BOOST_CHECK_EQUAL(gameState.getGamePhase(),Phase::CALLCHARACTER);
 
       gameState.endGame();
-      BOOST_CHECK_EQUAL(gameState.getGamePhase(),GamePhase::EndOfGame);
+      BOOST_CHECK_EQUAL(gameState.getGamePhase(),Phase::ENDGAME);
 
+      gameState.setPlaying(PlayerD);
+      BOOST_CHECK_EQUAL(gameState.getPlaying(),PlayerD);
   }
 }
 
