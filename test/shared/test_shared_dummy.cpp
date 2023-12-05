@@ -63,6 +63,8 @@ BOOST_AUTO_TEST_CASE(TestState)
       gameState.endGame();
       BOOST_CHECK_EQUAL(gameState.getGamePhase(),Phase::ENDGAME);
 
+      gameState.setPlaying(PlayerD);
+      BOOST_CHECK_EQUAL(gameState.getPlaying(),PlayerD);
   }
 }
 

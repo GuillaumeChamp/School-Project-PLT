@@ -12,8 +12,7 @@ namespace engine {
   }
 
   // Destructor
-  BuildCommand::~BuildCommand() {
-  }
+  BuildCommand::~BuildCommand() = default;
 
   // Execute method
   void BuildCommand::execute(state::GameState state) {
@@ -31,7 +30,7 @@ namespace engine {
     int coins = player.getNumberOfCoins();
 
     /// Checking if the player has already built an identical card
-    for(state::Card c : board){
+    for(const state::Card& c : board){
       if (c.getNameOfCard() == card->getNameOfCard()){
         return;
         }

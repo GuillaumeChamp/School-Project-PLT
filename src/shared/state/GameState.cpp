@@ -55,4 +55,21 @@ namespace state {
     void GameState::setCrownOwner(PlayerId player) {
         this->crownOwner =player;
     }
+
+    Player GameState::getPlayer(PlayerId playerId) const {
+        for(const Player& player : this->listOfPlayers){
+            if (player.getIdOfPlayer()==playerId){
+                return player;
+            }
+        }
+        throw std::exception();
+    }
+
+    PlayerId GameState::getPlaying() const {
+        return this->playing;
+    }
+
+    void GameState::setPlaying(PlayerId playerId) {
+        this->playing=playerId;
+    }
 }
