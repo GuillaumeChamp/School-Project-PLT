@@ -5,29 +5,8 @@
 namespace render {
     Button::Button(ButtonType buttonType, int posX, int posY):InteractiveElement(posX, posY) {
         this->name=buttonType;
-
-        switch (buttonType){
-            case bank:
-                surface.setPosition(posX,posY);
-                surface.setSize(sf::Vector2f(40, 40));
-                break;
-            case ButtonType::draw:
-                surface.setPosition(posX,posY);
-                surface.setSize(sf::Vector2f(40, 40));
-                break;
-            case endOfTurn:
-                surface.setPosition(posX,posY);
-                surface.setSize(sf::Vector2f(40, 40));
-                break;
-            case hand:
-                surface.setPosition(posX,posY);
-                surface.setSize(sf::Vector2f(40, 40));
-                break;
-            case help:
-                surface.setPosition(posX,posY);
-                surface.setSize(sf::Vector2f(40, 40));
-                break;
-        }
+        this->surface.setPosition(posX,posY);
+        this->surface.setSize(sf::Vector2f(40, 40));
     }
 
     Button::~Button() = default;
@@ -79,7 +58,7 @@ namespace render {
                 texture.loadFromFile("./../res/help.png");
                 break;
         }
-        surface.setTexture(&texture);
+        this->surface.setTexture(&texture);
         render.draw(surface);
     }
 
