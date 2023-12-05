@@ -12,7 +12,7 @@ namespace state {
         this->currentCharacter=character;
     }
 
-    CharacterType GameState::getCurrentCharacter() {
+    CharacterType GameState::getCurrentCharacter() const{
         return this->currentCharacter;
     }
 
@@ -38,7 +38,7 @@ namespace state {
         }
     }
 
-    Phase GameState::getGamePhase() {
+    Phase GameState::getGamePhase() const{
         return this->gamePhase;
     }
 
@@ -46,7 +46,7 @@ namespace state {
         this->gamePhase=Phase::ENDGAME;
     }
 
-    PlayerId GameState::getCrownOwner() {
+    PlayerId GameState::getCrownOwner() const{
         return this->crownOwner;
     }
 
@@ -59,6 +59,6 @@ namespace state {
     }
 
     std::vector<Card> initStack (){
-        
+
     }
 }

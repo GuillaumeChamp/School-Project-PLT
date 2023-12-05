@@ -17,19 +17,19 @@ Player::~Player(){
     //delete &nameOfPlayer;
 }
 
-std::string Player::getNameOfPlayer() {
+std::string Player::getNameOfPlayer() const{
     return this->nameOfPlayer;
 }
 
-std::vector<Card> Player::getBoardOfPlayer() {
+std::vector<Card> Player::getBoardOfPlayer() const{
     return this->board;
 }
 
-int Player::getNumberOfCoins() {
+int Player::getNumberOfCoins() const{
     return this->numberOfCoins;
 }
 
-int Player::getNumberOfCards() {
+int Player::getNumberOfCards() const{
     return this->hand.size();
 }
 
@@ -42,11 +42,11 @@ void Player::setNumberOfCoins (int nbOfCoins) {
     this->numberOfCoins = nbOfCoins;
 }
 
-    PlayerId Player::getIdOfPlayer() {
+    PlayerId Player::getIdOfPlayer() const{
         return this->playerId;
     }
 
-    CharacterType Player::getCharacter() {
+    CharacterType Player::getCharacter() const{
         return this->character;
     }
 
@@ -58,7 +58,7 @@ void Player::setNumberOfCoins (int nbOfCoins) {
         this->hand=hand;
     }
 
-    std::vector<Card> Player::getHand() {
+    std::vector<Card> Player::getHand() const{
         return this->hand;
     }
 
