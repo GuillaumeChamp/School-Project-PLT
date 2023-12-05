@@ -32,6 +32,7 @@ int main(int argc, char *argv[]) {
             window.setVerticalSyncEnabled(true);
 
             GameState gamestate=generateSampleState();
+            gamestate.setCurrentCharacter(Architect);
             render::Scene sceneA(render::SceneId::PlayerA, &gamestate);
             
 
@@ -81,6 +82,8 @@ GameState generateSampleState() {
 
     Card card1{"1",Commercial,2};
     Card card2{"2",Commercial,2};
+    Card card3{"25",Commercial,2};
+
 
     playerA.setCharacter(Warlord);
     playerB.setCharacter(Bishop);
@@ -88,9 +91,11 @@ GameState generateSampleState() {
     playerD.setCharacter(King);
 
     playerA.setBoardOfPlayer(std::vector<Card>{card1});
-    playerB.setBoardOfPlayer(std::vector<Card>{card2});
+    playerB.setBoardOfPlayer(std::vector<Card>{card2, card3});
     playerC.setBoardOfPlayer(std::vector<Card>{card2,card1});
     playerD.setBoardOfPlayer(std::vector<Card>{card1,card2});
+    
+    playerA.setHand(std::vector<Card>{card2});
 
     GameState gameState {std::vector<Player>{playerA,playerB,playerC,playerD}};
     return gameState;

@@ -1,83 +1,63 @@
+
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <vector>
 #include <sstream>
+#include <vector>
+#include <algorithm>
+#include <ctime>
+#include <cstdlib>
 
-// Define a struct to represent each entry in the CSV
-struct CSVEntry {
-    int id;
-    std::string name;
-    int multiplicity;
-    std::string type;
-    int cost;
-};
+#include "./state.h"  
 
-int main() {
-    // Create a vector to store the CSV entries
-    std::vector<CSVEntry> entries;
+std::vector<state::Card> initDeck() {
+    const std::string& filename = "./res/cards.csv";
+    std::vector<state::Card> cards;
+    std::ifstream file(filename);
 
-    // Open the CSV file
-    std::ifstream csvFile("resources/cards.csv");
-
-    if (!csvFile.is_open()) {
-        std::cerr << "Error: Unable to open the CSV file." << std::endl;
-        return 1;
+    if (!file.is_open()) {
+        std::cerr << "Error opening file: " << filename << std::endl;
+        exit(EXIT_FAILURE);
     }
 
-    // Read and parse the CSV data
     std::string line;
-    while (std::getline(csvFile, line)) {
-        // Split the line into tokens using ',' as the delimiter
+    while (std::getline(file, line)) {
         std::istringstream iss(line);
-        std::string token;
-        CSVEntry entry;
+        std::string id, name, multiplicity, type, cost;
 
-        // Read and assign values to the entry struct with error checking
-        if (std::getline(iss, token, ',')) {
-            try {
-                entry.id = std::stoi(token);
-            } catch (const std::invalid_argument& e) {
-                std::cerr << "Error parsing ID: " << e.what() << std::endl;
-                continue; // Skip this entry
-            }
-        }
-        if (std::getline(iss, entry.name, ',')) {
-            // Note: name is read as a string without conversion
-        }
-        if (std::getline(iss, token, ',')) {
-            try {
-                entry.multiplicity = std::stoi(token);
-            } catch (const std::invalid_argument& e) {
-                std::cerr << "Error parsing Multiplicity: " << e.what() << std::endl;
-                continue; // Skip this entry
-            }
-        }
-        if (std::getline(iss, entry.type, ',')) {
-            // Note: type is read as a string without conversion
-        }
-        if (std::getline(iss, token, ',')) {
-            try {
-                entry.cost = std::stoi(token);
-            } catch (const std::invalid_argument& e) {
-                std::cerr << "Error parsing Cost: " << e.what() << std::endl;
-                continue; // Skip this entry
-            }
+        if (!(iss >> id >> name >> multiplicity >> type >> cost)) {
+            std::cerr << "Error reading line: " << line << std::endl;
+            // Gérer l'erreur selon vos besoins
+            exit(EXIT_FAILURE);
         }
 
-        // Add the entry to the vector
-        entries.push_back(entry);
+        int multiplicityValue = std::stoi(multiplicity);
+        int costValue = std::stoi(cost);
+        state::CardType typeValue;
+        if (type == "Religious") {
+            typeValue = state::CardType::Religious;
+        } else if (type == "Military") {
+           typeValue = state::CardType::Military;
+        } else if (type == "Commercial") {
+            typeValue = state::CardType::Commercial;
+        } else if (type == "Noble") {
+            typeValue = state::CardType::Noble;
+        } else if (type == "Wonder") {
+            typeValue = state::CardType::Wonder;
+        }
+
+        for (int i = 0; i < multiplicityValue; ++i) {
+            state::Card card(id, typeValue, costValue);
+            cards.push_back(card);
+        }
     }
+    
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    std::random_shuffle(cards.begin(), cards.end());
 
-    // Close the CSV file
-    csvFile.close();
 
-    // Print the parsed data
-    for (const CSVEntry& entry : entries) {
-        std::cout << "ID: " << entry.id << ", Name: " << entry.name
-                  << ", Multiplicity: " << entry.multiplicity << ", Type: " << entry.type
-                  << ", Cost: " << entry.cost << std::endl;
-    }
+    file.close();
 
-    return 0;
+    return cards;
 }
+
+
