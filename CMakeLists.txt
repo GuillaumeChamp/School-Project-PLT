@@ -1,8 +1,6 @@
 cmake_minimum_required (VERSION 3.18)
 project (plt)
 
-configure_file(Config.h.in ${CMAKE_BINARY_DIR}/config.h)
-
 include_directories(${CMAKE_BINARY_DIR})
 
 # CMP0074 policy enable find_* to use <PackageName>_ROOT variables to find
@@ -122,6 +120,8 @@ add_subdirectory(src/client)
 
 # Rapport generation
 add_subdirectory(rapport)
+configure_file(Config.h.in ${CMAKE_BINARY_DIR}/config.h)
+
 
 # Unit tests
 # Set BUILD_TESTING to OFF in CMakeCache to disable tests
