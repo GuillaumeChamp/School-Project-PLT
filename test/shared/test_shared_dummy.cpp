@@ -30,7 +30,8 @@ BOOST_AUTO_TEST_CASE(TestState)
       Card cardWonder{"card1", CardType::Wonder, 2};
       BOOST_CHECK_EQUAL(cardWonder.getColorOfCard(), CardType::Wonder);
 
-      Player plr {"player1", PlayerId::PlayerA};
+      std::string playerName = "player1";
+      Player plr {playerName, PlayerId::PlayerA};
       BOOST_CHECK_EQUAL(plr.getNameOfPlayer(),"player1");
       BOOST_CHECK_EQUAL(plr.getIdOfPlayer(),PlayerId::PlayerA);
       BOOST_CHECK_EQUAL(plr.getCharacter(),CharacterType::NoCharacter);

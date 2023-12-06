@@ -1,0 +1,8 @@
+// Config.h.in
+
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define RES_DIR "${CMAKE_SOURCE_DIR}/res/"
+
+#endif
