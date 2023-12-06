@@ -7,10 +7,15 @@ using namespace ::engine;
 
 
 BOOST_AUTO_TEST_CASE(TestEngine){
-    state::Player plr1 {"player1", state::PlayerId::PlayerA};
-    state::Player plr2 {"player2", state::PlayerId::PlayerB};
-    state::Player plr3 {"player3", state::PlayerId::PlayerC};
-    state::Player plr4 {"player4", state::PlayerId::PlayerD};
+    std::string player1= "player1";
+    std::string player2= "player2";
+    std::string player3= "player3";
+    std::string player4= "player4";
+
+    state::Player plr1 {player1, state::PlayerId::PlayerA};
+    state::Player plr2 {player2, state::PlayerId::PlayerB};
+    state::Player plr3 {player3, state::PlayerId::PlayerC};
+    state::Player plr4 {player4, state::PlayerId::PlayerD};
 
     state::GameState gameState{std::vector<state::Player>{plr1,plr2,plr3,plr4}};
 
