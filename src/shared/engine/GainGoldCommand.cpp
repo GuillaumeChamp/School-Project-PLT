@@ -14,7 +14,7 @@ namespace engine {
   }
 
   // Execute method
-  void GainGoldCommand::execute(state::GameState state){
+  void GainGoldCommand::execute(state::GameState& state){
     
     /*switch (playing) {
 

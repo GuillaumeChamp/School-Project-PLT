@@ -61,17 +61,17 @@ int main(int argc, char *argv[]) {
             GameState gameState=generateSampleState();
             engine::Engine gameEngine(gameState);
 
-            std::unique_ptr<engine::Command> cmd(new engine::ChooseCharacterCommand(PlayerId::PlayerA,CharacterType::Assassin));
-            std::unique_ptr<engine::Command> cmd1(new engine::ChooseCharacterCommand(PlayerId::PlayerB,CharacterType::Thief));
-            std::unique_ptr<engine::Command> cmd2(new engine::ChooseCharacterCommand(PlayerId::PlayerC,CharacterType::Magician));
-            std::unique_ptr<engine::Command> cmd3(new engine::ChooseCharacterCommand(PlayerId::PlayerD,CharacterType::Warlord));
+            auto* cmd = new engine::ChooseCharacterCommand(PlayerId::PlayerA,CharacterType::Assassin);
+            auto* cmd1(new engine::ChooseCharacterCommand(PlayerId::PlayerB,CharacterType::Thief));
+            auto* cmd2(new engine::ChooseCharacterCommand(PlayerId::PlayerC,CharacterType::Magician));
+            auto* cmd3(new engine::ChooseCharacterCommand(PlayerId::PlayerD,CharacterType::Warlord));
 
-            gameEngine.addCommand(std::move(cmd));
-            gameEngine.addCommand(std::move(cmd1));
-            gameEngine.addCommand(std::move(cmd2));
-            gameEngine.addCommand(std::move(cmd3));
+            gameEngine.addCommand(cmd);
+            gameEngine.addCommand(cmd1);
+            gameEngine.addCommand(cmd2);
+            gameEngine.addCommand(cmd3);
 
-            gameEngine.executeAllCommands(gameState);
+            gameEngine.executeAllCommands();
             displayState(gameState);
 
 
