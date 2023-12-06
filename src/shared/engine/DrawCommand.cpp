@@ -25,27 +25,30 @@ namespace engine {
     // Getting the stack
     std::vector<state::Card> stack = state.getStack();
 
+    std::vector<state::Card> drawnCards;
+
     //Checking that the stack has enough cards to draw from
-    //if not, re-initializing the stack
-    if (stack.size() < nbOfCards){
-      //init stack
-    }
-    else if (stack.size() == nbOfCards)
+    if (stack.size() < nbOfCards) //if not, re-initializing the stack then drawing the cards
     {
-      //draw the cards then init stack
+      StackUtils::initStack();
+      drawnCards.insert(drawnCards.end(), stack.begin(), stack.begin() + nbOfCards);
+      stack.erase(stack.begin(), stack.begin() + nbOfCards);
     }
-    else
+    else if (stack.size() == nbOfCards) // if just enough, drawning the cards then re-initializing the stack
     {
-      //
-      std::vector<state::Card> firstTwoCards (stack.begin(), stack.begin() + 2);
-      stack.erase(stack.begin(), stack.begin() + 2);
+      drawnCards.insert(drawnCards.end(), stack.begin(), stack.begin() + nbOfCards);
+      StackUtils::initStack();
+    }
+    else // if yes, just draw the cards
+    {
+      drawnCards.insert(drawnCards.end(), stack.begin(), stack.begin() + nbOfCards);
+      stack.erase(stack.begin(), stack.begin() + nbOfCards);
     }
 
     // Adding the new cards to the player's hand
-    //for (state::Card card : firstTwoCards){
-
-
-    //}
+    for (state::Card card : drawnCards){
+      hand.insert(hand.end(), card);
+    }
 
     // Setting the player's new hand and the new stack
     player.setHand(hand);
