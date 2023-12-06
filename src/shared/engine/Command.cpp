@@ -4,10 +4,9 @@
 namespace engine {
 
   // Constructor
-  Command::Command() {
-  }
+  Command::Command() = default;
   // Destructor
-  Command::~Command() {}
+  Command::~Command() = default;
 
   // Getter for CommandTypeId
   CommandTypeId Command::getCommandTypeId() {

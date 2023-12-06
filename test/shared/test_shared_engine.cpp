@@ -26,10 +26,22 @@ BOOST_AUTO_TEST_CASE(TestEngine){
 
     auto* command= new BuildCommand(state::PlayerA,&card);
     Engine gameEngine(gameState);
-    //build->execute(gameState);
     gameEngine.addCommand(command);
     gameEngine.executeAllCommands();
     plr1=gameState.getPlayer(state::PlayerA);
+    //Not executed because not in player hand
+    BOOST_CHECK_EQUAL(plr1.getNumberOfCoins(),10);
+    BOOST_CHECK_EQUAL(plr1.getHand().size(),0);
+    BOOST_CHECK_EQUAL(plr1.getBoardOfPlayer().size(),0);
+
+    std::vector<state::Card> hand = std::vector<state::Card>{card};
+    plr1.setHand(hand);
+    command= new BuildCommand(state::PlayerA,&card);
+    gameState.updatePlayer(plr1);
+    gameEngine.addCommand(command);
+    gameEngine.executeAllCommands();
+    plr1=gameState.getPlayer(state::PlayerA);
+    //Not executed because not in player hand
     BOOST_CHECK_EQUAL(plr1.getNumberOfCoins(),9);
     BOOST_CHECK_EQUAL(plr1.getHand().size(),0);
     BOOST_CHECK_EQUAL(plr1.getBoardOfPlayer().size(),1);
