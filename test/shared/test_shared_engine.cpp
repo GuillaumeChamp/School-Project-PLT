@@ -19,8 +19,19 @@ BOOST_AUTO_TEST_CASE(TestEngine){
 
     state::GameState gameState{std::vector<state::Player>{plr1,plr2,plr3,plr4}};
 
-    state::Card card{"1", state::CardType::Military, 2};
-    BuildCommand buildCommand{state::PlayerA,&card};
+    state::Card card{"1", state::CardType::Religious, 1};
+
+    plr1.setNumberOfCoins(10);
+    gameState.updatePlayer(plr1);
+
+    Command* build = new BuildCommand(state::PlayerA,&card);
+    Engine gameEngine(gameState);
+    build->execute(gameState);
+    //gameEngine.executeAllCommands(gameState);
+    plr1=gameState.getPlayer(state::PlayerA);
+    //BOOST_CHECK_EQUAL(plr1.getNumberOfCoins(),9);
+    //BOOST_CHECK_EQUAL(plr1.getHand().size(),0);
+    //BOOST_CHECK_EQUAL(plr1.getBoardOfPlayer().size(),1);
 }
 
 /* vim: set sw=2 sts=2 et : */
