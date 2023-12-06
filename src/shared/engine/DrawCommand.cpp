@@ -53,6 +53,7 @@ namespace engine {
     // Setting the player's new hand and the new stack
     player.setHand(hand);
     state.setStack(stack);
+    state.updatePlayer(player);
   }
 
   // Serialize method
