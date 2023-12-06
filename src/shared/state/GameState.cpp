@@ -72,4 +72,13 @@ namespace state {
     void GameState::setPlaying(PlayerId playerId) {
         this->playing=playerId;
     }
+
+    void GameState::updatePlayer(Player& player) {
+        for (int i=0;i<listOfPlayers.size();i++){
+            if (player.getIdOfPlayer()==listOfPlayers[i].getIdOfPlayer()){
+                listOfPlayers[i]=player;
+                return;
+            }
+        }
+    }
 }

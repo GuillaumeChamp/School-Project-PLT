@@ -51,6 +51,7 @@ namespace engine {
     player.setBoardOfPlayer(board);
     player.setHand(hand);
     player.setNumberOfCoins(coins);
+    state.updatePlayer(player);
   }
 
 
