@@ -13,7 +13,7 @@ namespace engine {
   }
 
   // Execute method
-  void ChangePhaseCommand::execute(state::GameState state) {
+  void ChangePhaseCommand::execute(state::GameState& state) {
   }
 
 

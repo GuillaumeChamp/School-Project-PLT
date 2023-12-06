@@ -8,7 +8,7 @@
 namespace engine {
 
   // Constructor with parameter
-  Engine::Engine(state::GameState state) : currentState(state) {
+  Engine::Engine(state::GameState& state) : currentState(state) {
     // Other initialization if needed
     init();
   }
@@ -31,17 +31,20 @@ namespace engine {
 
   // Add a command to the list of commands
   
-  void Engine::addCommand (std::unique_ptr<Command> cmd){
+  void Engine::addCommand (Command* cmd){
 
-    listOfCommands.push_back(std::move(cmd));
+    listOfCommands.push_back(cmd);
 
   }
 
 
-  void Engine::executeAllCommands(state::GameState state){
-    for (auto& cmd : listOfCommands) {
-    cmd->execute(state);
-  }
+  void Engine::executeAllCommands(){
+    for (Command* command : listOfCommands) {
+        command->execute(this->currentState);
+    }
+    for ( auto p : listOfCommands )
+        delete p;
+    listOfCommands.clear();
   }
 
 

@@ -24,14 +24,15 @@ BOOST_AUTO_TEST_CASE(TestEngine){
     plr1.setNumberOfCoins(10);
     gameState.updatePlayer(plr1);
 
-    Command* build = new BuildCommand(state::PlayerA,&card);
+    auto* command= new BuildCommand(state::PlayerA,&card);
     Engine gameEngine(gameState);
-    build->execute(gameState);
-    //gameEngine.executeAllCommands(gameState);
+    //build->execute(gameState);
+    gameEngine.addCommand(command);
+    gameEngine.executeAllCommands();
     plr1=gameState.getPlayer(state::PlayerA);
-    //BOOST_CHECK_EQUAL(plr1.getNumberOfCoins(),9);
-    //BOOST_CHECK_EQUAL(plr1.getHand().size(),0);
-    //BOOST_CHECK_EQUAL(plr1.getBoardOfPlayer().size(),1);
+    BOOST_CHECK_EQUAL(plr1.getNumberOfCoins(),9);
+    BOOST_CHECK_EQUAL(plr1.getHand().size(),0);
+    BOOST_CHECK_EQUAL(plr1.getBoardOfPlayer().size(),1);
 }
 
 /* vim: set sw=2 sts=2 et : */

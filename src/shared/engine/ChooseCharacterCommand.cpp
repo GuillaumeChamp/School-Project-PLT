@@ -15,7 +15,7 @@ namespace engine {
   }
 
   // Execute method
-  void ChooseCharacterCommand::execute(state::GameState state) {
+  void ChooseCharacterCommand::execute(state::GameState& state) {
     /*switch (playing) {
 
         case state::Playing::PLAYERA:
