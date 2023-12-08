@@ -18,6 +18,7 @@ BOOST_AUTO_TEST_CASE(TestBuildCommand){
     state::Player plr4 {player4, state::PlayerId::PlayerD};
 
     state::GameState gameState{std::vector<state::Player>{plr1,plr2,plr3,plr4}};
+    gameState.setPlaying(state::PlayerA);
 
     state::Card card{"1", state::CardType::Religious, 3};
 
