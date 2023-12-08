@@ -11,7 +11,7 @@ namespace engine {
     UseCharacterAbilityCommand::~UseCharacterAbilityCommand() {
     }
 
-    void UseCharacterAbilityCommand::execute(state::GameState state) {
+    void UseCharacterAbilityCommand::execute(state::GameState& state) {
         // Getting the player to execute the command on
         state::Player player = state.getPlayer(authorPlayer);
         state::CharacterType character = player.getCharacter();

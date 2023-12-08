@@ -24,11 +24,6 @@ namespace engine {
     // Perform initialization tasks here
   }
 
-  // Getter for the current game state
-  state::GameState Engine::getState() {
-    return currentState;
-  }
-
   // Add a command to the list of commands
   
   void Engine::addCommand (Command* cmd){

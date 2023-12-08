@@ -13,7 +13,7 @@ namespace engine {
   }
 
   // Execute method
-  void ClaimBuildingGold::execute(state::GameState state) {
+  void ClaimBuildingGold::execute(state::GameState& state) {
   }
 
   // Serialize method
