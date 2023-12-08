@@ -52,7 +52,7 @@ namespace engine {
         }
         state::Player player = state.getPlayer(authorPlayer);
 
-        //check if player own card
+        //check if the player owns the card
         std::vector<state::Card> hand = player.getHand();
         bool found = false;
         for (auto i = hand.begin(); i < hand.end(); i++) {
@@ -61,17 +61,17 @@ namespace engine {
                 break;
             }
         }
-        if (!found) return false; //player do not own the card
+        if (!found) return false; //player doesn't own the card
 
-        //check if player no owning the building in the board
+        //check if the player doesn't own the building in the board
         std::vector<state::Card> board = player.getBoardOfPlayer();
         for (const state::Card &c: board) {
             if (c.getNameOfCard() == card->getNameOfCard()) {
-                return false; // player already built this building
+                return false; // the player have already built this building
             }
         }
 
-        //check if the player have enough money
+        //check if the player has enough coins
         if (player.getNumberOfCoins() < card->getCostOfCard()) {
             return false;
         }
@@ -80,4 +80,4 @@ namespace engine {
     }
 
 
-} // namespace engine
+}
