@@ -40,8 +40,13 @@ namespace engine {
         listOfCommands.clear();
     }
 
+    Engine* Engine::getInstance(state::GameState &state){
+        if (!INSTANCE) {
+            INSTANCE = new Engine(state);
+        }
+        return INSTANCE;
+    }
 
-    // Setters and Getters
-    // You can add setters and getters for other attributes as needed
+    Engine* Engine::INSTANCE = nullptr;
 
 } // namespace engine
