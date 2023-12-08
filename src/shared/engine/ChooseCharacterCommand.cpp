@@ -45,7 +45,7 @@ namespace engine {
     }
 
     bool ChooseCharacterCommand::check(state::GameState &state) {
-        Command::check(state);
+        return Command::check(state);
     }
 
 

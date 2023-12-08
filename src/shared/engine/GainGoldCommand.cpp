@@ -48,7 +48,7 @@ namespace engine {
     }
 
     bool GainGoldCommand::check(state::GameState &state) {
-        Command::check(state);
+        return Command::check(state);
     }
 
 

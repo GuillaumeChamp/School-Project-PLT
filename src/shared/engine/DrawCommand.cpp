@@ -59,7 +59,7 @@ namespace engine {
     }
 
     bool DrawCommand::check(state::GameState &state) {
-        Command::check(state);
+        return Command::check(state);
     }
 
 

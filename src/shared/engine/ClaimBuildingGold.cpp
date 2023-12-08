@@ -21,7 +21,7 @@ namespace engine {
     }
 
     bool ClaimBuildingGold::check(state::GameState &state) {
-        Command::check(state);
+        return Command::check(state);
     }
 
 } // namespace engine

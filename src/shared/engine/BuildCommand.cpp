@@ -47,7 +47,9 @@ namespace engine {
     }
 
     bool BuildCommand::check(state::GameState &state) {
-        Command::check(state);
+        if (!Command::check(state)){
+            return false;
+        }
         state::Player player = state.getPlayer(authorPlayer);
 
         //check if player own card
