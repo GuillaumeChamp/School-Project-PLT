@@ -41,6 +41,7 @@ namespace engine {
     coins = coins - card->getCostOfCard();
     for(auto i = hand.begin();i<hand.end();i++){
       if (hand[i-hand.begin()].getNameOfCard() == card->getNameOfCard()){
+        //auto indexToDelete = std::remove(hand.begin(), hand.end(), c);
         board.erase(i);
         break;
       }

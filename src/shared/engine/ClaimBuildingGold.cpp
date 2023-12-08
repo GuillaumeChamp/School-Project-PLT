@@ -5,6 +5,7 @@ namespace engine {
 
   // Constructor
   ClaimBuildingGold::ClaimBuildingGold(state::PlayerId authorPlayer) {
+    this->authorPlayer=authorPlayer;
   }
 
   // Destructor
@@ -18,6 +19,5 @@ namespace engine {
   // Serialize method
   void ClaimBuildingGold::serialize() {
   }
-
 
 } // namespace engine
