@@ -6,9 +6,9 @@ namespace engine {
 
   // Constructor
   ChooseCharacterCommand::ChooseCharacterCommand(state::PlayerId authorPlayer, state::CharacterType characterType): Command(){
-
+    this->authorPlayer=authorPlayer;
+    this->character=characterType;
   }
-
 
   // Destructor
   ChooseCharacterCommand::~ChooseCharacterCommand() {
