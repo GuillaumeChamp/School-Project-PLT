@@ -3,24 +3,29 @@
 
 namespace engine {
 
-  // Constructor
-  Command::Command() = default;
-  // Destructor
-  Command::~Command() = default;
+    // Constructor
+    Command::Command() = default;
 
-  // Getter for CommandTypeId
-  CommandTypeId Command::getCommandTypeId() {
-    return commandTypeId;
-  }
+    // Destructor
+    Command::~Command() = default;
 
-  // Execute method
-   void Command::execute(state::GameState& state) {
-  }
+    // Getter for CommandTypeId
+    CommandTypeId Command::getCommandTypeId() {
+        return commandTypeId;
+    }
 
-  // Serialize method
-  void Command::serialize() {
+    // Execute method
+    void Command::execute(state::GameState &state) {
+    }
 
-  }
+    // Serialize method
+    void Command::serialize() {
 
-  
+    }
+
+    bool Command::check(state::GameState &state) {
+        return authorPlayer==state.playing;
+    }
+
+
 } // namespace engine

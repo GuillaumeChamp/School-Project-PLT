@@ -32,6 +32,7 @@ int Player::getNumberOfCards() const{
 }
 
 void Player::setBoardOfPlayer(std::vector<Card>& board) {
+    this->board.clear();
     this->board = board;
 }
 
@@ -53,6 +54,7 @@ void Player::setNumberOfCoins (int nbOfCoins) {
     }
 
     void Player::setHand(std::vector<Card>& hand) {
+        this->hand.clear();
         this->hand=hand;
     }
 

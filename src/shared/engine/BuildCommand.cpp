@@ -19,47 +19,62 @@ namespace engine {
         // Getting the player to execute the command on
         state::Player player = state.getPlayer(authorPlayer);
 
-        // Check if card is present
+        // Remove the card
         std::vector<state::Card> hand = player.getHand();
         for (auto i = hand.begin(); i < hand.end(); i++) {
             if (hand[i - hand.begin()].getNameOfCard() == card->getNameOfCard()) {
                 hand.erase(i);
-
-                // Checking if he has enough coins to build the card
-                if (player.getNumberOfCoins() < card->getCostOfCard()) {
-                    return;
-                }
-
-                // Getting his board, hand and coins
-                std::vector<state::Card> board = player.getBoardOfPlayer();
-                int coins = player.getNumberOfCoins();
-
-                // Checking if the player has already built an identical card
-                for (const state::Card &c: board) {
-                    if (c.getNameOfCard() == card->getNameOfCard()) {
-                        return;
-                    }
-                }
-
-                // Modifying the player's attributes
-                board.push_back(*card);
-                coins = coins - card->getCostOfCard();
-
-                // Setting the player's new board, hand and coins
-                player.setBoardOfPlayer(board);
-                player.setHand(hand);
-                player.setNumberOfCoins(coins);
-                state.updatePlayer(player);
-                
-                break;
             }
         }
+        player.setHand(hand);
+
+        // Update coins
+        int coins = player.getNumberOfCoins();
+        coins = coins - card->getCostOfCard();
+        player.setNumberOfCoins(coins);
+        // Update board
+        std::vector<state::Card> board = player.getBoardOfPlayer();
+        board.push_back(*card);
+        player.setBoardOfPlayer(board);
+        // Push the update to the engine
+        state.updatePlayer(player);
     }
 
 
     // Serialize method
     void BuildCommand::serialize() {
 
+    }
+
+    bool BuildCommand::check(state::GameState &state) {
+        Command::check(state);
+        state::Player player = state.getPlayer(authorPlayer);
+
+        //check if player own card
+        std::vector<state::Card> hand = player.getHand();
+        bool found = false;
+        for (auto i = hand.begin(); i < hand.end(); i++) {
+            if (hand[i - hand.begin()].getNameOfCard() == card->getNameOfCard()) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) return false; //player do not own the card
+
+        //check if player no owning the building in the board
+        std::vector<state::Card> board = player.getBoardOfPlayer();
+        for (const state::Card &c: board) {
+            if (c.getNameOfCard() == card->getNameOfCard()) {
+                return false; // player already built this building
+            }
+        }
+
+        //check if the player have enough money
+        if (player.getNumberOfCoins() < card->getCostOfCard()) {
+            return false;
+        }
+
+        return true;
     }
 
 

@@ -3,21 +3,25 @@
 
 namespace engine {
 
-  // Constructor
-  ClaimBuildingGold::ClaimBuildingGold(state::PlayerId authorPlayer) {
-    this->authorPlayer=authorPlayer;
-  }
+    // Constructor
+    ClaimBuildingGold::ClaimBuildingGold(state::PlayerId authorPlayer) {
+        this->authorPlayer = authorPlayer;
+    }
 
-  // Destructor
-  ClaimBuildingGold::~ClaimBuildingGold() {
-  }
+    // Destructor
+    ClaimBuildingGold::~ClaimBuildingGold() {
+    }
 
-  // Execute method
-  void ClaimBuildingGold::execute(state::GameState& state) {
-  }
+    // Execute method
+    void ClaimBuildingGold::execute(state::GameState &state) {
+    }
 
-  // Serialize method
-  void ClaimBuildingGold::serialize() {
-  }
+    // Serialize method
+    void ClaimBuildingGold::serialize() {
+    }
+
+    bool ClaimBuildingGold::check(state::GameState &state) {
+        Command::check(state);
+    }
 
 } // namespace engine

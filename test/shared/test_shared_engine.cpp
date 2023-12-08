@@ -6,7 +6,7 @@
 using namespace ::engine;
 
 
-BOOST_AUTO_TEST_CASE(TestEngine){
+BOOST_AUTO_TEST_CASE(TestBuildCommand){
     std::string player1= "player1";
     std::string player2= "player2";
     std::string player3= "player3";
@@ -19,30 +19,40 @@ BOOST_AUTO_TEST_CASE(TestEngine){
 
     state::GameState gameState{std::vector<state::Player>{plr1,plr2,plr3,plr4}};
 
-    state::Card card{"1", state::CardType::Religious, 1};
-
-    plr1.setNumberOfCoins(10);
-    gameState.updatePlayer(plr1);
+    state::Card card{"1", state::CardType::Religious, 3};
 
     auto* command= new BuildCommand(state::PlayerA,&card);
     Engine gameEngine(gameState);
-    gameEngine.addCommand(command);
-    gameEngine.executeAllCommands();
+    //Test all case of non-available command
+
+    //Command not executed because card is not in the hand
+    BOOST_CHECK_EQUAL(command->check(gameState), false);
+
     plr1=gameState.getPlayer(state::PlayerA);
-    //Not executed because not in player hand
-    BOOST_CHECK_EQUAL(plr1.getNumberOfCoins(),10);
-    BOOST_CHECK_EQUAL(plr1.getHand().size(),0);
-    BOOST_CHECK_EQUAL(plr1.getBoardOfPlayer().size(),0);
 
     std::vector<state::Card> hand = std::vector<state::Card>{card};
     plr1.setHand(hand);
-    command= new BuildCommand(state::PlayerA,&card);
+    plr1.setBoardOfPlayer(hand);
     gameState.updatePlayer(plr1);
+    //Command not executed because already in the board
+    BOOST_CHECK_EQUAL(command->check(gameState), false);
+
+    std::vector<state::Card> board = std::vector<state::Card>{};
+    plr1.setBoardOfPlayer(board);
+    gameState.updatePlayer(plr1);
+    //Command not executed because not enough coin
+    BOOST_CHECK_EQUAL(command->check(gameState), false);
+
+    plr1.setNumberOfCoins(4);
+    gameState.updatePlayer(plr1);
+    //True this time
+    BOOST_CHECK_EQUAL(command->check(gameState), true);
+
     gameEngine.addCommand(command);
     gameEngine.executeAllCommands();
     plr1=gameState.getPlayer(state::PlayerA);
-    //Not executed because not in player hand
-    BOOST_CHECK_EQUAL(plr1.getNumberOfCoins(),9);
+
+    BOOST_CHECK_EQUAL(plr1.getNumberOfCoins(),1);
     BOOST_CHECK_EQUAL(plr1.getHand().size(),0);
     BOOST_CHECK_EQUAL(plr1.getBoardOfPlayer().size(),1);
 }
