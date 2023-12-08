@@ -15,7 +15,7 @@ namespace engine {
   }
 
   // Execute method
-  void Command::execute(state::GameState state) {
+   void Command::execute(state::GameState& state) {
   }
 
   // Serialize method

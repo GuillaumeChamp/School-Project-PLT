@@ -16,14 +16,29 @@ namespace engine {
 
   // Execute method
   void ChooseCharacterCommand::execute(state::GameState state) {
-    // Getting the player to execute the command on
-    state::Player player = state.getPlayer(authorPlayer);
+    /*switch (playing) {
 
-    // Setting the player's character
-    player.setCharacter(character);
+        case state::Playing::PLAYERA:
+            std::cout <<"A is a "<< characterType << std::endl;
+            break;
 
-    // Updating
-    state.updatePlayer(player);
+        case state::Playing::PLAYERB:
+            std::cout <<"B is a "<< characterType <<std::endl;
+            break;
+          
+          case state::Playing::PLAYERC:
+            std::cout <<"C is a "<< characterType <<std::endl;
+            break;
+          
+          case state::Playing::PLAYERD:
+            std::cout <<"D is a "<< characterType <<std::endl;
+            break;
+
+        default:
+            
+            break;
+    }*/
+
   }
 
   // Serialize method

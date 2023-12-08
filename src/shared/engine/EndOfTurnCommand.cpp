@@ -12,7 +12,7 @@ namespace engine {
   }
 
   // Execute method
-  void EndOfTurnCommand::execute(state::GameState state) {
+  void EndOfTurnCommand::execute(state::GameState& state) {
 
   }
 

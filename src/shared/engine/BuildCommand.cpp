@@ -15,7 +15,7 @@ namespace engine {
   BuildCommand::~BuildCommand() = default;
 
   // Execute method
-  void BuildCommand::execute(state::GameState state) {
+  void BuildCommand::execute(state::GameState& state) {
     // Getting the player to execute the command on
     state::Player player = state.getPlayer(authorPlayer);
     
@@ -42,7 +42,7 @@ namespace engine {
     for(auto i = hand.begin();i<hand.end();i++){
       if (hand[i-hand.begin()].getNameOfCard() == card->getNameOfCard()){
         //auto indexToDelete = std::remove(hand.begin(), hand.end(), c);
-        hand.erase(i);
+        board.erase(i);
         break;
       }
     }

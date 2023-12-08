@@ -15,7 +15,7 @@ namespace engine {
   }
 
   // Execute method
-  void DrawCommand::execute(state::GameState state) {
+  void DrawCommand::execute(state::GameState& state) {
     // Getting the player to execute the command on
     state::Player player = state.getPlayer(authorPlayer);
 
