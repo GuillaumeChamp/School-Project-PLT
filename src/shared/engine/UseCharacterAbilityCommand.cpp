@@ -57,4 +57,7 @@ namespace engine {
     void UseCharacterAbilityCommand::serialize() {
     }
 
+    bool UseCharacterAbilityCommand::check(state::GameState &state) {
+        return Command::check(state);
+    }
 } // namespace engine

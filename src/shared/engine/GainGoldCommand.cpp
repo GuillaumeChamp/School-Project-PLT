@@ -5,47 +5,51 @@
 
 namespace engine {
 
-  // Constructor
-  GainGoldCommand::GainGoldCommand(state::PlayerId authorPlayer,int nbOfGolds) : Command(){
-  }
+    // Constructor
+    GainGoldCommand::GainGoldCommand(state::PlayerId authorPlayer, int nbOfGolds) : Command() {
+    }
 
-  // Destructor
-  GainGoldCommand::~GainGoldCommand() {
-  }
+    // Destructor
+    GainGoldCommand::~GainGoldCommand() {
+    }
 
-  // Execute method
-  void GainGoldCommand::execute(state::GameState& state){
-    
-    /*switch (playing) {
+    // Execute method
+    void GainGoldCommand::execute(state::GameState &state) {
 
-        case state::Playing::PLAYERA:
-            std::cout <<"A : + "<<nbOfGolds<< std::endl;
-            break;
+        /*switch (playing) {
 
-        case state::Playing::PLAYERB:
-            std::cout <<"B : + "<<nbOfGolds<< std::endl;
-            break;
-          
-          case state::Playing::PLAYERC:
-            std::cout <<"C : + "<<nbOfGolds<< std::endl;
-            break;
-          
-          case state::Playing::PLAYERD:
-            std::cout <<"D : + "<<nbOfGolds<< std::endl;
-            break;
+            case state::Playing::PLAYERA:
+                std::cout <<"A : + "<<nbOfGolds<< std::endl;
+                break;
 
-        default:
-            // Default case if the enumeration value is not recognized
-            break;
-    }*/
+            case state::Playing::PLAYERB:
+                std::cout <<"B : + "<<nbOfGolds<< std::endl;
+                break;
 
-  }
+              case state::Playing::PLAYERC:
+                std::cout <<"C : + "<<nbOfGolds<< std::endl;
+                break;
 
-  // Serialize method
-  void GainGoldCommand::serialize() {
+              case state::Playing::PLAYERD:
+                std::cout <<"D : + "<<nbOfGolds<< std::endl;
+                break;
 
-    
-  }
+            default:
+                // Default case if the enumeration value is not recognized
+                break;
+        }*/
+
+    }
+
+    // Serialize method
+    void GainGoldCommand::serialize() {
+
+
+    }
+
+    bool GainGoldCommand::check(state::GameState &state) {
+        return Command::check(state);
+    }
 
 
 } // namespace engine
