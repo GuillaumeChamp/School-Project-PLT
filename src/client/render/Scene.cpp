@@ -228,7 +228,7 @@ namespace render {
 
 
         //Choose Character
-        if (state->getGamePhase()==0){
+        if (state->getGamePhase()==0 ){
             std::vector<state::CharacterType> availableCharacter = state->getAvailableCharacter();
             int indexFirstCharacterX = 445 + (8-availableCharacter.size())/2*90;
             int indexFirstCharacterY = 388;
