@@ -7,6 +7,10 @@ namespace engine {
 
   // Constructor
   GainGoldCommand::GainGoldCommand(state::PlayerId authorPlayer,int nbOfGolds) : Command(){
+
+    this->nbOfGolds=nbOfGolds;
+    this->authorPlayer=authorPlayer;
+
   }
 
   // Destructor
@@ -15,6 +19,9 @@ namespace engine {
 
   // Execute method
   void GainGoldCommand::execute(state::GameState& state){
+    state::Player player = state.getPlayer(authorPlayer);
+    player.setNumberOfCoins(player.getNumberOfCoins()+this->nbOfGolds);
+    state.updatePlayer(player);
     
     /*switch (playing) {
 

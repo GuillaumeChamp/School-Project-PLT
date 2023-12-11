@@ -16,7 +16,7 @@ void displayState(const state::GameState& gameState);
 
 
 int main(int argc, char *argv[]) {
-
+    
     if (argc >= 2) {
         if (std::strcmp(argv[1], "hello") == 0) {
            std::cout << "hello my dear" << std::endl;
@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
             GameState gameState=generateSampleState();
             engine::Engine gameEngine(gameState);
 
-            auto* cmd = new engine::ChooseCharacterCommand(PlayerId::PlayerA,CharacterType::Assassin);
+           /* auto* cmd = new engine::ChooseCharacterCommand(PlayerId::PlayerA,CharacterType::Assassin);
             auto* cmd1(new engine::ChooseCharacterCommand(PlayerId::PlayerB,CharacterType::Thief));
             auto* cmd2(new engine::ChooseCharacterCommand(PlayerId::PlayerC,CharacterType::Magician));
             auto* cmd3(new engine::ChooseCharacterCommand(PlayerId::PlayerD,CharacterType::Warlord));
@@ -69,12 +69,19 @@ int main(int argc, char *argv[]) {
             gameEngine.addCommand(cmd);
             gameEngine.addCommand(cmd1);
             gameEngine.addCommand(cmd2);
-            gameEngine.addCommand(cmd3);
+            gameEngine.addCommand(cmd3);*/
+
+            auto* cmd = new engine::ChangePhaseCommand(PlayerId::PlayerA);
+            //on effectue un changment de phase 
+            auto* cmd1 = new engine::GainGoldCommand(PlayerId::PlayerA,9);
+            //on fait gagner 9 Golds au player A
+
+            displayState(gameState);
+            gameEngine.addCommand(cmd);
+            gameEngine.addCommand(cmd1);
 
             gameEngine.executeAllCommands();
             displayState(gameState);
-
-
 
         }
 
@@ -94,6 +101,7 @@ void test(){
 }
 
 void displayState(const state::GameState& gameState) {
+    std::cout<<" | Phase : "<<gameState.getGamePhase()<<"\n---------------------------------"<<endl;
     for (auto& player : gameState.getListOfPlayer()) {
         std::cout << " | Name: " << player.getNameOfPlayer()
                   << " | Character: " << player.getCharacter()

@@ -4,7 +4,8 @@
 namespace engine {
 
   // Constructor
-  ChangePhaseCommand::ChangePhaseCommand(state::PlayerId authorPlayer, state::Phase phase) {
+  ChangePhaseCommand::ChangePhaseCommand(state::PlayerId authorPlayer) {
+    this->authorPlayer=authorPlayer;
 
   }
 
@@ -14,6 +15,7 @@ namespace engine {
 
   // Execute method
   void ChangePhaseCommand::execute(state::GameState& state) {
+    state.nextGamePhase();
   }
 
 
