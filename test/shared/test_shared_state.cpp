@@ -66,6 +66,10 @@ BOOST_AUTO_TEST_CASE(TestState)
 
       gameState.setPlaying(PlayerD);
       BOOST_CHECK_EQUAL(gameState.getPlaying(),PlayerD);
+
+      BOOST_CHECK_EQUAL(gameState.getPlayer(PlayerA).getNameOfPlayer(),plr.getNameOfPlayer());
+      BOOST_CHECK_THROW(gameState.getPlayer(PlayerD),std::exception);
+      BOOST_CHECK_NO_THROW(gameState.updatePlayer(plr));
   }
 }
 
