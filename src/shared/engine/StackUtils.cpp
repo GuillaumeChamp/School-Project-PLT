@@ -1,16 +1,18 @@
-
+// stackUtils.cpp
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <vector>
 #include <algorithm>
 #include <ctime>
-#include <cstdlib>
+#include "config.h"
+#include "StackUtils.h"
 
-#include "./state.h"  
+namespace engine {
 
-std::vector<state::Card> initDeck() {
-    const std::string& filename = "./res/cards.csv";
+  // 
+  std::vector<state::Card> StackUtils::initStack() {
+    std::string res = RES_DIR;
+    const std::string& filename = res + "cards.csv";
     std::vector<state::Card> cards;
     std::ifstream file(filename);
 
@@ -57,6 +59,7 @@ std::vector<state::Card> initDeck() {
     file.close();
 
     return cards;
-}
 
-
+  }
+  
+} // namespace engine

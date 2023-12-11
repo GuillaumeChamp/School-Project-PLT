@@ -73,6 +73,7 @@ namespace state {
         this->playing=playerId;
     }
 
+<<<<<<< HEAD
     std::vector<CharacterType> GameState::getAvailableCharacter () const{
         return this->availableCharacter;
     }
@@ -80,4 +81,14 @@ namespace state {
     void GameState::setAvailableCharacter (std::vector<CharacterType> listOfCharacter){
         this->availableCharacter=listOfCharacter;
     };
+=======
+    void GameState::updatePlayer(Player& player) {
+        for (int i=0;i<listOfPlayers.size();i++){
+            if (player.getIdOfPlayer()==listOfPlayers[i].getIdOfPlayer()){
+                listOfPlayers[i]=player;
+                return;
+            }
+        }
+    }
+>>>>>>> 99754c8ac4d3688675b9b6c3ec642c9911e9fb39
 }
