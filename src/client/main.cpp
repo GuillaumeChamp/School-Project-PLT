@@ -59,19 +59,19 @@ int main(int argc, char *argv[]) {
         
         else if (std::strcmp(argv[1], "engine") == 0) {
             GameState gameState=generateSampleState();
-            engine::Engine gameEngine(gameState);
+            engine::Engine* gameEngine = engine::Engine::getInstance(gameState);
 
             auto* cmd = new engine::ChooseCharacterCommand(PlayerId::PlayerA,CharacterType::Assassin);
             auto* cmd1(new engine::ChooseCharacterCommand(PlayerId::PlayerB,CharacterType::Thief));
             auto* cmd2(new engine::ChooseCharacterCommand(PlayerId::PlayerC,CharacterType::Magician));
             auto* cmd3(new engine::ChooseCharacterCommand(PlayerId::PlayerD,CharacterType::Warlord));
 
-            gameEngine.addCommand(cmd);
-            gameEngine.addCommand(cmd1);
-            gameEngine.addCommand(cmd2);
-            gameEngine.addCommand(cmd3);
+            gameEngine->addCommand(cmd);
+            gameEngine->addCommand(cmd1);
+            gameEngine->addCommand(cmd2);
+            gameEngine->addCommand(cmd3);
 
-            gameEngine.executeAllCommands();
+            gameEngine->executeAllCommands();
             displayState(gameState);
 
 

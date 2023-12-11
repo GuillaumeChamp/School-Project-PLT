@@ -4,7 +4,7 @@
 namespace engine {
 
     // Constructor
-    DrawCommand::DrawCommand(state::PlayerId authorPlayer, state::PlayerId targetPlayer, int nbOfCards) {
+    DrawCommand::DrawCommand(state::PlayerId authorPlayer, int nbOfCards) {
         this->authorPlayer = authorPlayer;
         this->targetPlayer = authorPlayer;
         this->nbOfCards = nbOfCards;

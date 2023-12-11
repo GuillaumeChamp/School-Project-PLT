@@ -23,13 +23,14 @@ BOOST_AUTO_TEST_CASE(TestBuildCommand){
     state::Card card{"1", state::CardType::Religious, 3};
 
     auto* command= new BuildCommand(state::PlayerA,&card);
-    Engine gameEngine(gameState);
+    engine::Engine* gameEngine = engine::Engine::getInstance(gameState);
     //Check serialized NIY
     BOOST_CHECK_NO_THROW(command->serialize());
 
     //Command not executed because not my turn
     BOOST_CHECK_EQUAL(command->check(gameState), false);
     gameState.setPlaying(state::PlayerA);
+    //Test all case of non-available command
 
     //Command not executed because card is not in the hand
     BOOST_CHECK_EQUAL(command->check(gameState), false);
@@ -54,8 +55,8 @@ BOOST_AUTO_TEST_CASE(TestBuildCommand){
     //True this time
     BOOST_CHECK_EQUAL(command->check(gameState), true);
 
-    gameEngine.addCommand(command);
-    gameEngine.executeAllCommands();
+    gameEngine->addCommand(command);
+    gameEngine->executeAllCommands();
     plr1=gameState.getPlayer(state::PlayerA);
 
     BOOST_CHECK_EQUAL(plr1.getNumberOfCoins(),1);
