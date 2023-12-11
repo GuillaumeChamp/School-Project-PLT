@@ -18,8 +18,8 @@ namespace engine {
         state::PlayerId currentPlayer = static_cast<state::PlayerId>(static_cast<int>(authorPlayer) + 1);
 
         // Check if we reached the last player and wrap around to the first player
-        if (currentPlayer > state::PlayerD) {
-            currentPlayer = state::PlayerA;
+        if (currentPlayer > state::PLAYER_D) {
+            currentPlayer = state::PLAYER_A;
         }
 
         // Updating the state
