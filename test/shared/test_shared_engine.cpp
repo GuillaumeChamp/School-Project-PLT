@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(TestBuildCommand){
     state::Card card{"1", state::CardType::Religious, 3};
 
     auto* command= new BuildCommand(state::PlayerA,&card);
-    engine::Engine* gameEngine = engine::Engine::getInstance(gameState);
+    Engine* gameEngine = Engine::getInstance(gameState);
     //Check serialized NIY
     BOOST_CHECK_NO_THROW(command->serialize());
 
