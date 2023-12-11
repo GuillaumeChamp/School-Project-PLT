@@ -7,7 +7,7 @@ namespace render {
     Button::Button(ButtonType buttonType, int posX, int posY):InteractiveElement(posX, posY) {
         this->name=buttonType;
         this->surface.setPosition(posX,posY);
-        this->surface.setSize(sf::Vector2f(40, 40));
+        this->surface.setSize(sf::Vector2f(50, 50));
     }
 
     Button::~Button() = default;
@@ -48,10 +48,10 @@ namespace render {
                 texture.loadFromFile(res+"chest.png");
                 break;
             case ButtonType::draw :
-                texture.loadFromFile(res+"dos_rouge.jpg");
+                texture.loadFromFile(res+"draw_icon.png");
                 break;
             case endOfTurn:
-                texture.loadFromFile(res+"dos_vert.jpg");
+                texture.loadFromFile(res+"end_of_turn_icon.png");
                 break;
             case hand:
                 texture.loadFromFile(res+"dos_vert.jpg");

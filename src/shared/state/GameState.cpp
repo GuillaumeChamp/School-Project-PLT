@@ -72,4 +72,12 @@ namespace state {
     void GameState::setPlaying(PlayerId playerId) {
         this->playing=playerId;
     }
+
+    std::vector<CharacterType> GameState::getAvailableCharacter () const{
+        return this->availableCharacter;
+    }
+
+    void GameState::setAvailableCharacter (std::vector<CharacterType> listOfCharacter){
+        this->availableCharacter=listOfCharacter;
+    };
 }
