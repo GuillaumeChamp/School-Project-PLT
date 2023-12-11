@@ -9,8 +9,7 @@ namespace engine {
         this->targetCard = targetCard;
     }
 
-    UseCharacterAbilityCommand::~UseCharacterAbilityCommand() {
-    }
+    UseCharacterAbilityCommand::~UseCharacterAbilityCommand() = default;
 
     void UseCharacterAbilityCommand::execute(state::GameState& state) {
         // Getting the players corresponding to the Ids
@@ -59,7 +58,7 @@ namespace engine {
                 std::vector<state::Card> newHand;
 
                 // Switching the cards
-                newHand.insert(newHand.end(), stack.begin(), stack.begin() + authorHand.size());
+                newHand.insert(newHand.end(), stack.begin(), stack.begin() + (int) authorHand.size());
                 stack.insert(stack.begin(), authorHand.begin(), authorHand.end());
 
                 // Updating the state
@@ -67,6 +66,7 @@ namespace engine {
                 state.updatePlayer(player);
                 state.setStack(stack);
             }
+
         }
 
 
