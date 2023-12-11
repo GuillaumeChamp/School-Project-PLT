@@ -24,6 +24,7 @@ namespace engine {
         for (auto i = hand.begin(); i < hand.end(); i++) {
             if (hand[i - hand.begin()].getNameOfCard() == card->getNameOfCard()) {
                 hand.erase(i);
+                break;
             }
         }
         player.setHand(hand);
@@ -42,9 +43,7 @@ namespace engine {
 
 
     // Serialize method
-    void BuildCommand::serialize() {
-
-    }
+    void BuildCommand::serialize() {}
 
     bool BuildCommand::check(state::GameState &state) {
         if (!Command::check(state)){

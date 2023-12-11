@@ -52,6 +52,8 @@ namespace render {
     }
 
     Scene::~Scene() {
+        this->listOfButtons.clear();
+        this->displayedCard.clear();
     }
 
     void Scene::draw(sf::RenderWindow &window) {
@@ -222,13 +224,34 @@ namespace render {
             //Todo add highlight
 
         }
-        if (IHMState::getInstance()->hoverCard != nullptr) {
-            VisualCard *cardToZoom = (IHMState::getInstance()->hoverCard);
-            if (cardToZoom != nullptr) {
-                (*cardToZoom).zoomCard();
-                (*cardToZoom).draw(window);
-            }
+        if (IHMState::getInstance()->hoverCard != nullptr){
+            std::cout<<"you are hover a card : " <<std::endl;
         }
+
+
+        //Choose Character
+        if (state->getGamePhase()==0 ){
+            std::vector<state::CharacterType> availableCharacter = state->getAvailableCharacter();
+            int indexFirstCharacterX = 445 + (8-availableCharacter.size())/2*90;
+            int indexFirstCharacterY = 388;
+            sf::RectangleShape characterChoiceBackground = sf::RectangleShape(sf::Vector2f(90*availableCharacter.size()+10,134));
+            characterChoiceBackground.setFillColor(sf::Color::Blue);
+            window.draw(characterChoiceBackground);
+            
+            for (auto& character : availableCharacter) {
+                std::string characterName = CharacterTypeString[character];
+                VisualCard characterCard = VisualCard(characterName, indexFirstCharacterX, indexFirstCharacterY);
+                displayedCard.push_back(characterCard);
+                }
+        }
+
+        // Card Zoom
+        VisualCard * cardToZoom = (IHMState::getInstance()->hoverCard);
+        if (cardToZoom != nullptr){
+        (*cardToZoom).zoomCard();
+        (*cardToZoom).draw(window);
+        }
+
     }
 
 
