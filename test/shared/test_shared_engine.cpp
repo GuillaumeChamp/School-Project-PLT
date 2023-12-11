@@ -62,7 +62,6 @@ BOOST_AUTO_TEST_CASE(TestBuildCommand){
     BOOST_CHECK_EQUAL(plr1.getNumberOfCoins(),1);
     BOOST_CHECK_EQUAL(plr1.getHand().size(),0);
     BOOST_CHECK_EQUAL(plr1.getBoardOfPlayer().size(),1);
-
 }
 
 /* vim: set sw=2 sts=2 et : */
