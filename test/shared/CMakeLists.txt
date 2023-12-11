@@ -1,5 +1,5 @@
 # List of test functions
-add_custom_test(shared_dummy)
+add_custom_test(shared_state)
 add_custom_test(shared_engine)
 
 
