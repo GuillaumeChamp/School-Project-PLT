@@ -2,50 +2,51 @@
 #include "Engine.h"
 #include "Command.h"
 
-#include "Command.h"
-
 
 namespace engine {
 
-  // Constructor with parameter
-  Engine::Engine(state::GameState state) : currentState(state) {
-    // Other initialization if needed
-    init();
-  }
+    // Constructor with parameter
+    Engine::Engine(state::GameState &state) : currentState(state) {
+        // Other initialization if needed
+        init();
+    }
 
-  // Destructor
-  Engine::~Engine() {
-    // Clean up resources if needed
-  }
+    // Destructor
+    Engine::~Engine() = default;
 
-  // Initialization method
-  void Engine::init() {
-    
-    // Perform initialization tasks here
-  }
+    // Initialization method
+    void Engine::init() {
 
-  // Getter for the current game state
-  state::GameState Engine::getState() {
-    return currentState;
-  }
+        // Perform initialization tasks here
+    }
 
-  // Add a command to the list of commands
-  
-  void Engine::addCommand (std::unique_ptr<Command> cmd){
+    // Add a command to the list of commands
 
-    listOfCommands.push_back(std::move(cmd));
-
-  }
+    void Engine::addCommand(Command *cmd) {
+        listOfCommands.push_back(cmd);
+    }
 
 
-  void Engine::executeAllCommands(state::GameState state){
-    for (auto& cmd : listOfCommands) {
-    cmd->execute(state);
-  }
-  }
+    void Engine::executeAllCommands() {
+        //execute all the commands but check before
+        for (Command *command: listOfCommands) {
+            if (command->check(this->currentState)) {
+                command->execute(this->currentState);
+            }
+        }
+        //free the memory
+        for (auto p: listOfCommands)
+            delete p;
+        listOfCommands.clear();
+    }
 
+    Engine* Engine::getInstance(state::GameState &state){
+        if (!INSTANCE) {
+            INSTANCE = new Engine(state);
+        }
+        return INSTANCE;
+    }
 
-  // Setters and Getters
-  // You can add setters and getters for other attributes as needed
+    Engine* Engine::INSTANCE = nullptr;
 
 } // namespace engine

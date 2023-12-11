@@ -3,22 +3,26 @@
 
 namespace engine {
 
-  // Constructor
-  EndOfTurnCommand::EndOfTurnCommand(state::PlayerId authorPlayer) {
-  }
+    // Constructor
+    EndOfTurnCommand::EndOfTurnCommand(state::PlayerId authorPlayer) {
+    }
 
-  // Destructor
-  EndOfTurnCommand::~EndOfTurnCommand() {
-  }
+    // Destructor
+    EndOfTurnCommand::~EndOfTurnCommand() {
+    }
 
-  // Execute method
-  void EndOfTurnCommand::execute(state::GameState state) {
+    // Execute method
+    void EndOfTurnCommand::execute(state::GameState &state) {
 
-  }
+    }
 
-  // Serialize method
-  void EndOfTurnCommand::serialize() {
-  }
+    // Serialize method
+    void EndOfTurnCommand::serialize() {
+    }
+
+    bool EndOfTurnCommand::check(state::GameState &state) {
+        return Command::check(state);
+    }
 
 
 } // namespace engine
