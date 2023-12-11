@@ -19,9 +19,7 @@ namespace engine {
     }
 
     // Serialize method
-    void Command::serialize() {
-
-    }
+    void Command::serialize() {}
 
     bool Command::check(state::GameState &state) {
         return authorPlayer==state.playing;

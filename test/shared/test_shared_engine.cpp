@@ -18,12 +18,18 @@ BOOST_AUTO_TEST_CASE(TestBuildCommand){
     state::Player plr4 {player4, state::PlayerId::PlayerD};
 
     state::GameState gameState{std::vector<state::Player>{plr1,plr2,plr3,plr4}};
-    gameState.setPlaying(state::PlayerA);
+    gameState.setPlaying(state::PlayerB);
 
     state::Card card{"1", state::CardType::Religious, 3};
 
     auto* command= new BuildCommand(state::PlayerA,&card);
-    engine::Engine* gameEngine = engine::Engine::getInstance(gameState);
+    Engine* gameEngine = Engine::getInstance(gameState);
+    //Check serialized NIY
+    BOOST_CHECK_NO_THROW(command->serialize());
+
+    //Command not executed because not my turn
+    BOOST_CHECK_EQUAL(command->check(gameState), false);
+    gameState.setPlaying(state::PlayerA);
     //Test all case of non-available command
 
     //Command not executed because card is not in the hand
@@ -56,6 +62,7 @@ BOOST_AUTO_TEST_CASE(TestBuildCommand){
     BOOST_CHECK_EQUAL(plr1.getNumberOfCoins(),1);
     BOOST_CHECK_EQUAL(plr1.getHand().size(),0);
     BOOST_CHECK_EQUAL(plr1.getBoardOfPlayer().size(),1);
+
 }
 
 /* vim: set sw=2 sts=2 et : */
