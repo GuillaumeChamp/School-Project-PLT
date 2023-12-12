@@ -60,4 +60,50 @@ BOOST_AUTO_TEST_CASE(TestBuildCommand){
     BOOST_CHECK_EQUAL(plr1.getBoardOfPlayer().size(),1);
 }
 
-/* vim: set sw=2 sts=2 et : */
+BOOST_AUTO_TEST_CASE(TestDrawCommand){
+
+    state::Player plr1 {"player1", state::PlayerId::PLAYER_A};
+    state::Player plr2 {"player2", state::PlayerId::PLAYER_B};
+    state::Player plr3 {"player3", state::PlayerId::PLAYER_C};
+    state::Player plr4 {"player4", state::PlayerId::PLAYER_D};
+
+    plr1.setDrawAvailability(false);
+    state::GameState gameState{std::vector<state::Player>{plr1,plr2,plr3,plr4}};
+    gameState.setPlaying(state::PLAYER_B);
+
+    state::Card card{"1", state::CardType::RELIGIOUS, 3};
+
+    auto* command= new DrawCommand(state::PlayerId::PLAYER_A,2);
+    Engine* gameEngine = Engine::getInstance(gameState);
+    BOOST_CHECK_EQUAL(gameState.getDrawableCards().size(),0);
+    //Check serialized NIY
+    BOOST_CHECK_NO_THROW(command->serialize());
+
+    //Command not executed because not my turn
+    BOOST_CHECK_EQUAL(command->check(gameState), false);
+    gameState.setPlaying(state::PlayerId::PLAYER_A);
+
+    //Command not executed because draw is not available
+    BOOST_CHECK_EQUAL(command->check(gameState), false);
+
+    plr1.setDrawAvailability(true);
+    gameState.updatePlayer(plr1);
+    //Command not executed because already in the board
+    BOOST_CHECK_EQUAL(command->check(gameState), true);
+    BOOST_CHECK_EQUAL(gameState.getStack().size(),0);
+
+    gameEngine->addCommand(command);
+    gameEngine->executeAllCommands();
+
+    BOOST_CHECK_EQUAL(gameState.getDrawableCards().size(),2);
+    BOOST_CHECK_EQUAL(gameState.getStack().size(),63);
+
+    command= new DrawCommand(state::PlayerId::PLAYER_A,3);
+    gameEngine->addCommand(command);
+    gameEngine->executeAllCommands();
+
+    BOOST_CHECK_EQUAL(gameState.getDrawableCards().size(),3);
+    BOOST_CHECK_EQUAL(gameState.getStack().size(),60);
+
+}
+
