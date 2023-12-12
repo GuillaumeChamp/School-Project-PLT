@@ -9,7 +9,7 @@
 
 namespace engine {
 
-  // 
+  // Method to initialize the stack based on the csv file of all cards
   std::vector<state::Card> StackUtils::initStack() {
     std::string res = RES_DIR;
     const std::string& filename = res + "cards.csv";

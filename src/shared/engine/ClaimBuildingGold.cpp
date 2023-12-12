@@ -63,9 +63,9 @@ namespace engine {
     state.updatePlayer(player);
   }
 
-  // Serialize method
-  void ClaimBuildingGold::serialize() {
+  // Check method
+  bool check (state::GameState& state) {
+    
   }
-
 
 } // namespace engine

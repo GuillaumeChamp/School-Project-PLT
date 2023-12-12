@@ -42,10 +42,7 @@ namespace engine {
     }
 
 
-    // Serialize method
-    void BuildCommand::serialize() {}
-
-    // Check
+    // Check method
     bool BuildCommand::check(state::GameState &state) {
         if (!Command::check(state)){
             return false;

@@ -46,10 +46,6 @@ namespace engine {
         }
     }
 
-    // Serialization method
-    void UseWonderAbilityCommand::serialize() {
-    }
-
     // Check method
     bool UseWonderAbilityCommand::check(state::GameState& state) {
         return true;

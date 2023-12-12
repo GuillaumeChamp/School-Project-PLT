@@ -19,10 +19,6 @@ namespace engine {
         Engine::getInstance(state)->addCommand(command);
     }
 
-    // Serialization method
-    void PlayCardCommand::serialize() {
-    }
-
     // Check method
     bool PlayCardCommand::check(state::GameState& state) {
         return true;

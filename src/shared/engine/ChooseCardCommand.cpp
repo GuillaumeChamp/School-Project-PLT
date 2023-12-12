@@ -17,10 +17,6 @@ namespace engine {
 
     }
 
-    // Serialization method
-    void ChooseCardCommand::serialize() {
-    }
-
     // Check method
     bool ChooseCardCommand::check(state::GameState& state) {
         return true;
