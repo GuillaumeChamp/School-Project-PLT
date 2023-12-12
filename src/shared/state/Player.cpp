@@ -77,4 +77,13 @@ namespace state {
         this->capacityAvailable = availability;
     }
 
+    bool Player::isDrawAvailable() const {
+        return this->drawAvailable;
+    }
+
+    void Player::setDrawAvailability(bool availability) {
+        this->drawAvailable=availability;
+    }
+
+
 }
