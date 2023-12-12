@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
             window.setVerticalSyncEnabled(true);
 
             GameState gamestate=generateSampleState();
-            gamestate.setCurrentCharacter(Architect);
+            gamestate.setCurrentCharacter(ARCHITECT);
             render::Scene sceneA(render::SceneId::PlayerA, &gamestate);
             
 
@@ -61,10 +61,10 @@ int main(int argc, char *argv[]) {
             GameState gameState=generateSampleState();
             engine::Engine* gameEngine = engine::Engine::getInstance(gameState);
 
-            auto* cmd = new engine::ChooseCharacterCommand(PlayerId::PlayerA,CharacterType::Assassin);
-            auto* cmd1(new engine::ChooseCharacterCommand(PlayerId::PlayerB,CharacterType::Thief));
-            auto* cmd2(new engine::ChooseCharacterCommand(PlayerId::PlayerC,CharacterType::Magician));
-            auto* cmd3(new engine::ChooseCharacterCommand(PlayerId::PlayerD,CharacterType::Warlord));
+            auto* cmd = new engine::ChooseCharacterCommand(PlayerId::PLAYER_A,CharacterType::ASSASSIN);
+            auto* cmd1(new engine::ChooseCharacterCommand(PlayerId::PLAYER_B,CharacterType::THIEF));
+            auto* cmd2(new engine::ChooseCharacterCommand(PlayerId::PLAYER_C,CharacterType::MAGICIAN));
+            auto* cmd3(new engine::ChooseCharacterCommand(PlayerId::PLAYER_D,CharacterType::WARLORD));
 
             gameEngine->addCommand(cmd);
             gameEngine->addCommand(cmd1);
@@ -88,8 +88,8 @@ int main(int argc, char *argv[]) {
 }
 
 void test(){
-    Card card {"card1", CardType::Military, 2};
-    Player player {(string &) "player1", PlayerId::PlayerA};
+    Card card {"card1", CardType::MILITARY, 2};
+    Player player {(string &) "player1", PlayerId::PLAYER_A};
     GameState gameState {std::vector<Player>{player}};
 }
 
@@ -121,24 +121,20 @@ void displayState(const state::GameState& gameState) {
 
 
 GameState generateSampleState() {
-    std::string player1 = "player1";
-    std::string player2 = "player2";
-    std::string player3 = "player3";
-    std::string player4 = "player4";
-    Player playerA {player1, PlayerId::PlayerA};
-    Player playerB {player2, PlayerId::PlayerB};
-    Player playerC {player3 , PlayerId::PlayerC};
-    Player playerD {player4, PlayerId::PlayerD};
+    Player playerA {"player1", PlayerId::PLAYER_A};
+    Player playerB {"player2", PlayerId::PLAYER_B};
+    Player playerC {"player3" , PlayerId::PLAYER_C};
+    Player playerD {"player4", PlayerId::PLAYER_D};
 
-    Card card1{"1",Commercial,2};
-    Card card2{"2",Commercial,2};
-    Card card3{"25",Commercial,2};
+    Card card1{"1",CardType::COMMERCIAL,2};
+    Card card2{"2",CardType::COMMERCIAL,2};
+    Card card3{"25",CardType::COMMERCIAL,2};
 
 
-    playerA.setCharacter(Warlord);
-    playerB.setCharacter(Bishop);
-    playerC.setCharacter(Merchant);
-    playerD.setCharacter(King);
+    playerA.setCharacter(CharacterType::WARLORD);
+    playerB.setCharacter(CharacterType::BISHOP);
+    playerC.setCharacter(CharacterType::MERCHANT);
+    playerD.setCharacter(CharacterType::KING);
 
     std::vector<Card> playerABoard{card1};
     std::vector<Card> playerBBoard{card2};

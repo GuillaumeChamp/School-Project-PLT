@@ -7,35 +7,31 @@ using namespace ::engine;
 
 
 BOOST_AUTO_TEST_CASE(TestBuildCommand){
-    std::string player1= "player1";
-    std::string player2= "player2";
-    std::string player3= "player3";
-    std::string player4= "player4";
 
-    state::Player plr1 {player1, state::PlayerId::PlayerA};
-    state::Player plr2 {player2, state::PlayerId::PlayerB};
-    state::Player plr3 {player3, state::PlayerId::PlayerC};
-    state::Player plr4 {player4, state::PlayerId::PlayerD};
+    state::Player plr1 {"player1", state::PlayerId::PLAYER_A};
+    state::Player plr2 {"player2", state::PlayerId::PLAYER_B};
+    state::Player plr3 {"player3", state::PlayerId::PLAYER_C};
+    state::Player plr4 {"player4", state::PlayerId::PLAYER_D};
 
     state::GameState gameState{std::vector<state::Player>{plr1,plr2,plr3,plr4}};
-    gameState.setPlaying(state::PlayerB);
+    gameState.setPlaying(state::PLAYER_B);
 
-    state::Card card{"1", state::CardType::Religious, 3};
+    state::Card card{"1", state::CardType::RELIGIOUS, 3};
 
-    auto* command= new BuildCommand(state::PlayerA,&card);
+    auto* command= new BuildCommand(state::PLAYER_A,&card);
     Engine* gameEngine = Engine::getInstance(gameState);
     //Check serialized NIY
     BOOST_CHECK_NO_THROW(command->serialize());
 
     //Command not executed because not my turn
     BOOST_CHECK_EQUAL(command->check(gameState), false);
-    gameState.setPlaying(state::PlayerA);
+    gameState.setPlaying(state::PLAYER_A);
     //Test all case of non-available command
 
     //Command not executed because card is not in the hand
     BOOST_CHECK_EQUAL(command->check(gameState), false);
 
-    plr1=gameState.getPlayer(state::PlayerA);
+    plr1=gameState.getPlayer(state::PLAYER_A);
 
     std::vector<state::Card> hand = std::vector<state::Card>{card};
     plr1.setHand(hand);
@@ -57,7 +53,7 @@ BOOST_AUTO_TEST_CASE(TestBuildCommand){
 
     gameEngine->addCommand(command);
     gameEngine->executeAllCommands();
-    plr1=gameState.getPlayer(state::PlayerA);
+    plr1=gameState.getPlayer(state::PLAYER_A);
 
     BOOST_CHECK_EQUAL(plr1.getNumberOfCoins(),1);
     BOOST_CHECK_EQUAL(plr1.getHand().size(),0);

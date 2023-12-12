@@ -2697,7 +2697,7 @@
       <dia:attribute name="attributes">
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#Religious#</dia:string>
+            <dia:string>#RELIGIOUS#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -2720,7 +2720,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#Military#</dia:string>
+            <dia:string>#MILITARY#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -2743,7 +2743,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#Commercial#</dia:string>
+            <dia:string>#COMMERCIAL#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -2766,7 +2766,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#Noble#</dia:string>
+            <dia:string>#NOBLE#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -2789,7 +2789,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#Wonder#</dia:string>
+            <dia:string>#WONDER#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3088,7 +3088,7 @@
       <dia:attribute name="attributes">
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#Assassin#</dia:string>
+            <dia:string>#ASSASSIN#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3111,7 +3111,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#Thief#</dia:string>
+            <dia:string>#THIEF#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3134,7 +3134,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#Magician#</dia:string>
+            <dia:string>#MAGICIAN#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3157,7 +3157,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#King#</dia:string>
+            <dia:string>#KING#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3180,7 +3180,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#Bishop#</dia:string>
+            <dia:string>#BISHOP#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3203,7 +3203,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#Merchant #</dia:string>
+            <dia:string>#MERCHANT#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3226,7 +3226,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#Architect#</dia:string>
+            <dia:string>#ARCHITECT#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3249,7 +3249,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#Warlord #</dia:string>
+            <dia:string>#WARLORD#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3272,7 +3272,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#NoCharacter#</dia:string>
+            <dia:string>#NO_CHARACTER#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3312,8 +3312,8 @@
       </dia:attribute>
       <dia:attribute name="orth_points">
         <dia:point val="10.4796,-12.5612"/>
-        <dia:point val="5.76396,-12.5612"/>
-        <dia:point val="5.76396,12.985"/>
+        <dia:point val="5.76395,-12.5612"/>
+        <dia:point val="5.76395,12.985"/>
         <dia:point val="1.7483,12.985"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
@@ -3383,16 +3383,16 @@
     </dia:object>
     <dia:object type="UML - Class" version="0" id="O9">
       <dia:attribute name="obj_pos">
-        <dia:point val="42.4909,-3.8364"/>
+        <dia:point val="41.8409,-4.3864"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="42.4409,-3.8864;49.2012,1.8136"/>
+        <dia:rectangle val="41.7909,-4.4364;48.9362,1.2636"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
-        <dia:point val="42.4909,-3.8364"/>
+        <dia:point val="41.8409,-4.3864"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="6.6603124999999999"/>
+        <dia:real val="7.0453124999999996"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="5.6000000000000005"/>
@@ -3490,7 +3490,7 @@
       <dia:attribute name="attributes">
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#CHOOSECHARACTER#</dia:string>
+            <dia:string>#CHOOSE_CHARACTER#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3513,7 +3513,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#CALLCHARACTER#</dia:string>
+            <dia:string>#CALL_CHARACTER#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3536,7 +3536,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#ENDGAME#</dia:string>
+            <dia:string>#END_GAME#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3559,7 +3559,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#STARTGAME#</dia:string>
+            <dia:string>#START_GAME#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3697,7 +3697,7 @@
       <dia:attribute name="attributes">
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#PlayerA#</dia:string>
+            <dia:string>#PLAYER_A#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3720,7 +3720,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#PlayerB#</dia:string>
+            <dia:string>#PLAYER_B#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3743,7 +3743,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#PlayerC#</dia:string>
+            <dia:string>#PLAYER_C#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3766,7 +3766,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#PlayerD#</dia:string>
+            <dia:string>#PLAYER_D#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3789,7 +3789,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#NoPlayer#</dia:string>
+            <dia:string>#NO_PLAYER#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -3911,8 +3911,8 @@
       </dia:attribute>
       <dia:attribute name="orth_points">
         <dia:point val="10.4796,-5.1612"/>
-        <dia:point val="3.0525,-5.1612"/>
-        <dia:point val="3.0525,-5.2"/>
+        <dia:point val="3.05249,-5.1612"/>
+        <dia:point val="3.05249,-5.2"/>
         <dia:point val="-4.77461,-5.2"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
@@ -4039,16 +4039,16 @@
         <dia:point val="38.75,-1.5612"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="38,-2.3112;42.4905,-0.1814"/>
+        <dia:rectangle val="38,-2.3314;41.8405,-0.7062"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
         <dia:point val="38.75,-1.5612"/>
-        <dia:point val="40.9453,-1.5612"/>
-        <dia:point val="40.9453,-1.0364"/>
-        <dia:point val="42.4405,-1.0364"/>
+        <dia:point val="40.6202,-1.5612"/>
+        <dia:point val="40.6202,-1.5864"/>
+        <dia:point val="41.7905,-1.5864"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="0"/>

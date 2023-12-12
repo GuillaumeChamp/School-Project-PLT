@@ -12,7 +12,7 @@ Player::Player(std::string name, state::PlayerId id){
     this->nameOfPlayer = std::move(name);
     this->playerId = id;
     this->numberOfCoins = 2;
-    this->character = CharacterType::NoCharacter;
+    this->character = CharacterType::NO_CHARACTER;
     this->isCapacityAvailable= false;
 }
 

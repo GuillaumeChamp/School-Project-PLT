@@ -35,15 +35,15 @@ namespace engine {
         int costValue = std::stoi(cost);
         state::CardType typeValue;
         if (type == "Religious") {
-            typeValue = state::CardType::Religious;
+            typeValue = state::CardType::RELIGIOUS;
         } else if (type == "Military") {
-           typeValue = state::CardType::Military;
+           typeValue = state::CardType::MILITARY;
         } else if (type == "Commercial") {
-            typeValue = state::CardType::Commercial;
+            typeValue = state::CardType::COMMERCIAL;
         } else if (type == "Noble") {
-            typeValue = state::CardType::Noble;
+            typeValue = state::CardType::NOBLE;
         } else if (type == "Wonder") {
-            typeValue = state::CardType::Wonder;
+            typeValue = state::CardType::WONDER;
         }
 
         for (int i = 0; i < multiplicityValue; ++i) {

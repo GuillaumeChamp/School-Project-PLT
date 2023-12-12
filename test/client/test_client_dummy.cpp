@@ -27,10 +27,10 @@ BOOST_AUTO_TEST_CASE(TestSFML)
         std::string player3= "player3";
         std::string player4= "player4";
 
-        state::Player playerA {player1, state::PlayerId::PlayerA};
-        state::Player playerB {player2, state::PlayerId::PlayerB};
-        state::Player playerC {player3, state::PlayerId::PlayerC};
-        state::Player playerD {player4, state::PlayerId::PlayerD};
+        state::Player playerA {player1, state::PlayerId::PLAYER_A};
+        state::Player playerB {player2, state::PlayerId::PLAYER_B};
+        state::Player playerC {player3, state::PlayerId::PLAYER_C};
+        state::Player playerD {player4, state::PlayerId::PLAYER_D};
 
         state::GameState gameState {std::vector<state::Player>{playerA,playerB,playerC,playerD}};
         render::Scene scene{render::SceneId::PlayerA,&gameState};
