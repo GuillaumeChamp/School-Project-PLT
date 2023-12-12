@@ -47,10 +47,12 @@ BOOST_AUTO_TEST_CASE(TestState){
     BOOST_CHECK_EQUAL(plr.getCharacter(), CharacterType::WARLORD);
 
     GameState gameState{std::vector<Player>{plr}};
+    gameState.setStack(hand);
     BOOST_CHECK_EQUAL(gameState.getListOfPlayer().size(), 1);
     BOOST_CHECK_EQUAL(gameState.getCurrentCharacter(), CharacterType::NO_CHARACTER);
     BOOST_CHECK_EQUAL(gameState.getGamePhase(), Phase::CHOOSE_CHARACTER);
-
+    BOOST_CHECK_EQUAL(gameState.getStack().size(),1);
+    
     gameState.setCrownOwner(PlayerId::PLAYER_A);
     BOOST_CHECK_EQUAL((gameState.getCrownOwner()), plr.getIdOfPlayer());
 
@@ -65,9 +67,11 @@ BOOST_AUTO_TEST_CASE(TestState){
     BOOST_CHECK_NO_THROW(gameState.updatePlayer(plr));
 
     plr.setCapacityAvailability(true);
+    plr.setDrawAvailability(true);
     gameState.updatePlayer(plr);
 
-    BOOST_CHECK_EQUAL(gameState.getPlayer(PLAYER_A).getCapacityAvailability(),true);
+    BOOST_CHECK_EQUAL(gameState.getPlayer(PLAYER_A).isCapacityAvailable(),true);
+    BOOST_CHECK_EQUAL(gameState.getPlayer(PLAYER_A).isDrawAvailable(),true);
 
     gameState.setKilledCharacter(KING);
     BOOST_CHECK_EQUAL(gameState.getKilledCharacter(),KING);

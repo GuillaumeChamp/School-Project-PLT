@@ -11,8 +11,7 @@ namespace engine {
     }
 
     // Destructor
-    DrawCommand::~DrawCommand() {
-    }
+    DrawCommand::~DrawCommand() = default;
 
     // Execute method
     void DrawCommand::execute(state::GameState &state) {
@@ -28,8 +27,7 @@ namespace engine {
         std::vector<state::Card> drawnCards;
 
         //Checking that the stack has enough cards to draw from
-        if (stack.size() < nbOfCards) //if not, re-initializing the stack then drawing the cards
-        {
+        if (stack.size() < nbOfCards){ //if not, re-initializing the stack then drawing the cards
             StackUtils::initStack();
             drawnCards.insert(drawnCards.end(), stack.begin(), stack.begin() + nbOfCards);
             stack.erase(stack.begin(), stack.begin() + nbOfCards);
@@ -44,7 +42,7 @@ namespace engine {
         }
 
         // Adding the new cards to the player's hand
-        for (state::Card card: drawnCards) {
+        for (const state::Card& card : drawnCards) {
             hand.insert(hand.end(), card);
         }
 
