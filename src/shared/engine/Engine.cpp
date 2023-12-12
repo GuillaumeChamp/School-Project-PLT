@@ -16,7 +16,6 @@ namespace engine {
 
     // Initialization method
     void Engine::init() {
-
         // Perform initialization tasks here
     }
 
@@ -35,8 +34,9 @@ namespace engine {
             }
         }
         //free the memory
-        for (auto p: listOfCommands)
+        for (auto p: listOfCommands){
             delete p;
+        }
         listOfCommands.clear();
     }
 
