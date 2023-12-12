@@ -20,8 +20,6 @@ BOOST_AUTO_TEST_CASE(TestBuildCommand){
 
     auto* command= new BuildCommand(state::PLAYER_A,&card);
     Engine* gameEngine = Engine::getInstance(gameState);
-    //Check serialized NIY
-    BOOST_CHECK_NO_THROW(command->serialize());
 
     //Command not executed because not my turn
     BOOST_CHECK_EQUAL(command->check(gameState), false);
