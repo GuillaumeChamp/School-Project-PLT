@@ -8,48 +8,48 @@
 
 BOOST_AUTO_TEST_CASE(TestSFML)
 {
-    {
-        ::sf::Texture texture;
-        BOOST_CHECK(texture.getSize() == ::sf::Vector2<unsigned int> {});
 
-        render::Button button{render::ButtonType::hand,10,20};
-        BOOST_CHECK_EQUAL(button.name,render::ButtonType::hand);
-        BOOST_CHECK_EQUAL(button.getSurface().getPosition().x,10);
-        BOOST_CHECK_EQUAL(button.getSurface().getPosition().y,20);
+    ::sf::Texture texture;
+    BOOST_CHECK(texture.getSize() == ::sf::Vector2<unsigned int>{});
 
-        BOOST_CHECK_EQUAL(render::IHMState::getInstance()->hoverCard, nullptr);
-        BOOST_CHECK_EQUAL(render::IHMState::getInstance()->hoverButton, nullptr);
-        BOOST_CHECK_EQUAL(render::IHMState::getInstance()->isHandDisplayed, false);
-        BOOST_CHECK_EQUAL(render::IHMState::getInstance()->isHelpDisplayed, false);
+    render::Button button{render::ButtonType::hand, 10, 20};
+    BOOST_CHECK_EQUAL(button.name, render::ButtonType::hand);
+    BOOST_CHECK_EQUAL(button.getSurface().getPosition().x, 10);
+    BOOST_CHECK_EQUAL(button.getSurface().getPosition().y, 20);
 
-        std::string player1= "player1";
-        std::string player2= "player2";
-        std::string player3= "player3";
-        std::string player4= "player4";
+    BOOST_CHECK_EQUAL(render::IHMState::getInstance()->hoverCard, nullptr);
+    BOOST_CHECK_EQUAL(render::IHMState::getInstance()->hoverButton, nullptr);
+    BOOST_CHECK_EQUAL(render::IHMState::getInstance()->isHandDisplayed, false);
+    BOOST_CHECK_EQUAL(render::IHMState::getInstance()->isHelpDisplayed, false);
 
-        state::Player playerA {player1, state::PlayerId::PLAYER_A};
-        state::Player playerB {player2, state::PlayerId::PLAYER_B};
-        state::Player playerC {player3, state::PlayerId::PLAYER_C};
-        state::Player playerD {player4, state::PlayerId::PLAYER_D};
+    std::string player1 = "player1";
+    std::string player2 = "player2";
+    std::string player3 = "player3";
+    std::string player4 = "player4";
 
-        state::GameState gameState {std::vector<state::Player>{playerA,playerB,playerC,playerD}};
-        render::Scene scene{render::SceneId::PlayerA,&gameState};
+    state::Player playerA{player1, state::PlayerId::PLAYER_A};
+    state::Player playerB{player2, state::PlayerId::PLAYER_B};
+    state::Player playerC{player3, state::PlayerId::PLAYER_C};
+    state::Player playerD{player4, state::PlayerId::PLAYER_D};
 
-        sf::RenderWindow render{};
-        sf::Event event{};
-        BOOST_CHECK_NO_THROW(scene.draw(render));
-        BOOST_CHECK_NO_THROW(scene.handleEvent(event));
+    state::GameState gameState{std::vector<state::Player>{playerA, playerB, playerC, playerD}};
+    render::Scene scene{render::SceneId::PlayerA, &gameState};
 
-        sf::Font font{};
-        BOOST_CHECK_NO_THROW(render::PlayerRender::drawPlayer(render,&playerA,0,true,true,font));
+    sf::RenderWindow render{};
+    sf::Event event{};
+    BOOST_CHECK_NO_THROW(scene.draw(render));
+    BOOST_CHECK_NO_THROW(scene.handleEvent(event));
 
-        //Is file reachable
-        std::string path = RES_DIR;
-        path.append("Garet-Book.ttf");
-        struct stat sb{};
-        BOOST_CHECK_EQUAL(stat(path.c_str(), &sb), 0);
+    sf::Font font{};
+    BOOST_CHECK_NO_THROW(render::PlayerRender::drawPlayer(render, &playerA, 0, true, true, font));
 
-    }
+    //Is file reachable
+    std::string path = RES_DIR;
+    path.append("Garet-Book.ttf");
+    struct stat sb{};
+    BOOST_CHECK_EQUAL(stat(path.c_str(), &sb), 0);
+
+
 }
 
 /* vim: set sw=2 sts=2 et : */

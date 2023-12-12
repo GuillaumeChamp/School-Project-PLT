@@ -65,9 +65,11 @@ BOOST_AUTO_TEST_CASE(TestState){
     BOOST_CHECK_NO_THROW(gameState.updatePlayer(plr));
 
     plr.setCapacityAvailability(true);
+    plr.setDrawAvailability(true);
     gameState.updatePlayer(plr);
 
-    BOOST_CHECK_EQUAL(gameState.getPlayer(PLAYER_A).getCapacityAvailability(),true);
+    BOOST_CHECK_EQUAL(gameState.getPlayer(PLAYER_A).isCapacityAvailable(),true);
+    BOOST_CHECK_EQUAL(gameState.getPlayer(PLAYER_A).isDrawAvailable(),true);
 
     gameState.setKilledCharacter(KING);
     BOOST_CHECK_EQUAL(gameState.getKilledCharacter(),KING);
