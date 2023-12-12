@@ -6,12 +6,12 @@ namespace state {
 
     GameState::GameState(std::vector<Player> listOfPlayer) {
         this->listOfPlayers = std::move(listOfPlayer);
-        this->currentCharacter= CharacterType::NoCharacter;
-        this->crownOwner = PlayerA;
-        this->gamePhase = Phase::CHOOSECHARACTER;
-        this->playing = NoPlayer;
-        this->killedCharacter = NoCharacter;
-        this->robbedCharacter = NoCharacter;
+        this->currentCharacter= CharacterType::NO_CHARACTER;
+        this->crownOwner = PLAYER_A;
+        this->gamePhase = Phase::CHOOSE_CHARACTER;
+        this->playing = NO_PLAYER;
+        this->killedCharacter = NO_CHARACTER;
+        this->robbedCharacter = NO_CHARACTER;
     }
 
     std::vector<Player> GameState::getListOfPlayer () const{
