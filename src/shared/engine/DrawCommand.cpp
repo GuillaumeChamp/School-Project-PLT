@@ -18,21 +18,20 @@ namespace engine {
         // Init variable and query data
         state::Player player = state.getPlayer(authorPlayer);
         std::vector<state::Card> stack = state.getStack();
+        std::vector<state::Card> drawableCards;
 
-        std::vector<state::Card> drawnCards;
-        //Checking that the stack has enough cards to draw from
-        if (stack.size() < nbOfCards) { //if not, re-initializing the stack then drawing the cards
+        // Checking that the stack has enough cards to draw from
+        if (stack.size() < nbOfCards) { // if not, re-initializing the stack
             stack = StackUtils::initStack();
-            drawnCards.insert(drawnCards.end(), stack.begin(), stack.begin() + nbOfCards);
-            stack.erase(stack.begin(), stack.begin() + nbOfCards);
             //TODO replace stack by list because erase is heavy after finishing stack related command
-        } else {// if yes, just draw the cards
-            drawnCards.insert(drawnCards.end(), stack.begin(), stack.begin() + nbOfCards);
-            stack.erase(stack.begin(), stack.begin() + nbOfCards);
         }
 
+        // Getting the drawable cards from the stack
+        drawableCards.insert(drawableCards.end(), stack.begin(), stack.begin() + nbOfCards);
+        stack.erase(stack.begin(), stack.begin() + nbOfCards);
+
         // Update the state
-        state.setDrawableCards(drawnCards);
+        state.setDrawableCards(drawableCards);
         state.setStack(stack);
         state.updatePlayer(player);
     }

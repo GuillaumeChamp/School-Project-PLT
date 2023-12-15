@@ -15,8 +15,15 @@ namespace engine {
     // Execute method
     void PlayCardCommand::execute(state::GameState& state) {
         // 
-        auto* command = new ChooseCardCommand(authorPlayer, card);
-        Engine::getInstance(state)->addCommand(command);
+        state::Player player = state.getPlayer(authorPlayer);
+        std::vector<state::Card> hand = player.getHand();
+
+        hand.insert(hand.end(), card);
+
+        player.setHand(hand);
+        state.updatePlayer(player);
+        
+
     }
 
     // Check method
