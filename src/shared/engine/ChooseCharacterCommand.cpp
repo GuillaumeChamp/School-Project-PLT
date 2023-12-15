@@ -32,10 +32,7 @@ namespace engine {
 
     }
 
-    // Serialize method
-    void ChooseCharacterCommand::serialize() {
-    }
-
+    // Check method
     bool ChooseCharacterCommand::check(state::GameState &state) {
         return Command::check(state);
     }

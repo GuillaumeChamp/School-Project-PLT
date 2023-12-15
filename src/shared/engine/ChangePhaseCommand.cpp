@@ -36,6 +36,7 @@ namespace engine {
       
     }
 
+    // Check method
     bool ChangePhaseCommand::check(state::GameState &state) {
         return Command::check(state);
     }

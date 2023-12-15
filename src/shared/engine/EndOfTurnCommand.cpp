@@ -10,12 +10,12 @@ namespace engine {
     }
 
     // Destructor
-    EndOfTurnCommand::~EndOfTurnCommand() {
-    }
+    EndOfTurnCommand::~EndOfTurnCommand() = default;
 
     // Execute method
     void EndOfTurnCommand::execute(state::GameState &state) {
         // Switch to the next player
+
         
 
         state::Player player = state.getPlayer(authorPlayer);
@@ -64,8 +64,13 @@ namespace engine {
 
     // Serialize method
     void EndOfTurnCommand::serialize() {
+        auto nextPlayer = static_cast<state::PlayerId>(static_cast<int>(authorPlayer) % 4 + 1);
+        // Updating the state
+        state.setPlaying(nextPlayer);
+
     }
 
+    // Check method
     bool EndOfTurnCommand::check(state::GameState &state) {
         return Command::check(state);
     }

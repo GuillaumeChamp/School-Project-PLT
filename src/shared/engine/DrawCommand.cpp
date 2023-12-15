@@ -11,55 +11,35 @@ namespace engine {
     }
 
     // Destructor
-    DrawCommand::~DrawCommand() {
-    }
+    DrawCommand::~DrawCommand() = default;
 
     // Execute method
     void DrawCommand::execute(state::GameState &state) {
-        // Getting the player to execute the command on
+        // Init variable and query data
         state::Player player = state.getPlayer(authorPlayer);
-
-        // Getting his hand
-        std::vector<state::Card> hand = player.getHand();
-
-        // Getting the stack
         std::vector<state::Card> stack = state.getStack();
 
         std::vector<state::Card> drawnCards;
-
         //Checking that the stack has enough cards to draw from
-        if (stack.size() < nbOfCards) //if not, re-initializing the stack then drawing the cards
-        {
-            StackUtils::initStack();
+        if (stack.size() < nbOfCards) { //if not, re-initializing the stack then drawing the cards
+            stack = StackUtils::initStack();
             drawnCards.insert(drawnCards.end(), stack.begin(), stack.begin() + nbOfCards);
             stack.erase(stack.begin(), stack.begin() + nbOfCards);
-        } else if (stack.size() == nbOfCards) // if just enough, drawning the cards then re-initializing the stack
-        {
-            drawnCards.insert(drawnCards.end(), stack.begin(), stack.begin() + nbOfCards);
-            StackUtils::initStack();
-        } else // if yes, just draw the cards
-        {
+            //TODO replace stack by list because erase is heavy after finishing stack related command
+        } else {// if yes, just draw the cards
             drawnCards.insert(drawnCards.end(), stack.begin(), stack.begin() + nbOfCards);
             stack.erase(stack.begin(), stack.begin() + nbOfCards);
         }
 
-        // Adding the new cards to the player's hand
-        for (state::Card card: drawnCards) {
-            hand.insert(hand.end(), card);
-        }
-
-        // Setting the player's new hand and the new stack
-        player.setHand(hand);
+        // Update the state
+        state.setDrawableCards(drawnCards);
         state.setStack(stack);
         state.updatePlayer(player);
     }
 
-    // Serialize method
-    void DrawCommand::serialize() {
-    }
-
+    // Check method
     bool DrawCommand::check(state::GameState &state) {
-        return Command::check(state);
+        return Command::check(state) && state.getPlayer(authorPlayer).isDrawAvailable();
     }
 
 

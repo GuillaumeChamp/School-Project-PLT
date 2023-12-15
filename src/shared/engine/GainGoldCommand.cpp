@@ -27,10 +27,13 @@ namespace engine {
 
     }
 
+
     // Serialize method
     void GainGoldCommand::serialize() {
     }
 
+
+    // Check method
     bool GainGoldCommand::check(state::GameState &state) {
           return Command::check(state);
     }
