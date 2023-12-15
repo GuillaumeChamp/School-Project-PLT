@@ -1,33 +1,13 @@
 #include "Button.h"
 #include <iostream>
 #include <SFML/Graphics/Texture.hpp>
+#include "config.h"
 
 namespace render {
     Button::Button(ButtonType buttonType, int posX, int posY):InteractiveElement(posX, posY) {
         this->name=buttonType;
-
-        switch (buttonType){
-            case bank:
-                surface.setPosition(posX,posY);
-                surface.setSize(sf::Vector2f(40, 40));
-                break;
-            case ButtonType::draw:
-                surface.setPosition(posX,posY);
-                surface.setSize(sf::Vector2f(40, 40));
-                break;
-            case endOfTurn:
-                surface.setPosition(posX,posY);
-                surface.setSize(sf::Vector2f(40, 40));
-                break;
-            case hand:
-                surface.setPosition(posX,posY);
-                surface.setSize(sf::Vector2f(40, 40));
-                break;
-            case help:
-                surface.setPosition(posX,posY);
-                surface.setSize(sf::Vector2f(40, 40));
-                break;
-        }
+        this->surface.setPosition(posX,posY);
+        this->surface.setSize(sf::Vector2f(50, 50));
     }
 
     Button::~Button() = default;
@@ -61,25 +41,26 @@ namespace render {
     }
 
     void Button::draw(sf::RenderWindow &render) {
+        std::string res = RES_DIR;
         sf::Texture texture;
         switch (this->name){
-            case bank:
-                texture.loadFromFile("./../res/chest.png");
+            case ButtonType::bank:
+                texture.loadFromFile(res+"chest.png");
                 break;
-            case ButtonType::draw:
-                texture.loadFromFile("./../res/dos_rouge.jpg");
+            case ButtonType::draw :
+                texture.loadFromFile(res+"draw_icon.png");
                 break;
             case endOfTurn:
-                texture.loadFromFile("./../res/dos_vert.jpg");
+                texture.loadFromFile(res+"end_of_turn_icon.png");
                 break;
             case hand:
-                texture.loadFromFile("./../res/dos_vert.jpg");
+                texture.loadFromFile(res+"dos_vert.jpg");
                 break;
             case help:
-                texture.loadFromFile("./../res/help.png");
+                texture.loadFromFile(res+"help.png");
                 break;
         }
-        surface.setTexture(&texture);
+        this->surface.setTexture(&texture);
         render.draw(surface);
     }
 

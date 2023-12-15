@@ -12,6 +12,7 @@ using namespace state;
 
 void test();
 GameState generateSampleState();
+void displayState(const state::GameState& gameState);
 
 
 int main(int argc, char *argv[]) {
@@ -33,12 +34,13 @@ int main(int argc, char *argv[]) {
             window.setVerticalSyncEnabled(true);
 
             GameState gamestate=generateSampleState();
+            gamestate.setCurrentCharacter(ARCHITECT);
             render::Scene sceneA(render::SceneId::PlayerA, &gamestate);
             
 
 
              while (window.isOpen()) {
-                sf::Event event;
+                sf::Event event{};
                 while (window.pollEvent(event)) {
                     sceneA.handleEvent(event);
                
@@ -57,35 +59,23 @@ int main(int argc, char *argv[]) {
         
         else if (std::strcmp(argv[1], "engine") == 0) {
             GameState gameState=generateSampleState();
-            engine::Engine gameEngine(gameState);
-            
-            /*std::unique_ptr<engine::Command> cmd(new engine::Gain2GoldCommand(Playing::PLAYERA,2));
-            std::unique_ptr<engine::Command> cmd1(new engine::Gain2GoldCommand(Playing::PLAYERB,3));
-            std::unique_ptr<engine::Command> cmd2(new engine::Gain2GoldCommand(Playing::PLAYERC,5));
-            std::unique_ptr<engine::Command> cmd3(new engine::Gain2GoldCommand(Playing::PLAYERD,8));
-            
+            engine::Engine* gameEngine = engine::Engine::getInstance(gameState);
 
-            gameEngine.addCommand(std::move(cmd));
-            gameEngine.addCommand(std::move(cmd1));
-            gameEngine.addCommand(std::move(cmd2));
-            gameEngine.addCommand(std::move(cmd3));
+            auto* cmd = new engine::ChooseCharacterCommand(PlayerId::PLAYER_A,CharacterType::ASSASSIN);
+            auto* cmd1(new engine::ChooseCharacterCommand(PlayerId::PLAYER_B,CharacterType::THIEF));
+            auto* cmd2(new engine::ChooseCharacterCommand(PlayerId::PLAYER_C,CharacterType::MAGICIAN));
+            auto* cmd3(new engine::ChooseCharacterCommand(PlayerId::PLAYER_D,CharacterType::WARLORD));
 
-            gameEngine.executeAllCommands(gameState);*/
+            gameEngine->addCommand(cmd);
+            gameEngine->addCommand(cmd1);
+            gameEngine->addCommand(cmd2);
+            gameEngine->addCommand(cmd3);
 
-            std::unique_ptr<engine::Command> cmd(new engine::ChooseCharacterCommand(PlayerId::PlayerA,CharacterType::Assassin));
-            std::unique_ptr<engine::Command> cmd1(new engine::ChooseCharacterCommand(PlayerId::PlayerB,CharacterType::Thief));
-            std::unique_ptr<engine::Command> cmd2(new engine::ChooseCharacterCommand(PlayerId::PlayerC,CharacterType::Magician));
-            std::unique_ptr<engine::Command> cmd3(new engine::ChooseCharacterCommand(PlayerId::PlayerD,CharacterType::Warlord));
-
-            gameEngine.addCommand(std::move(cmd));
-            gameEngine.addCommand(std::move(cmd1));
-            gameEngine.addCommand(std::move(cmd2));
-            gameEngine.addCommand(std::move(cmd3));
-
-            gameEngine.executeAllCommands(gameState);
+            gameEngine->executeAllCommands();
+            displayState(gameState);
 
 
-           
+
         }
 
         else {
@@ -98,29 +88,63 @@ int main(int argc, char *argv[]) {
 }
 
 void test(){
-    Card card {"card1", CardType::Military, 2};
-    Player player {"player1", PlayerId::PlayerA};
+    Card card {"card1", CardType::MILITARY, 2};
+    Player player {(string &) "player1", PlayerId::PLAYER_A};
     GameState gameState {std::vector<Player>{player}};
 }
 
+void displayState(const state::GameState& gameState) {
+    for (auto& player : gameState.getListOfPlayer()) {
+        std::cout << " | Name: " << player.getNameOfPlayer()
+                  << " | Character: " << player.getCharacter()
+                  << " | Nb of cards: " << player.getNumberOfCards()
+                  << " | Nb of coins: " << player.getNumberOfCoins()
+                  << std::endl;
+
+        std::cout <<"---------------------------------\n Hand of "<<player.getNameOfPlayer() << std::endl;
+        for (auto& card : player.getHand()) {
+            std::cout << " | Name : " << card.getNameOfCard()
+                      << " | Color : " << card.getColorOfCard()
+                      << " | Cost : " << card.getCostOfCard()<<"\n---------------------------------"
+                      << std::endl;
+        }
+
+        std::cout <<"---------------------------------\n Board of "<<player.getNameOfPlayer() << std::endl;
+        for (auto& card : player.getBoardOfPlayer()) {
+            std::cout << " | Name : " << card.getNameOfCard()
+                      << " | Color : " << card.getColorOfCard()
+                      << " | Cost : " << card.getCostOfCard()<<"\n---------------------------------"  // Corrected
+                      << std::endl;
+        }
+    }
+}
+
+
 GameState generateSampleState() {
-    Player playerA {"player1", PlayerId::PlayerA};
-    Player playerB {"player2", PlayerId::PlayerB};
-    Player playerC {"player3", PlayerId::PlayerC};
-    Player playerD {"player4", PlayerId::PlayerD};
+    Player playerA {"player1", PlayerId::PLAYER_A};
+    Player playerB {"player2", PlayerId::PLAYER_B};
+    Player playerC {"player3" , PlayerId::PLAYER_C};
+    Player playerD {"player4", PlayerId::PLAYER_D};
 
-    Card card1{"1",Commercial,2};
-    Card card2{"2",Commercial,2};
+    Card card1{"1",CardType::COMMERCIAL,2};
+    Card card2{"2",CardType::COMMERCIAL,2};
+    Card card3{"25",CardType::COMMERCIAL,2};
 
-    playerA.setCharacter(Warlord);
-    playerB.setCharacter(Bishop);
-    playerC.setCharacter(Merchant);
-    playerD.setCharacter(King);
 
-    playerA.setBoardOfPlayer(std::vector<Card>{card1});
-    playerB.setBoardOfPlayer(std::vector<Card>{card2});
-    playerC.setBoardOfPlayer(std::vector<Card>{card2,card1});
-    playerD.setBoardOfPlayer(std::vector<Card>{card1,card2});
+    playerA.setCharacter(CharacterType::WARLORD);
+    playerB.setCharacter(CharacterType::BISHOP);
+    playerC.setCharacter(CharacterType::MERCHANT);
+    playerD.setCharacter(CharacterType::KING);
+
+    std::vector<Card> playerABoard{card1};
+    std::vector<Card> playerBBoard{card2};
+    std::vector<Card> playerCBoard{card2,card1,card3};
+    std::vector<Card> playerDBoard{card1,card2};
+
+    playerA.setBoardOfPlayer(playerABoard);
+    playerB.setBoardOfPlayer(playerBBoard);
+    playerC.setBoardOfPlayer(playerCBoard);
+    playerD.setBoardOfPlayer(playerDBoard);
 
     GameState gameState {std::vector<Player>{playerA,playerB,playerC,playerD}};
     return gameState;

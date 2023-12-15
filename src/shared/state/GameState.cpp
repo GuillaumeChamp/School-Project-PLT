@@ -4,7 +4,17 @@
 
 namespace state {
 
-    std::vector<Player> GameState::getListOfPlayer (){
+    GameState::GameState(std::vector<Player> listOfPlayer) {
+        this->listOfPlayers = std::move(listOfPlayer);
+        this->currentCharacter= CharacterType::NO_CHARACTER;
+        this->crownOwner = PLAYER_A;
+        this->gamePhase = Phase::CHOOSE_CHARACTER;
+        this->playing = NO_PLAYER;
+        this->killedCharacter = NO_CHARACTER;
+        this->robbedCharacter = NO_CHARACTER;
+    }
+
+    std::vector<Player> GameState::getListOfPlayer () const{
         return this->listOfPlayers;
     }
 
@@ -12,41 +22,15 @@ namespace state {
         this->currentCharacter=character;
     }
 
-    CharacterType GameState::getCurrentCharacter() {
+    CharacterType GameState::getCurrentCharacter() const{
         return this->currentCharacter;
     }
 
-
-
-    GameState::GameState(std::vector<Player> listOfPlayer) {
-        this->listOfPlayers = std::move(listOfPlayer);
-        this->currentCharacter= CharacterType::NoCharacter;
-        this->crownOwner = PlayerA;
-        this->gamePhase = Phase::CHOOSECHARACTER;
-    }
-
-    void GameState::nextGamePhase() {
-        switch (gamePhase) {
-            case Phase::CHOOSECHARACTER :
-                this->gamePhase = Phase::CALLCHARACTER;
-                break;
-            case Phase::ENDGAME:
-                break;
-            case Phase::CALLCHARACTER :
-                this->gamePhase = Phase::CHOOSECHARACTER;
-                break;
-        }
-    }
-
-    Phase GameState::getGamePhase() {
+    Phase GameState::getGamePhase() const{
         return this->gamePhase;
     }
 
-    void GameState::endGame() {
-        this->gamePhase=Phase::ENDGAME;
-    }
-
-    PlayerId GameState::getCrownOwner() {
+    PlayerId GameState::getCrownOwner() const{
         return this->crownOwner;
     }
 
@@ -54,11 +38,76 @@ namespace state {
         this->crownOwner =player;
     }
 
-    std::vector<Card> drawCards (int nbToDraw) {
-
+    Player GameState::getPlayer(PlayerId playerId) const {
+        for(const Player& player : this->listOfPlayers){
+            if (player.getIdOfPlayer()==playerId){
+                return player;
+            }
+        }
+        throw std::exception();
     }
 
-    std::vector<Card> initStack (){
-        
+    PlayerId GameState::getPlaying() const {
+        return this->playing;
+    }
+
+    void GameState::setPlaying(PlayerId playerId) {
+        this->playing=playerId;
+    }
+
+    std::vector<CharacterType> GameState::getAvailableCharacter () const{
+        return this->availableCharacter;
+    }
+
+    void GameState::setAvailableCharacter (std::vector<CharacterType> listOfCharacter){
+        this->availableCharacter.clear();
+        this->availableCharacter=std::move(listOfCharacter);
+    }
+
+    void GameState::updatePlayer(Player& player) {
+        for (int i=0;i<listOfPlayers.size();i++){
+            if (player.getIdOfPlayer()==listOfPlayers[i].getIdOfPlayer()){
+                listOfPlayers[i]=player;
+                return;
+            }
+        }
+    }
+
+    std::vector<Card> GameState::getStack() const {
+        return this->stack;
+    }
+
+    CharacterType GameState::getKilledCharacter() const {
+        return this->killedCharacter;
+    }
+
+    CharacterType GameState::getRobbedCharacter() const {
+        return this->robbedCharacter;
+    }
+
+    std::vector<Card> GameState::getDrawableCards() const{
+        return this->drawableCards;
+    }
+
+    void GameState::setStack(std::vector<Card> stack) {
+        this->stack.clear();
+        this->stack=std::move(stack);
+    }
+
+    void GameState::setKilledCharacter(CharacterType character) {
+        this->killedCharacter = character;
+    }
+
+    void GameState::setDrawableCards(std::vector<Card> listOfDrawableCards) {
+        this->drawableCards.clear();
+        this->drawableCards = std::move(listOfDrawableCards);
+    }
+
+    void GameState::setRobbedCharacter(CharacterType character) {
+        this->robbedCharacter = character;
+    }
+
+    void GameState::setGamePhase(Phase newPhase) {
+        this->gamePhase=newPhase;
     }
 }

@@ -8,9 +8,7 @@ namespace render {
         this->surface.setPosition(posX, posY);
     }
 
-    InteractiveElement::~InteractiveElement(){
-        
-    }
+    InteractiveElement::~InteractiveElement()= default;
 
     sf::RectangleShape InteractiveElement::getSurface() const{
         return this->surface;

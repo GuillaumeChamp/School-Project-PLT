@@ -1,33 +1,27 @@
 // Engine.cpp
 #include "Engine.h"
-#include "Command.h"
-
-#include "Command.h"
 
 
 namespace engine {
     Engine *Engine::INSTANCE = nullptr;
 
-  // Constructor with parameter
-  Engine::Engine(state::GameState state) : currentState(state) {
-    // Other initialization if needed
-    init();
-  }
+    // Constructor with parameter
+    Engine::Engine(state::GameState &state) : currentState(state) {
+        // Other initialization if needed
+        init();
+    }
 
-  // Destructor
-  Engine::~Engine() {
-    // Clean up resources if needed
-  }
+    // Destructor
+    Engine::~Engine() = default;
 
-  // Initialization method
-  void Engine::init() {
-
-    // Perform initialization tasks here
-  }
+    void Engine::init() {
+        // Perform initialization tasks here
+    }
 
     void Engine::addCommand(Command *cmd) {
         listOfCommands.push_back(cmd);
     }
+
 
     void Engine::executeAllCommands() {
         //execute all the commands but check before
@@ -37,17 +31,16 @@ namespace engine {
             }
         }
         //free the memory
-        for (auto p: listOfCommands) {
+        for (auto p: listOfCommands){
             delete p;
         }
         listOfCommands.clear();
     }
 
-    Engine *Engine::getInstance(state::GameState &state) {
+    Engine* Engine::getInstance(state::GameState &state){
         if (!INSTANCE) {
             INSTANCE = new Engine(state);
         }
         return INSTANCE;
     }
-
 }
