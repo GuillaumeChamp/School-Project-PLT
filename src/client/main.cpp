@@ -58,10 +58,27 @@ int main(int argc, char *argv[]) {
 
         
         else if (std::strcmp(argv[1], "engine") == 0) {
-            GameState gameState=generateSampleState();
+
+            GameState gameState = generateSampleState();
+            gameState.setPlaying(PlayerId::PLAYER_A);
+            gameState.setAvailableCharacter({ASSASSIN,THIEF,MAGICIAN,KING,BISHOP,MERCHANT, ARCHITECT,WARLORD});
+
+            
             engine::Engine* gameEngine = engine::Engine::getInstance(gameState);
 
-            auto* cmd = new engine::ChooseCharacterCommand(PlayerId::PLAYER_A,CharacterType::ASSASSIN);
+            auto* cmd = new engine::ChangePhaseCommand(gameState.getPlaying(),gameState.getGamePhase());
+
+            
+            
+
+           // auto* cmd1 = new engine::StartGameCommand(PlayerId::PLAYER_A);
+            auto* cmd2 = new engine::ChooseCharacterCommand(PlayerId::PLAYER_A,CharacterType::MAGICIAN);
+
+            gameEngine->addCommand(cmd);
+            //gameEngine->addCommand(cmd1);
+            gameEngine->addCommand(cmd2);
+
+           /* auto* cmd = new engine::ChooseCharacterCommand(PlayerId::PLAYER_A,CharacterType::ASSASSIN);
             auto* cmd1(new engine::ChooseCharacterCommand(PlayerId::PLAYER_B,CharacterType::THIEF));
             auto* cmd2(new engine::ChooseCharacterCommand(PlayerId::PLAYER_C,CharacterType::MAGICIAN));
             auto* cmd3(new engine::ChooseCharacterCommand(PlayerId::PLAYER_D,CharacterType::WARLORD));
@@ -69,11 +86,10 @@ int main(int argc, char *argv[]) {
             gameEngine->addCommand(cmd);
             gameEngine->addCommand(cmd1);
             gameEngine->addCommand(cmd2);
-            gameEngine->addCommand(cmd3);
-
+            gameEngine->addCommand(cmd3);*/
+            displayState(gameState);
             gameEngine->executeAllCommands();
             displayState(gameState);
-
 
 
         }
@@ -94,6 +110,11 @@ void test(){
 }
 
 void displayState(const state::GameState& gameState) {
+    std::cout << "---------------------------------\n | Phase : " << gameState.getGamePhase()<<"\n---------------------------------"<< std::endl;
+    std::cout << "---------------------------------\n | Avaible Characters : " <<std::endl;
+    for (auto& character : gameState.getAvailableCharacter()) {
+        std::cout << " | Character : " << character;
+    }std::cout<<"\n"<<std::endl;
     for (auto& player : gameState.getListOfPlayer()) {
         std::cout << " | Name: " << player.getNameOfPlayer()
                   << " | Character: " << player.getCharacter()
@@ -109,7 +130,8 @@ void displayState(const state::GameState& gameState) {
                       << std::endl;
         }
 
-        std::cout <<"---------------------------------\n Board of "<<player.getNameOfPlayer() << std::endl;
+        std::cout <<"---------------------------------\n Board of "<<player.getNameOfPlayer() << " Size : " <<player.getBoardOfPlayer().size() << std::endl;
+        
         for (auto& card : player.getBoardOfPlayer()) {
             std::cout << " | Name : " << card.getNameOfCard()
                       << " | Color : " << card.getColorOfCard()
@@ -131,10 +153,10 @@ GameState generateSampleState() {
     Card card3{"25",CardType::COMMERCIAL,2};
 
 
-    playerA.setCharacter(CharacterType::WARLORD);
-    playerB.setCharacter(CharacterType::BISHOP);
-    playerC.setCharacter(CharacterType::MERCHANT);
-    playerD.setCharacter(CharacterType::KING);
+    playerA.setCharacter(CharacterType::NO_CHARACTER);
+    playerB.setCharacter(CharacterType::NO_CHARACTER);
+    playerC.setCharacter(CharacterType::NO_CHARACTER);
+    playerD.setCharacter(CharacterType::NO_CHARACTER);
 
     std::vector<Card> playerABoard{card1};
     std::vector<Card> playerBBoard{card2};
@@ -147,6 +169,7 @@ GameState generateSampleState() {
     playerD.setBoardOfPlayer(playerDBoard);
 
     GameState gameState {std::vector<Player>{playerA,playerB,playerC,playerD}};
+    
     return gameState;
 }
 

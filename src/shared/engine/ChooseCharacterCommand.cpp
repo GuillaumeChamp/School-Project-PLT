@@ -1,5 +1,8 @@
 // ChooseCharacterCommand.cpp
 #include "ChooseCharacterCommand.h"
+#include <vector>
+#include <iostream>
+#include <algorithm>
 
 namespace engine {
 
@@ -15,28 +18,17 @@ namespace engine {
 
     // Execute method
     void ChooseCharacterCommand::execute(state::GameState &state) {
-        /*switch (playing) {
-
-            case state::Playing::PLAYERA:
-                std::cout <<"A is a "<< characterType << std::endl;
-                break;
-
-            case state::Playing::PLAYERB:
-                std::cout <<"B is a "<< characterType <<std::endl;
-                break;
-
-              case state::Playing::PLAYERC:
-                std::cout <<"C is a "<< characterType <<std::endl;
-                break;
-
-              case state::Playing::PLAYERD:
-                std::cout <<"D is a "<< characterType <<std::endl;
-                break;
-
-            default:
-
-                break;
-        }*/
+        state::Player player = state.getPlayer(this->authorPlayer);
+        std::vector<state::CharacterType> availableCharacters = state.getAvailableCharacter();
+        availableCharacters.erase(
+            std::remove(availableCharacters.begin(), availableCharacters.end(), this->character),
+            availableCharacters.end()
+        );
+        
+        state.setAvailableCharacter(availableCharacters);
+        player.setCharacter(this->character);
+        state.updatePlayer(player);
+        
 
     }
 

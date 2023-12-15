@@ -7,6 +7,11 @@ namespace engine {
 
     // Constructor
     GainGoldCommand::GainGoldCommand(state::PlayerId authorPlayer, int nbOfGolds) : Command() {
+      
+      this->nbOfGold=nbOfGolds;
+    
+      this->authorPlayer=authorPlayer;
+
     }
 
     // Destructor
@@ -16,39 +21,18 @@ namespace engine {
     // Execute method
     void GainGoldCommand::execute(state::GameState &state) {
 
-        /*switch (playing) {
+      state::Player player = state.getPlayer(this->authorPlayer);
 
-            case state::Playing::PLAYERA:
-                std::cout <<"A : + "<<nbOfGolds<< std::endl;
-                break;
-
-            case state::Playing::PLAYERB:
-                std::cout <<"B : + "<<nbOfGolds<< std::endl;
-                break;
-
-              case state::Playing::PLAYERC:
-                std::cout <<"C : + "<<nbOfGolds<< std::endl;
-                break;
-
-              case state::Playing::PLAYERD:
-                std::cout <<"D : + "<<nbOfGolds<< std::endl;
-                break;
-
-            default:
-                // Default case if the enumeration value is not recognized
-                break;
-        }*/
+      player.setNumberOfCoins(player.getNumberOfCoins()+nbOfGold);
 
     }
 
     // Serialize method
     void GainGoldCommand::serialize() {
-
-
     }
 
     bool GainGoldCommand::check(state::GameState &state) {
-        return Command::check(state);
+          return Command::check(state);
     }
 
 
