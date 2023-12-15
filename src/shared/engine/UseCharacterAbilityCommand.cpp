@@ -127,9 +127,7 @@ namespace engine {
 
     }
 
-    void UseCharacterAbilityCommand::serialize() {
-    }
-
+    // Check method
     bool UseCharacterAbilityCommand::check(state::GameState &state) {
         return Command::check(state);
     }
