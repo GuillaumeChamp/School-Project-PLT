@@ -6,6 +6,7 @@
 
 
 namespace engine {
+    Engine *Engine::INSTANCE = nullptr;
 
   // Constructor with parameter
   Engine::Engine(state::GameState state) : currentState(state) {
@@ -20,32 +21,33 @@ namespace engine {
 
   // Initialization method
   void Engine::init() {
-    
+
     // Perform initialization tasks here
   }
 
-  // Getter for the current game state
-  state::GameState Engine::getState() {
-    return currentState;
-  }
+    void Engine::addCommand(Command *cmd) {
+        listOfCommands.push_back(cmd);
+    }
 
-  // Add a command to the list of commands
-  
-  void Engine::addCommand (std::unique_ptr<Command> cmd){
+    void Engine::executeAllCommands() {
+        //execute all the commands but check before
+        for (Command *command: listOfCommands) {
+            if (command->check(this->currentState)) {
+                command->execute(this->currentState);
+            }
+        }
+        //free the memory
+        for (auto p: listOfCommands) {
+            delete p;
+        }
+        listOfCommands.clear();
+    }
 
-    listOfCommands.push_back(std::move(cmd));
+    Engine *Engine::getInstance(state::GameState &state) {
+        if (!INSTANCE) {
+            INSTANCE = new Engine(state);
+        }
+        return INSTANCE;
+    }
 
-  }
-
-
-  void Engine::executeAllCommands(state::GameState state){
-    for (auto& cmd : listOfCommands) {
-    cmd->execute(state);
-  }
-  }
-
-
-  // Setters and Getters
-  // You can add setters and getters for other attributes as needed
-
-} // namespace engine
+}
