@@ -9,21 +9,14 @@ namespace engine {
     }
 
     // Destructor
-    EndOfTurnCommand::~EndOfTurnCommand() {
-    }
+    EndOfTurnCommand::~EndOfTurnCommand() = default;
 
     // Execute method
     void EndOfTurnCommand::execute(state::GameState &state) {
         // Switch to the next player
-        state::PlayerId currentPlayer = static_cast<state::PlayerId>(static_cast<int>(authorPlayer) + 1);
-
-        // Check if we reached the last player and wrap around to the first player
-        if (currentPlayer > state::PLAYER_D) {
-            currentPlayer = state::PLAYER_A;
-        }
-
+        auto nextPlayer = static_cast<state::PlayerId>(static_cast<int>(authorPlayer) % 4 + 1);
         // Updating the state
-        state.setPlaying(currentPlayer);
+        state.setPlaying(nextPlayer);
     }
 
     // Serialize method
