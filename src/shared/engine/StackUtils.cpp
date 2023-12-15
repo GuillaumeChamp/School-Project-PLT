@@ -9,12 +9,12 @@
 
 namespace engine {
 
-    //
-    std::vector<state::Card> StackUtils::initStack() {
-        std::string res = RES_DIR;
-        const std::string &filename = res + "cards.csv";
-        std::vector<state::Card> cards;
-        std::ifstream file(filename);
+  // Method to initialize the stack based on the csv file of all cards
+  std::vector<state::Card> StackUtils::initStack() {
+    std::string res = RES_DIR;
+    const std::string& filename = res + "cards.csv";
+    std::vector<state::Card> cards;
+    std::ifstream file(filename);
 
         if (!file.is_open()) {
             std::cerr << "Error opening file: " << filename << std::endl;

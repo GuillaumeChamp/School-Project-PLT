@@ -27,10 +27,8 @@ BOOST_FIXTURE_TEST_SUITE(s, F)
 
         state::Card card{"1", state::CardType::RELIGIOUS, 3};
 
-        auto *command = new BuildCommand(state::PLAYER_A, &card);
-        Engine *gameEngine = Engine::getInstance(gameState);
-        //Check serialized NIY
-        BOOST_CHECK_NO_THROW(command->serialize());
+    auto* command= new BuildCommand(state::PLAYER_A,&card);
+    Engine* gameEngine = Engine::getInstance(gameState);
 
         //Command not executed because not my turn
         BOOST_CHECK_EQUAL(command->check(gameState), false);

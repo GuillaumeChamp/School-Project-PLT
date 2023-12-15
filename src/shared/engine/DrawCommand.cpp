@@ -37,10 +37,7 @@ namespace engine {
         state.updatePlayer(player);
     }
 
-    // Serialize method
-    void DrawCommand::serialize() {
-    }
-
+    // Check method
     bool DrawCommand::check(state::GameState &state) {
         return Command::check(state) && state.getPlayer(authorPlayer).isDrawAvailable();
     }

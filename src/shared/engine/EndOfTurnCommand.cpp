@@ -19,10 +19,7 @@ namespace engine {
         state.setPlaying(nextPlayer);
     }
 
-    // Serialize method
-    void EndOfTurnCommand::serialize() {
-    }
-
+    // Check method
     bool EndOfTurnCommand::check(state::GameState &state) {
         return Command::check(state);
     }

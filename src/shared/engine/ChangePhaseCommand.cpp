@@ -16,6 +16,7 @@ namespace engine {
     void ChangePhaseCommand::execute(state::GameState &state) {
     }
 
+    // Check method
     bool ChangePhaseCommand::check(state::GameState &state) {
         return Command::check(state);
     }
