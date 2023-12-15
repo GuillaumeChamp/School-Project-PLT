@@ -1,3 +1,4 @@
+include(ExternalProject)
 
 set(lib_server_target server_static)
 
@@ -12,21 +13,29 @@ list(REMOVE_ITEM server_sources "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
 add_library(${lib_server_target} STATIC ${server_sources} ${jsoncpp_sources})
 add_dependencies(${lib_server_target} generate-headers)
 target_include_directories(${lib_server_target} PUBLIC
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${jsoncpp_include_dir}
-  )
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${jsoncpp_include_dir}
+)
+
+target_link_libraries(${lib_server_target} PRIVATE
+        ${CMAKE_SOURCE_DIR}/extern/restbed/${CMAKE_BUILD_TYPE}/library/librestbed.so.4.7
+
+)
 target_link_libraries(${lib_server_target} PUBLIC
-  ${MHD_LIBRARY}
-  $<TARGET_NAME:shared_static>
-  )
+        ${CMAKE_SOURCE_DIR}/extern/restbed/${CMAKE_BUILD_TYPE}/include/
+)
+
 
 # Compile "server" executable
 set(server_target server)
 add_executable(${server_target} main.cpp)
-target_link_libraries(${server_target} ${lib_server_target})
-if(BUILD_CODE_COVERAGE)
-  add_dependencies(code-coverage ${server_target})
-endif()
+target_link_libraries(${server_target}
+        ${lib_server_target}
+        ${CMAKE_SOURCE_DIR}/${3rd_part}/restbed/${CMAKE_BUILD_TYPE}/library/librestbed.so.4.7
+)
+if (BUILD_CODE_COVERAGE)
+    add_dependencies(code-coverage ${server_target})
+endif ()
 
 # vim: set sw=2 sts=2 et:
 
