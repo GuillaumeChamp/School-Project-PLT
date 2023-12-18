@@ -17,22 +17,9 @@ target_include_directories(${lib_server_target} PUBLIC
         ${jsoncpp_include_dir}
 )
 
-target_link_libraries(${lib_server_target} PRIVATE
-        ${CMAKE_SOURCE_DIR}/extern/restbed/${CMAKE_BUILD_TYPE}/library/librestbed.so.4.7
-
-)
-target_link_libraries(${lib_server_target} PUBLIC
-        ${CMAKE_SOURCE_DIR}/extern/restbed/${CMAKE_BUILD_TYPE}/include/
-)
-
-
 # Compile "server" executable
 set(server_target server)
 add_executable(${server_target} main.cpp)
-target_link_libraries(${server_target}
-        ${lib_server_target}
-        ${CMAKE_SOURCE_DIR}/${3rd_part}/restbed/${CMAKE_BUILD_TYPE}/library/librestbed.so.4.7
-)
 if (BUILD_CODE_COVERAGE)
     add_dependencies(code-coverage ${server_target})
 endif ()
