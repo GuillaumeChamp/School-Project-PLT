@@ -62,34 +62,21 @@ int main(int argc, char *argv[]) {
             GameState gameState = generateSampleState();
             gameState.setPlaying(PlayerId::PLAYER_A);
             gameState.setAvailableCharacter({ASSASSIN,THIEF,MAGICIAN,KING,BISHOP,MERCHANT, ARCHITECT,WARLORD});
-
+            gameState.setCurrentCharacter(CharacterType::ASSASSIN);
+            gameState.setGamePhase(Phase::CHOOSE_CHARACTER);
+            
             
             engine::Engine* gameEngine = engine::Engine::getInstance(gameState);
 
-            auto* cmd = new engine::ChangePhaseCommand(gameState.getPlaying(),gameState.getGamePhase());
+    
+           
+            
 
+           
             
             
-
-           // auto* cmd1 = new engine::StartGameCommand(PlayerId::PLAYER_A);
-            auto* cmd2 = new engine::ChooseCharacterCommand(PlayerId::PLAYER_A,CharacterType::MAGICIAN);
-
-            gameEngine->addCommand(cmd);
-            //gameEngine->addCommand(cmd1);
-            gameEngine->addCommand(cmd2);
-
-           /* auto* cmd = new engine::ChooseCharacterCommand(PlayerId::PLAYER_A,CharacterType::ASSASSIN);
-            auto* cmd1(new engine::ChooseCharacterCommand(PlayerId::PLAYER_B,CharacterType::THIEF));
-            auto* cmd2(new engine::ChooseCharacterCommand(PlayerId::PLAYER_C,CharacterType::MAGICIAN));
-            auto* cmd3(new engine::ChooseCharacterCommand(PlayerId::PLAYER_D,CharacterType::WARLORD));
-
-            gameEngine->addCommand(cmd);
-            gameEngine->addCommand(cmd1);
-            gameEngine->addCommand(cmd2);
-            gameEngine->addCommand(cmd3);*/
-            displayState(gameState);
-            gameEngine->executeAllCommands();
-            displayState(gameState);
+            //gameEngine->executeAllCommands();
+            //displayState(gameState);
 
 
         }

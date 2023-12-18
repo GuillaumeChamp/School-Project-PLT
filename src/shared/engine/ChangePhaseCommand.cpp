@@ -17,6 +17,8 @@ namespace engine {
 
     // Execute method
     void ChangePhaseCommand::execute(state::GameState &state) {
+      state::Player currentPlayer = state.getPlayer(authorPlayer);
+      bool win = currentPlayer.getBoardOfPlayer().size() ==8;
     
        switch (this->phase) { 
           case state::Phase::START_GAME :
@@ -28,7 +30,13 @@ namespace engine {
           case state::Phase::END_GAME:
                 break;
           case state::Phase::CALL_CHARACTER :
-                this->phase = state::Phase::CHOOSE_CHARACTER;
+                  if(win){
+                  this->phase = state::Phase::END_GAME;
+                  }
+                  else{
+                  this->phase = state::Phase::CHOOSE_CHARACTER;
+                  }
+                
                 break;
         }
         
