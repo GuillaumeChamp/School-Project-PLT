@@ -62,13 +62,7 @@ namespace engine {
 
     }
 
-    // Serialize method
-    void EndOfTurnCommand::serialize() {
-        auto nextPlayer = static_cast<state::PlayerId>(static_cast<int>(authorPlayer) % 4 + 1);
-        // Updating the state
-        state.setPlaying(nextPlayer);
 
-    }
 
     // Check method
     bool EndOfTurnCommand::check(state::GameState &state) {

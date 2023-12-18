@@ -21,9 +21,8 @@ namespace engine {
     
   } 
 
-  // Serialize method
-  void StartGameCommand::serialize() { 
-  }
+  
+  
 
   // Check method
   bool StartGameCommand::check(state::GameState& state) {
