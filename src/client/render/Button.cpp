@@ -36,6 +36,10 @@ namespace render {
                 buttonText = "Ouvre le menu d'aide";
                 IHMState::getInstance()->isHelpDisplayed=!IHMState::getInstance()->isHelpDisplayed;
                 break;
+            case ButtonType::capacity:
+                IHMState::getInstance()->isCapacityButtonPressed=!IHMState::getInstance()->isCapacityButtonPressed;
+                
+                break;
         }
         std::cout << "Clic sur le bouton : " << buttonText << std::endl;
     }
@@ -59,9 +63,16 @@ namespace render {
             case help:
                 texture.loadFromFile(res+"help.png");
                 break;
+            case capacity:
+                texture.loadFromFile(res+"help.png");
+                break;
         }
         this->surface.setTexture(&texture);
         render.draw(surface);
     }
+
+    ButtonType Button::getType() const {
+            return this->name;
+        }
 
 }

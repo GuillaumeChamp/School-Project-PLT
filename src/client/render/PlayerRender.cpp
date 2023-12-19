@@ -100,6 +100,11 @@ namespace render {
         playerName.setCharacterSize(16);
         playerName.setPosition(boardX, boardY);
 
+        //Capacity
+        if (playerToRender->getCapacityAvailability() && positionId==0){
+            
+        };
+
         //Board
         int indexOfCard =0;
         for (auto& card : playerToRender->getBoardOfPlayer()){

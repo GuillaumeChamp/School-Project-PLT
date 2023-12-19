@@ -62,4 +62,11 @@ void Player::setNumberOfCoins (int nbOfCoins) {
         return this->hand;
     }
 
+    void Player::setCapacityAvailability(bool isCapacityAvailable) {
+        this->isCapacityAvailable=isCapacityAvailable;
+    }
+
+    bool Player::getCapacityAvailability(){
+        return this->isCapacityAvailable;
+    }
 }

@@ -17,8 +17,8 @@ namespace render {
         listOfButtons.emplace_back(ButtonType::bank, 700, 350);
         listOfButtons.emplace_back(ButtonType::draw, 900, 350);
         listOfButtons.emplace_back(ButtonType::endOfTurn, 780, 500);
-        //listOfButtons.emplace_back(ButtonType::hand, 1500,850);
-        listOfButtons.emplace_back(ButtonType::hand, 600, 300);
+        listOfButtons.emplace_back(ButtonType::hand, 1450,850);
+        //listOfButtons.emplace_back(ButtonType::hand, 600, 300);
         listOfButtons.emplace_back(ButtonType::help, 1500, 50);
 
         //Background
@@ -127,14 +127,7 @@ namespace render {
             window.draw(cardIcon);
         }
 
-
-
-        // Affichage des boutons
-        for (auto &button: listOfButtons) {
-            button.draw(window);
-        }
-
-
+        
 
         //Affichage des cartes des joueurs
 
@@ -146,7 +139,7 @@ namespace render {
 
         for (int i = 0; i < 3; i++) {
             idOfSceneOwner++;
-            idOfSceneOwner > 4 ? 1 : idOfSceneOwner;
+            idOfSceneOwner = idOfSceneOwner > 4 ? 1 : idOfSceneOwner;
             for (auto &player2: listOfPlayer) {
                 if (player2.getIdOfPlayer() == idOfSceneOwner) {
                     listOfPlayerOrder.push_back(player2);
@@ -185,6 +178,42 @@ namespace render {
             i++;
         }
 
+
+        //Capacity button
+        
+        state::Player currentPlayer = listOfPlayerOrder[0];
+        bool found=false;
+
+        for(const auto& button: listOfButtons){
+            if(button.name==capacity){
+                found=true;
+            }
+        }
+
+        if (currentPlayer.getCapacityAvailability() && !found){
+            listOfButtons.emplace_back(ButtonType::capacity, 1500, 750);
+
+        }
+
+        if (!currentPlayer.getCapacityAvailability() && found){
+            for (auto it = listOfButtons.begin(); it != listOfButtons.end();) {
+                if (it->name == capacity) {
+                    it = listOfButtons.erase(it);
+                } else {
+                    ++it;
+                }
+            }
+        }
+        
+        
+        // Affichage des boutons 
+        for (auto& button : listOfButtons) {
+            button.draw(window);
+        }
+
+        
+
+
         //IDF
         const char *CharacterTypeString[] = {
                 "Assassin",
@@ -219,7 +248,8 @@ namespace render {
         }
         if (IHMState::getInstance()->hoverButton != nullptr) {
             std::cout << "you are hover a button : " << IHMState::getInstance()->hoverButton->name << std::endl;
-            //Todo add highlight
+        
+        //Todo add highlight
 
         }
         if (IHMState::getInstance()->hoverCard != nullptr){
@@ -228,21 +258,12 @@ namespace render {
 
 
         //Choose Character
-        if (state->getGamePhase()==0 ){
-            std::vector<state::CharacterType> availableCharacter = state->getAvailableCharacter();
-            int indexFirstCharacterX = 445 + (8-availableCharacter.size())/2*90;
-            int indexFirstCharacterY = 388;
-            sf::RectangleShape characterChoiceBackground = sf::RectangleShape(sf::Vector2f(90*availableCharacter.size()+10,134));
-            characterChoiceBackground.setFillColor(sf::Color::Blue);
-            window.draw(characterChoiceBackground);
-            
-            for (auto& character : availableCharacter) {
-                std::string characterName = CharacterTypeString[character];
-                VisualCard characterCard = VisualCard(characterName, indexFirstCharacterX, indexFirstCharacterY);
-                displayedCard.push_back(characterCard);
-                }
+        if (state->getGamePhase()==0 && static_cast<int>(state->getPlaying())==static_cast<int>(sceneId)){
+            promptCharacterSelection(true, window);
         }
 
+        
+        
         // Card Zoom
         VisualCard * cardToZoom = (IHMState::getInstance()->hoverCard);
         if (cardToZoom != nullptr){
@@ -283,7 +304,13 @@ namespace render {
                     break;
                 }
             }
+            //Capacity
+            if (IHMState::getInstance()->isCapacityButtonPressed){
+                
+            }
         }
+
+        
     }
 
     void Scene::drawPlayerHand(sf::RenderWindow &window) {
@@ -296,7 +323,7 @@ namespace render {
 
         std::vector<state::Player> listOfPlayer = state->getListOfPlayer();
         for (auto &player: listOfPlayer) {
-            if (player.getIdOfPlayer() == sceneId) {
+            if (static_cast<int>(player.getIdOfPlayer()) == static_cast<int>(sceneId)) {
 
                 //Creation des cartes de la main du joueur
                 int posFirstCardHandX = 130;
@@ -310,10 +337,8 @@ namespace render {
 
                 }
             }
-
         }
     }
-
 
     void Scene::drawHelp(sf::RenderWindow &window) {
 
@@ -324,5 +349,71 @@ namespace render {
         helpMenu.setOutlineColor(sf::Color::Black);
         window.draw(helpMenu);
         window.draw(helpMenuText);
+    }
+
+    void Scene::promptCharacterSelection(bool isPartial, sf::RenderWindow& window){
+        const char *CharacterTypeString[] = {
+                "Assassin",
+                "Thief",
+                "Magician",
+                "King",
+                "Bishop",
+                "Merchant",
+                "Architect",
+                "Warlord",
+                "NoCharacter"
+        };
+        if (isPartial){
+            std::vector<state::CharacterType> availableCharacter = state->getAvailableCharacter();
+            int indexFirstCharacterX = 445 + (8-availableCharacter.size())/2*90;
+            int indexFirstCharacterY = 388;
+            sf::RectangleShape characterChoiceBackground = sf::RectangleShape(sf::Vector2f(90*availableCharacter.size()+10,134));
+            characterChoiceBackground.setFillColor(sf::Color(76, 68, 53));
+            window.draw(characterChoiceBackground);
+            int i=0;
+            for (auto& character : availableCharacter) {
+                std::string characterName = CharacterTypeString[character];
+                VisualCard characterCard = VisualCard(characterName, indexFirstCharacterX+90*i, indexFirstCharacterY);
+                i++;
+                characterCard.draw(window);
+                displayedCard.push_back(characterCard);
+                }
+        }
+        else{
+            std::vector<state::CharacterType> availableCharacter;
+            int indexFirstCharacterX = 445;
+            int indexFirstCharacterY = 388;
+            sf::RectangleShape characterChoiceBackground = sf::RectangleShape(sf::Vector2f(730,134));
+            characterChoiceBackground.setFillColor(sf::Color(76, 68, 53));
+            window.draw(characterChoiceBackground);
+            
+            for (int i=0; i<7; i++) {
+                std::string characterName = CharacterTypeString[i];
+                VisualCard characterCard = VisualCard(characterName, indexFirstCharacterX+90*i, indexFirstCharacterY);
+                i++;
+                characterCard.draw(window);
+                displayedCard.push_back(characterCard);
+                }
+        }
+
+    }
+
+    void Scene::drawCard(sf::RenderWindow& window){
+        std::vector<state::Card> drawableCards = state->getDrawableCards();
+        int posX = 760;
+        int posY = 388;
+        int i =0;
+
+        sf::RectangleShape characterChoiceBackground = sf::RectangleShape(sf::Vector2f(90*drawableCards.size()+10,134));
+        characterChoiceBackground.setFillColor(sf::Color(76, 68, 53));
+        window.draw(characterChoiceBackground);
+
+        for(auto& card: drawableCards){
+            std::string cardName=card.Card::getNameOfCard();
+            VisualCard drawableCard = VisualCard(cardName, posX+90*i, posY);
+            i++;
+            drawableCard.draw(window);
+            displayedCard.push_back(drawableCard);
+        }
     }
 }

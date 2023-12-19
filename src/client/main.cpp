@@ -130,6 +130,7 @@ GameState generateSampleState() {
     Player playerC {player3 , PlayerId::PlayerC};
     Player playerD {player4, PlayerId::PlayerD};
 
+    playerA.setCapacityAvailability(true);
     Card card1{"1",Commercial,2};
     Card card2{"2",Commercial,2};
     Card card3{"25",Commercial,2};

@@ -81,6 +81,14 @@ namespace state {
         this->availableCharacter=listOfCharacter;
     }
 
+    std::vector<Card> GameState::getDrawableCards() {
+        return this->drawableCards;
+    }
+
+    void GameState::setDrawableCards (std::vector<Card> listOfDrawableCards){
+        this->drawableCards=listOfDrawableCards;
+    }
+
     void GameState::updatePlayer(Player& player) {
         for (int i=0;i<listOfPlayers.size();i++){
             if (player.getIdOfPlayer()==listOfPlayers[i].getIdOfPlayer()){
