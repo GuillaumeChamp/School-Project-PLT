@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(TestState){
 
     Json::Value value= StateSerializer::serialize(gameState);
 
-    GameState newState = StateSerializer::unserialize(value);
+    GameState newState = StateSerializer::deserialize(value);
 }
 
 /* vim: set sw=2 sts=2 et : */
