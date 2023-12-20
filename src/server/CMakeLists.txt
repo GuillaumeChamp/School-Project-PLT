@@ -1,5 +1,3 @@
-include(ExternalProject)
-
 set(lib_server_target server_static)
 
 # Generate header files from dia UML files
@@ -17,9 +15,14 @@ target_include_directories(${lib_server_target} PUBLIC
         ${jsoncpp_include_dir}
 )
 
+target_link_libraries(${lib_server_target} PUBLIC
+        $<TARGET_NAME:shared_static>
+)
+
 # Compile "server" executable
 set(server_target server)
 add_executable(${server_target} main.cpp)
+target_link_libraries(${server_target} ${lib_server_target})
 if (BUILD_CODE_COVERAGE)
     add_dependencies(code-coverage ${server_target})
 endif ()
