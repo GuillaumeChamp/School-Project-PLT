@@ -9,7 +9,6 @@ namespace engine {
     GainGoldCommand::GainGoldCommand(state::PlayerId authorPlayer, int nbOfGolds) : Command() {
       
       this->nbOfGold=nbOfGolds;
-    
       this->authorPlayer=authorPlayer;
 
     }
@@ -24,13 +23,16 @@ namespace engine {
       state::Player player = state.getPlayer(this->authorPlayer);
 
       player.setNumberOfCoins(player.getNumberOfCoins()+nbOfGold);
+      player.setDrawAvailability(false);
+      state.updatePlayer(player);
 
     }
 
 
     // Check method
     bool GainGoldCommand::check(state::GameState &state) {
-          return Command::check(state);
+          state::Player player = state.getPlayer(this->authorPlayer);        
+          return Command::check(state) && player.isDrawAvailable();
     }
 
 

@@ -64,18 +64,17 @@ int main(int argc, char *argv[]) {
             gameState.setAvailableCharacter({ASSASSIN,THIEF,MAGICIAN,KING,BISHOP,MERCHANT, ARCHITECT,WARLORD});
             gameState.setCurrentCharacter(CharacterType::ASSASSIN);
             gameState.setGamePhase(Phase::CHOOSE_CHARACTER);
-            
-            
             engine::Engine* gameEngine = engine::Engine::getInstance(gameState);
 
-    
-           
+            std::cout<<"Phase : "<< gameState.getGamePhase()<<std::endl;
+            auto* cmd = new engine::ChooseCharacterCommand(gameState.getPlaying(),CharacterType::ASSASSIN);
             
+            gameEngine->addCommand(cmd);
 
-           
+            auto* cmd1 = new engine::ChooseCharacterCommand(gameState.getPlaying(),CharacterType::ASSASSIN);
+            gameEngine->addCommand(cmd1);
             
-            
-            //gameEngine->executeAllCommands();
+            gameEngine->executeAllCommands();
             //displayState(gameState);
 
 

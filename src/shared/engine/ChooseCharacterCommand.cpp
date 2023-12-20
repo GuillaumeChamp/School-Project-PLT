@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <iostream>
 
 namespace engine {
 
@@ -34,7 +35,15 @@ namespace engine {
 
     // Check method
     bool ChooseCharacterCommand::check(state::GameState &state) {
-        return Command::check(state);
+        state::Player player = state.getPlayer(this->authorPlayer);
+        bool characterIsAvaible;
+        bool noCharacter = state::CharacterType::NO_CHARACTER==player.getCharacter();
+        std::vector<state::CharacterType> availableCharacters = state.getAvailableCharacter();
+        auto it = std::find(availableCharacters.begin(), availableCharacters.end(), this->character);
+
+        if (it != availableCharacters.end()) { characterIsAvaible=true;} 
+        else {characterIsAvaible=false;}
+        return (Command::check(state) && characterIsAvaible && noCharacter);
     }
 
 
