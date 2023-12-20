@@ -306,11 +306,19 @@ namespace render {
             }
             //Capacity
             if (IHMState::getInstance()->isCapacityButtonPressed){
-                
+                for (auto &cards: displayedCard) {
+                    if (cards.checkClick(event.mouseButton.x, event.mouseButton.y)){
+                        printf("Capacité activée:");
+                        break;
+                    }
+                }
+                //clic sur carte perso en bas
+                if (event.mouseButton.x>=985 && event.mouseButton.x<=1065 && event.mouseButton.y>=774 && event.mouseButton.y<=898){
+                    printf("Capacité activée:");
+                    state->getPlayer();
+                }
             }
         }
-
-        
     }
 
     void Scene::drawPlayerHand(sf::RenderWindow &window) {
