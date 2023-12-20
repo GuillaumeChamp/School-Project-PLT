@@ -22,7 +22,7 @@ namespace engine {
     }
 
     bool Command::check(state::GameState &state) {
-        return authorPlayer==state.playing;
+        return authorPlayer==state.getPlaying();
     }
 
 

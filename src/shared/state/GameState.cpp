@@ -64,12 +64,8 @@ namespace state {
         this->availableCharacter=std::move(listOfCharacter);
     }
 
-    std::vector<Card> GameState::getDrawableCards() {
+    std::vector<Card> GameState::getDrawableCards() const {
         return this->drawableCards;
-    }
-
-    void GameState::setDrawableCards (std::vector<Card> listOfDrawableCards){
-        this->drawableCards=listOfDrawableCards;
     }
 
     void GameState::updatePlayer(Player& player) {
@@ -93,10 +89,6 @@ namespace state {
         return this->robbedCharacter;
     }
 
-    std::vector<Card> GameState::getDrawableCards() const{
-        return this->drawableCards;
-    }
-
     void GameState::setStack(std::vector<Card> stack) {
         this->stack.clear();
         this->stack=std::move(stack);
@@ -117,5 +109,12 @@ namespace state {
 
     void GameState::setGamePhase(Phase newPhase) {
         this->gamePhase=newPhase;
+    }
+
+    void GameState::setSubPhase (SubPhase newSubPhase){
+        this->subPhase=newSubPhase;
+    }
+    SubPhase GameState::getSubPhase (){
+        return this->subPhase;
     }
 }

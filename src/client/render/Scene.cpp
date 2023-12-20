@@ -192,12 +192,12 @@ namespace render {
             }
         }
 
-        if (currentPlayer.getCapacityAvailability() && !found){
+        if (currentPlayer.isCapacityAvailable() && !found){
             listOfButtons.emplace_back(ButtonType::capacity, 1500, 750);
 
         }
 
-        if (!currentPlayer.getCapacityAvailability() && found){
+        if (!currentPlayer.isCapacityAvailable() && found){
             for (auto it = listOfButtons.begin(); it != listOfButtons.end();) {
                 if (it->name == capacity) {
                     it = listOfButtons.erase(it);
@@ -264,7 +264,15 @@ namespace render {
             promptCharacterSelection(true, window);
         }
 
+        //Pre Draw  
+        if (state->getSubPhase() ==1){
+            drawCard(window);
+        }
         
+        //Pre Capacity  
+        if (state->getSubPhase() ==2){
+
+        }
         
         // Card Zoom
         VisualCard * cardToZoom = (IHMState::getInstance()->hoverCard);
@@ -315,10 +323,10 @@ namespace render {
                     }
                 }
                 //clic sur carte perso en bas
-                if (event.mouseButton.x>=985 && event.mouseButton.x<=1065 && event.mouseButton.y>=774 && event.mouseButton.y<=898){
-                    printf("Capacité activée:");
-                    state->getPlayer();
-                }
+                //if (event.mouseButton.x>=985 && event.mouseButton.x<=1065 && event.mouseButton.y>=774 && event.mouseButton.y<=898){
+                //    printf("Capacité activée:");
+                //    state->getPlayer();
+                //}
             }
         }
     }
@@ -344,7 +352,6 @@ namespace render {
                     std::string filename = card.getNameOfCard();
                     displayedCard.emplace_back(filename, posFirstCardHandX + 90 * i, posFirstCardHandY);
                     i++;
-
                 }
             }
         }
