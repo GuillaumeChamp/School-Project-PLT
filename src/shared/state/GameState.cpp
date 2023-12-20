@@ -4,6 +4,16 @@
 
 namespace state {
 
+    GameState::GameState(std::vector<Player> listOfPlayer) {
+        this->listOfPlayers = std::move(listOfPlayer);
+        this->currentCharacter= CharacterType::NO_CHARACTER;
+        this->crownOwner = PLAYER_A;
+        this->gamePhase = Phase::CHOOSE_CHARACTER;
+        this->playing = NO_PLAYER;
+        this->killedCharacter = NO_CHARACTER;
+        this->robbedCharacter = NO_CHARACTER;
+    }
+
     std::vector<Player> GameState::getListOfPlayer () const{
         return this->listOfPlayers;
     }
@@ -16,36 +26,8 @@ namespace state {
         return this->currentCharacter;
     }
 
-
-
-    GameState::GameState(std::vector<Player> listOfPlayer) {
-        this->listOfPlayers = std::move(listOfPlayer);
-        this->currentCharacter= CharacterType::NoCharacter;
-        this->crownOwner = PlayerA;
-        this->gamePhase = Phase::CHOOSECHARACTER;
-        this->playing = NoPlayer;
-    }
-
-    void GameState::nextGamePhase() {
-        switch (gamePhase) {
-            case Phase::CHOOSECHARACTER :
-                this->gamePhase = Phase::CALLCHARACTER;
-                break;
-            case Phase::ENDGAME:
-                break;
-            case Phase::CALLCHARACTER :
-            case STARTGAME:
-                this->gamePhase = Phase::CHOOSECHARACTER;
-                break;
-        }
-    }
-
     Phase GameState::getGamePhase() const{
         return this->gamePhase;
-    }
-
-    void GameState::endGame() {
-        this->gamePhase=Phase::ENDGAME;
     }
 
     PlayerId GameState::getCrownOwner() const{
@@ -78,7 +60,8 @@ namespace state {
     }
 
     void GameState::setAvailableCharacter (std::vector<CharacterType> listOfCharacter){
-        this->availableCharacter=listOfCharacter;
+        this->availableCharacter.clear();
+        this->availableCharacter=std::move(listOfCharacter);
     }
 
     std::vector<Card> GameState::getDrawableCards() {
@@ -96,5 +79,43 @@ namespace state {
                 return;
             }
         }
+    }
+
+    std::vector<Card> GameState::getStack() const {
+        return this->stack;
+    }
+
+    CharacterType GameState::getKilledCharacter() const {
+        return this->killedCharacter;
+    }
+
+    CharacterType GameState::getRobbedCharacter() const {
+        return this->robbedCharacter;
+    }
+
+    std::vector<Card> GameState::getDrawableCards() const{
+        return this->drawableCards;
+    }
+
+    void GameState::setStack(std::vector<Card> stack) {
+        this->stack.clear();
+        this->stack=std::move(stack);
+    }
+
+    void GameState::setKilledCharacter(CharacterType character) {
+        this->killedCharacter = character;
+    }
+
+    void GameState::setDrawableCards(std::vector<Card> listOfDrawableCards) {
+        this->drawableCards.clear();
+        this->drawableCards = std::move(listOfDrawableCards);
+    }
+
+    void GameState::setRobbedCharacter(CharacterType character) {
+        this->robbedCharacter = character;
+    }
+
+    void GameState::setGamePhase(Phase newPhase) {
+        this->gamePhase=newPhase;
     }
 }

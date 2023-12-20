@@ -52,6 +52,8 @@ namespace render {
     }
 
     Scene::~Scene() {
+        this->listOfButtons.clear();
+        this->displayedCard.clear();
     }
 
     void Scene::draw(sf::RenderWindow &window) {

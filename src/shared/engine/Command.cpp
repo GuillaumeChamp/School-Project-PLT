@@ -16,11 +16,9 @@ namespace engine {
 
     // Execute method
     void Command::execute(state::GameState &state) {
-    }
 
-    // Serialize method
-    void Command::serialize() {
-
+        // Implement the logic to execute the command on the game state
+        // You may use the 'playing' and 'card' attributes in this method
     }
 
     bool Command::check(state::GameState &state) {

@@ -4,69 +4,86 @@
 
 #include "Player.h"
 
+#include <utility>
+
 namespace state {
 
-Player::Player(std::string& name, state::PlayerId id){
-    this->nameOfPlayer = name;
-    this->playerId = id;
-    this->numberOfCoins = 2;
-    this->character = CharacterType::NoCharacter;
-}
+    Player::Player(std::string name, state::PlayerId id) {
+        this->nameOfPlayer = std::move(name);
+        this->playerId = id;
+        this->numberOfCoins = 2;
+        this->character = CharacterType::NO_CHARACTER;
+        this->capacityAvailable = false;
+        this->drawAvailable = false;
+    }
 
-Player::~Player()= default;
+    Player::~Player() {
+        this->hand.clear();
+        this->board.clear();
+    }
 
-std::string Player::getNameOfPlayer() const{
-    return this->nameOfPlayer;
-}
+    std::string Player::getNameOfPlayer() const {
+        return this->nameOfPlayer;
+    }
 
-std::vector<Card> Player::getBoardOfPlayer() const{
-    return this->board;
-}
+    std::vector<Card> Player::getBoardOfPlayer() const {
+        return this->board;
+    }
 
-int Player::getNumberOfCoins() const{
-    return this->numberOfCoins;
-}
+    int Player::getNumberOfCoins() const {
+        return this->numberOfCoins;
+    }
 
-int Player::getNumberOfCards() const{
-    return (int) this->hand.size();
-}
+    int Player::getNumberOfCards() const {
+        return (int) this->hand.size();
+    }
 
-void Player::setBoardOfPlayer(std::vector<Card>& board) {
-    this->board.clear();
-    this->board = board;
-}
+    void Player::setBoardOfPlayer(std::vector<Card> board) {
+        this->board.clear();
+        this->board = std::move(board);
+    }
 
 
-void Player::setNumberOfCoins (int nbOfCoins) {
-    this->numberOfCoins = nbOfCoins;
-}
+    void Player::setNumberOfCoins(int nbOfCoins) {
+        this->numberOfCoins = nbOfCoins;
+    }
 
-    PlayerId Player::getIdOfPlayer() const{
+    PlayerId Player::getIdOfPlayer() const {
         return this->playerId;
     }
 
-    CharacterType Player::getCharacter() const{
+    CharacterType Player::getCharacter() const {
         return this->character;
     }
 
     void Player::setCharacter(CharacterType character) {
-        this->character=character;
+        this->character = character;
     }
 
-    void Player::setHand(std::vector<Card>& hand) {
+    void Player::setHand(std::vector<Card> hand) {
         this->hand.clear();
-        this->hand=hand;
+        this->hand = std::move(hand);
     }
 
-    std::vector<Card> Player::getHand() const{
+    std::vector<Card> Player::getHand() const {
         return this->hand;
     }
 
-    void Player::setCapacityAvailability(bool isCapacityAvailable) {
-        this->isCapacityAvailable=isCapacityAvailable;
+    bool Player::isCapacityAvailable() const {
+        return this->capacityAvailable;
     }
 
-    bool Player::getCapacityAvailability(){
-        return this->isCapacityAvailable;
+    void Player::setCapacityAvailability(bool availability) {
+        this->capacityAvailable = availability;
     }
+
+    bool Player::isDrawAvailable() const {
+        return this->drawAvailable;
+    }
+
+    void Player::setDrawAvailability(bool availability) {
+        this->drawAvailable=availability;
+    }
+
+
 }

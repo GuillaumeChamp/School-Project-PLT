@@ -2,15 +2,14 @@
 
 namespace engine {
 
-    UseCharacterAbilityCommand::UseCharacterAbilityCommand(state::PlayerId authorPlayer, state::PlayerId targetPlayer = state::NoPlayer, state::CharacterType targetCharacter = state::NoCharacter, state::Card* targetCard = nullptr){
+    UseCharacterAbilityCommand::UseCharacterAbilityCommand(state::PlayerId authorPlayer, state::PlayerId targetPlayer = state::NO_PLAYER, state::CharacterType targetCharacter = state::NO_CHARACTER, state::Card* targetCard = nullptr){
         this->authorPlayer = authorPlayer;
         this->targetPlayer = targetPlayer;
         this->targetCharacter = targetCharacter;
         this->targetCard = targetCard;
     }
 
-    UseCharacterAbilityCommand::~UseCharacterAbilityCommand() {
-    }
+    UseCharacterAbilityCommand::~UseCharacterAbilityCommand() = default;
 
     void UseCharacterAbilityCommand::execute(state::GameState& state) {
         // Getting the players corresponding to the Ids
@@ -21,25 +20,25 @@ namespace engine {
         state::CharacterType character = player.getCharacter();
 
         // Applying the character ability 
-        if (character == state::CharacterType::Assassin)
+        if (character == state::CharacterType::ASSASSIN)
         {
             state.setKilledCharacter(targetCharacter);
         }
 
 
-        else if (character == state::CharacterType::Thief)
+        else if (character == state::CharacterType::THIEF)
         {
             state.setRobbedCharacter(targetCharacter);
         }
 
 
-        else if (character == state::CharacterType::Magician)
+        else if (character == state::CharacterType::MAGICIAN)
         {
             // Getting the author player's hand
             std::vector<state::Card> authorHand = player.getHand();
 
             // He either targets a player to switch his cards with
-            if (targetPlayer != state::PlayerId::NoPlayer)
+            if (targetPlayer != state::PlayerId::NO_PLAYER)
             {
                 // Getting the target player's hand
                 std::vector<state::Card> targetHand = targeted.getHand();
@@ -59,7 +58,7 @@ namespace engine {
                 std::vector<state::Card> newHand;
 
                 // Switching the cards
-                newHand.insert(newHand.end(), stack.begin(), stack.begin() + authorHand.size());
+                newHand.insert(newHand.end(), stack.begin(), stack.begin() + (int) authorHand.size());
                 stack.insert(stack.begin(), authorHand.begin(), authorHand.end());
 
                 // Updating the state
@@ -67,23 +66,24 @@ namespace engine {
                 state.updatePlayer(player);
                 state.setStack(stack);
             }
+
         }
 
 
 
-        else if (character == state::CharacterType::King)
+        else if (character == state::CharacterType::KING)
         {
             state.setCrownOwner(authorPlayer);
         }
 
 
-        else if (character == state::CharacterType::Bishop)
+        else if (character == state::CharacterType::BISHOP)
         {
             // Nothing to do
         }
 
 
-        else if (character == state::CharacterType::Merchant)
+        else if (character == state::CharacterType::MERCHANT)
         {
             // Getting the player's coins and adding one
             int coins = player.getNumberOfCoins();
@@ -94,7 +94,7 @@ namespace engine {
         }
 
 
-        else if (character == state::CharacterType::Architect)
+        else if (character == state::CharacterType::ARCHITECT)
         {
             // Creating a DrawCommand of two cards
             auto* command = new DrawCommand(authorPlayer, 2);
@@ -102,7 +102,7 @@ namespace engine {
         }
 
 
-        else if (character == state::CharacterType::Warlord)
+        else if (character == state::CharacterType::WARLORD)
         {
             // Getting the targeted player's board
             std::vector<state::Card> targetBoard = targeted.getBoardOfPlayer();
@@ -127,9 +127,7 @@ namespace engine {
 
     }
 
-    void UseCharacterAbilityCommand::serialize() {
-    }
-
+    // Check method
     bool UseCharacterAbilityCommand::check(state::GameState &state) {
         return Command::check(state);
     }
