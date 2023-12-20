@@ -1,7 +1,8 @@
 #include <boost/test/unit_test.hpp>
 
-#include "../../src/shared/state/Player.h"
-#include "../../src/shared/state/GameState.h"
+#include "state.h"
+#include <json/json.h>
+
 
 using namespace ::state;
 
@@ -31,6 +32,10 @@ BOOST_AUTO_TEST_CASE(TestState){
 
     std::string playerName = "player1";
     Player plr{playerName, PlayerId::PLAYER_A};
+    Player plr1{playerName, PlayerId::PLAYER_B};
+    Player plr2{playerName, PlayerId::PLAYER_C};
+    Player plr3{playerName, PlayerId::PLAYER_D};
+
     BOOST_CHECK_EQUAL(plr.getNameOfPlayer(), "player1");
     BOOST_CHECK_EQUAL(plr.getIdOfPlayer(), PlayerId::PLAYER_A);
     BOOST_CHECK_EQUAL(plr.getCharacter(), CharacterType::NO_CHARACTER);
@@ -48,7 +53,7 @@ BOOST_AUTO_TEST_CASE(TestState){
 
     GameState gameState("Player1","Player2","Player3","Player4");
     gameState.setStack(hand);
-    BOOST_CHECK_EQUAL(gameState.getListOfPlayer().size(), 1);
+    BOOST_CHECK_EQUAL(gameState.getListOfPlayer().size(), 4);
     BOOST_CHECK_EQUAL(gameState.getCurrentCharacter(), CharacterType::NO_CHARACTER);
     BOOST_CHECK_EQUAL(gameState.getGamePhase(), Phase::CHOOSE_CHARACTER);
     BOOST_CHECK_EQUAL(gameState.getStack().size(),1);
@@ -63,7 +68,7 @@ BOOST_AUTO_TEST_CASE(TestState){
     BOOST_CHECK_EQUAL(gameState.getPlaying(), PLAYER_D);
 
     BOOST_CHECK_EQUAL(gameState.getPlayer(PLAYER_A).getNameOfPlayer(), plr.getNameOfPlayer());
-    BOOST_CHECK_THROW(gameState.getPlayer(PLAYER_D), std::exception);
+    BOOST_CHECK_THROW(gameState.getPlayer(NO_PLAYER), std::exception);
     BOOST_CHECK_NO_THROW(gameState.updatePlayer(plr));
 
     plr.setCapacityAvailability(true);
@@ -88,6 +93,9 @@ BOOST_AUTO_TEST_CASE(TestState){
     gameState.setGamePhase(CALL_CHARACTER);
     BOOST_CHECK_EQUAL(gameState.getGamePhase(),CALL_CHARACTER);
 
+    Json::Value value= StateSerializer::serialize(gameState);
+
+    GameState newState = StateSerializer::unserialize(value);
 }
 
 /* vim: set sw=2 sts=2 et : */
