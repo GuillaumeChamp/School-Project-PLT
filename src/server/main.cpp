@@ -30,17 +30,12 @@ namespace net = boost::asio;            // from <boost/asio.hpp>
 using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 
 state::GameState generateSampleState();
+
 state::GameState sample = generateSampleState();
-namespace my_program_state {
-    std::size_t request_count() {
-        static std::size_t count = 0;
-        return ++count;
-    }
-}
 
 class http_connection : public std::enable_shared_from_this<http_connection> {
 public:
-    explicit http_connection(tcp::socket socket): socket_(std::move(socket)) {
+    explicit http_connection(tcp::socket socket) : socket_(std::move(socket)) {
     }
 
     // Initiate the asynchronous operations associated with the connection.
@@ -57,7 +52,7 @@ private:
     beast::flat_buffer buffer_{8192};
 
     // The request message.
-    http::request<http::dynamic_body> request_;
+    http::request<http::string_body> request_;
 
     // The response message.
     http::response<http::dynamic_body> response_;
@@ -81,18 +76,43 @@ private:
                 });
     }
 
-    // Determine what needs to be done with the request message.
+    void log_command() {
+        response_.set(http::field::content_type, "text/plain");
+        if (request_.target() == "/command") {
+            std::string content =request_.body();
+            //parsing
+            auto pos = content.find(',');
+            std::string token1 = content.substr(0, pos);
+            content.erase(0, pos + 1);
+            pos = content.find(',');
+            std::string token2 = content.substr(0, pos);
+            content.erase(0, pos + 1);
+            pos = content.find(',');
+            std::string token3 = content.substr(0, pos);
+            content.erase(0, pos + 1);
+            std::cout << "source : " << token1 << " object : " << token2 << " target : " << token3 << std::endl;
+            beast::ostream(response_.body()) << "Command registered\r\n";
+        } else {
+            response_.result(http::status::not_found);
+            beast::ostream(response_.body()) << "File not found\r\n";
+        }
+    }
+
+// Determine what needs to be done with the request message.
     void process_request() {
         response_.version(request_.version());
         response_.keep_alive(false);
-
         switch (request_.method()) {
             case http::verb::get:
                 response_.result(http::status::ok);
                 response_.set(http::field::server, "Beast");
                 create_response();
                 break;
-
+            case http::verb::post:
+                response_.result(http::status::ok);
+                response_.set(http::field::server, "Beast");
+                log_command();
+                break;
             default:
                 // We return responses indicating an error if
                 // we do not recognize the request method.
@@ -110,19 +130,7 @@ private:
 
     // Construct a response message based on the program state.
     void create_response() {
-        if (request_.target() == "/count") {
-            response_.set(http::field::content_type, "text/html");
-            beast::ostream(response_.body())
-                    << "<html>\n"
-                    << "<head><title>Request count</title></head>\n"
-                    << "<body>\n"
-                    << "<h1>Request count</h1>\n"
-                    << "<p>There have been "
-                    << my_program_state::request_count()
-                    << " requests so far.</p>\n"
-                    << "</body>\n"
-                    << "</html>\n";
-        } else if (request_.target() == "/state") {
+        if (request_.target() == "/state") {
             response_.set(http::field::content_type, "application/json");
             beast::ostream(response_.body())
                     << state::StateSerializer::serialize(sample);
@@ -204,14 +212,14 @@ int main(int argc, char *argv[]) {
 }
 
 state::GameState generateSampleState() {
-    state::Player playerA {"player1", state::PlayerId::PLAYER_A};
-    state::Player playerB {"player2", state::PlayerId::PLAYER_B};
-    state::Player playerC {"player3" , state::PlayerId::PLAYER_C};
-    state::Player playerD {"player4", state::PlayerId::PLAYER_D};
+    state::Player playerA{"player1", state::PlayerId::PLAYER_A};
+    state::Player playerB{"player2", state::PlayerId::PLAYER_B};
+    state::Player playerC{"player3", state::PlayerId::PLAYER_C};
+    state::Player playerD{"player4", state::PlayerId::PLAYER_D};
 
-    state::Card card1{"1",state::CardType::COMMERCIAL,2};
-    state::Card card2{"2",state::CardType::COMMERCIAL,2};
-    state::Card card3{"25",state::CardType::COMMERCIAL,2};
+    state::Card card1{"1", state::CardType::COMMERCIAL, 2};
+    state::Card card2{"2", state::CardType::COMMERCIAL, 2};
+    state::Card card3{"25", state::CardType::COMMERCIAL, 2};
 
 
     playerA.setCharacter(state::CharacterType::WARLORD);
@@ -221,14 +229,14 @@ state::GameState generateSampleState() {
 
     std::vector<state::Card> playerABoard{card1};
     std::vector<state::Card> playerBBoard{card2};
-    std::vector<state::Card> playerCBoard{card2,card1,card3};
-    std::vector<state::Card> playerDBoard{card1,card2};
+    std::vector<state::Card> playerCBoard{card2, card1, card3};
+    std::vector<state::Card> playerDBoard{card1, card2};
 
     playerA.setBoardOfPlayer(playerABoard);
     playerB.setBoardOfPlayer(playerBBoard);
     playerC.setBoardOfPlayer(playerCBoard);
     playerD.setBoardOfPlayer(playerDBoard);
 
-    state::GameState gameState {std::vector<state::Player>{playerA,playerB,playerC,playerD}};
+    state::GameState gameState{std::vector<state::Player>{playerA, playerB, playerC, playerD}};
     return gameState;
 }
