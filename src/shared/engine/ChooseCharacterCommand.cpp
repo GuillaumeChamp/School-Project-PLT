@@ -19,8 +19,12 @@ namespace engine {
 
     // Execute method
     void ChooseCharacterCommand::execute(state::GameState &state) {
+
+        //on récupère les characters disponible pour pouvoir valider la commande
         state::Player player = state.getPlayer(this->authorPlayer);
         std::vector<state::CharacterType> availableCharacters = state.getAvailableCharacter();
+
+        //on efface de la liste des characters dispo le character selectionné par le joueur
         availableCharacters.erase(
             std::remove(availableCharacters.begin(), availableCharacters.end(), this->character),
             availableCharacters.end()
@@ -29,7 +33,6 @@ namespace engine {
         state.setAvailableCharacter(availableCharacters);
         player.setCharacter(this->character);
         state.updatePlayer(player);
-        
 
     }
 

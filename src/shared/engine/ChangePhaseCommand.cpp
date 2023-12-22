@@ -26,6 +26,17 @@ namespace engine {
                 break;
           case state::Phase::CHOOSE_CHARACTER :
                 this->phase = state::Phase::CALL_CHARACTER;
+                        
+                //penser à remettre la liste des characters dispo dans son état intiale 
+                state.setAvailableCharacter({
+                  state::CharacterType::ASSASSIN,
+                  state::CharacterType::THIEF,
+                  state::CharacterType::MAGICIAN,
+                  state::CharacterType::KING,
+                  state::CharacterType::BISHOP,
+                  state::CharacterType::MERCHANT,
+                  state::CharacterType::ARCHITECT,
+                  state::CharacterType::WARLORD});
                 break;
           case state::Phase::END_GAME:
                 break;
