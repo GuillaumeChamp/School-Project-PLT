@@ -46,21 +46,21 @@ namespace state {
         json[PHASE] = state.getGamePhase();
 
         std::vector<Card> cards = state.getStack();
-        for (int i = 0; i < cards.size(); i++) {
+        for (int i = 0; i < (int) cards.size(); i++) {
             json[STACK][i][NAME] = cards[i].getNameOfCard();
             json[STACK][i][COLOR] = cards[i].getColorOfCard();
             json[STACK][i][COST] = cards[i].getCostOfCard();
         }
 
         cards = state.getDrawableCards();
-        for (int i = 0; i < cards.size(); i++) {
+        for (int i = 0; i < (int) cards.size(); i++) {
             json[DRAW][i][NAME] = cards[i].getNameOfCard();
             json[DRAW][i][COLOR] = cards[i].getColorOfCard();
             json[DRAW][i][COST] = cards[i].getCostOfCard();
         }
 
         std::vector<CharacterType> available = state.getAvailableCharacter();
-        for (int i = 0; i < available.size(); i++) {
+        for (int i = 0; i < (int) available.size(); i++) {
             json[AVAILABLE][i] = available[i];
         }
         return json;
@@ -150,14 +150,14 @@ namespace state {
         data[PLAYER][id][COIN] = player.getNumberOfCoins();
 
         std::vector<Card> cards = player.getHand();
-        for (int i = 0; i < cards.size(); i++) {
+        for (int i = 0; i < (int) cards.size(); i++) {
             data[PLAYER][id][HAND][i][NAME] = (cards[i].getNameOfCard());
             data[PLAYER][id][HAND][i][COLOR] = (cards[i].getColorOfCard());
             data[PLAYER][id][HAND][i][COST] = (cards[i].getCostOfCard());
         }
 
         cards = player.getBoardOfPlayer();
-        for (int i = 0; i < cards.size(); i++) {
+        for (int i = 0; i < (int) cards.size(); i++) {
             data[PLAYER][id][BOARD][i][NAME] = (cards[i].getNameOfCard());
             data[PLAYER][id][BOARD][i][COLOR] = (cards[i].getColorOfCard());
             data[PLAYER][id][BOARD][i][COST] = (cards[i].getCostOfCard());
