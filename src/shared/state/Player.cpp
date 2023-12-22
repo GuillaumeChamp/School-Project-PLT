@@ -13,6 +13,7 @@ namespace state {
         this->playerId = id;
         this->numberOfCoins = 2;
         this->character = CharacterType::NO_CHARACTER;
+        this->board = {};
         this->capacityAvailable = false;
         this->drawAvailable = false;
     }

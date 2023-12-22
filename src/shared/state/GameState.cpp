@@ -4,14 +4,17 @@
 
 namespace state {
 
-    GameState::GameState(std::vector<Player> listOfPlayer) {
-        this->listOfPlayers = std::move(listOfPlayer);
-        this->currentCharacter= CharacterType::NO_CHARACTER;
-        this->crownOwner = PLAYER_A;
-        this->gamePhase = Phase::CHOOSE_CHARACTER;
-        this->playing = NO_PLAYER;
-        this->killedCharacter = NO_CHARACTER;
-        this->robbedCharacter = NO_CHARACTER;
+    GameState::GameState(std::string Name1, std::string Name2, std::string Name3, std::string Name4) {
+    
+    this->gamePhase = Phase::START_GAME;
+    
+    //création de notre liste de player
+    Player playerA {Name1 , PlayerId::PLAYER_A};
+    Player playerB {Name2, PlayerId::PLAYER_B};
+    Player playerC {Name3 , PlayerId::PLAYER_C};
+    Player playerD {Name4, PlayerId::PLAYER_D};
+    this->listOfPlayers = {playerA,playerB,playerC,playerD};
+
     }
 
     std::vector<Player> GameState::getListOfPlayer () const{
@@ -72,7 +75,7 @@ namespace state {
             }
         }
     }
-
+    
     std::vector<Card> GameState::getStack() const {
         return this->stack;
     }
@@ -110,4 +113,6 @@ namespace state {
     void GameState::setGamePhase(Phase newPhase) {
         this->gamePhase=newPhase;
     }
+
+    
 }
