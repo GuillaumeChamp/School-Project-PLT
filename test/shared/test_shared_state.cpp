@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(TestState) {
     BOOST_CHECK_EQUAL(plr.getNumberOfCards(), 1);
     plr.setNumberOfCoins(5);
     BOOST_CHECK_EQUAL(plr.getNumberOfCoins(), 5);
-    std::vector<Card> board;
+    std::vector<Card> board{cardCommercial,cardReligious};
     plr.setBoardOfPlayer(board);
     BOOST_CHECK_EQUAL(plr.getBoardOfPlayer().size(), board.size());
     plr.setCharacter(CharacterType::WARLORD);

@@ -138,6 +138,7 @@ namespace state {
             int cost = data[PLAYER][id][BOARD][i][COST].asInt();
             int color = data[PLAYER][id][BOARD][i][COLOR].asInt();
             board.emplace_back(name, static_cast<state::CardType>(color), cost);
+            i++;
         }
         player.setBoardOfPlayer(board);
         return player;
