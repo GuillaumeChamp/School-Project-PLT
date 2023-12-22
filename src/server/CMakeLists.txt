@@ -1,4 +1,3 @@
-
 set(lib_server_target server_static)
 
 # Generate header files from dia UML files
@@ -12,21 +11,21 @@ list(REMOVE_ITEM server_sources "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
 add_library(${lib_server_target} STATIC ${server_sources} ${jsoncpp_sources})
 add_dependencies(${lib_server_target} generate-headers)
 target_include_directories(${lib_server_target} PUBLIC
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${jsoncpp_include_dir}
-  )
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${jsoncpp_include_dir}
+)
+
 target_link_libraries(${lib_server_target} PUBLIC
-  ${MHD_LIBRARY}
-  $<TARGET_NAME:shared_static>
-  )
+        $<TARGET_NAME:shared_static>
+)
 
 # Compile "server" executable
 set(server_target server)
 add_executable(${server_target} main.cpp)
 target_link_libraries(${server_target} ${lib_server_target})
-if(BUILD_CODE_COVERAGE)
-  add_dependencies(code-coverage ${server_target})
-endif()
+if (BUILD_CODE_COVERAGE)
+    add_dependencies(code-coverage ${server_target})
+endif ()
 
 # vim: set sw=2 sts=2 et:
 

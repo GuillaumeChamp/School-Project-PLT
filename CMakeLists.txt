@@ -32,7 +32,6 @@ IF(CMAKE_COMPILER_IS_GNUCC)
 ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 
-
 # Add code coverage support for Gcov using GCC
 set(BUILD_CODE_COVERAGE ON CACHE BOOL
   "Set BUILD_CODE_COVERAGE to OFF to disable code coverage")
@@ -116,7 +115,7 @@ find_library(
 # Add source subdirectories
 add_subdirectory(src/shared)
 add_subdirectory(src/client)
-#add_subdirectory(src/server)
+add_subdirectory(src/server)
 
 # Rapport generation
 add_subdirectory(rapport)
@@ -131,6 +130,7 @@ if(BUILD_TESTING)
   # Include tests scripts
   add_subdirectory(test)
 endif()
+
 
 # vim: set sw=2 sts=2 et:
 
