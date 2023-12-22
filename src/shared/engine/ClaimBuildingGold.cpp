@@ -7,6 +7,7 @@ namespace engine {
   // Constructor
   ClaimBuildingGold::ClaimBuildingGold(state::PlayerId authorPlayer) {
     this->authorPlayer=authorPlayer;
+      this->targetPlayer = authorPlayer;
   }
 
   // Destructor
@@ -64,8 +65,8 @@ namespace engine {
   }
 
   // Check method
-  bool check (state::GameState& state) {
-    
+  bool ClaimBuildingGold::check (state::GameState& state) {
+      return Command::check(state);
   }
 
 } // namespace engine

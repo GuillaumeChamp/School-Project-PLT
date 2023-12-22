@@ -50,11 +50,11 @@ BOOST_AUTO_TEST_CASE(TestState) {
     plr.setCharacter(CharacterType::WARLORD);
     BOOST_CHECK_EQUAL(plr.getCharacter(), CharacterType::WARLORD);
 
-    GameState gameState("Player1","Player2","Player3","Player4");
+    GameState gameState(std::vector<Player>{plr,plr1,plr2,plr3});
     gameState.setStack(hand);
     BOOST_CHECK_EQUAL(gameState.getListOfPlayer().size(), 4);
     BOOST_CHECK_EQUAL(gameState.getCurrentCharacter(), CharacterType::NO_CHARACTER);
-    BOOST_CHECK_EQUAL(gameState.getGamePhase(), Phase::CHOOSE_CHARACTER);
+    BOOST_CHECK_EQUAL(gameState.getGamePhase(), Phase::START_GAME);
     BOOST_CHECK_EQUAL(gameState.getStack().size(), 1);
 
     gameState.setCrownOwner(PlayerId::PLAYER_A);
