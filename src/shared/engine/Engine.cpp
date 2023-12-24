@@ -5,7 +5,6 @@
 namespace engine {
     Engine *Engine::INSTANCE = nullptr;
 
-    // Constructor with parameter
     Engine::Engine(state::GameState &state) : currentState(state) {
         // Other initialization if needed
         init();
@@ -26,18 +25,18 @@ namespace engine {
     void Engine::executeAllCommands() {
         //execute all the commands but check before
         for (Command *command: listOfCommands) {
-            if (command->check(this->currentState)) {
-                command->execute(this->currentState);
+            if (command->check(currentState)) {
+                command->execute(currentState);
             }
         }
-        //free the memory
-        for (auto p: listOfCommands){
+        //free the memory with processed command
+        for (auto p: listOfCommands) {
             delete p;
         }
         listOfCommands.clear();
     }
 
-    Engine* Engine::getInstance(state::GameState &state){
+    Engine *Engine::getInstance(state::GameState &state) {
         if (!INSTANCE) {
             INSTANCE = new Engine(state);
         }
