@@ -12,7 +12,7 @@ namespace engine {
     }
 
     // Destructor
-    BuildCommand::~BuildCommand() = default;
+    BuildCommand::~BuildCommand() = default; //no need to delete card (cause double free)
 
     // Execute method
     void BuildCommand::execute(state::GameState &state) {
@@ -21,12 +21,10 @@ namespace engine {
 
         // Remove the card
         std::vector<state::Card> hand = player.getHand();
-        for (auto i = hand.begin(); i < hand.end(); i++) {
-            if (hand[i - hand.begin()].getNameOfCard() == card->getNameOfCard()) {
-                hand.erase(i);
-                break;
-            }
-        }
+        hand.erase(std::remove_if(hand.begin(), hand.end(), [this](const state::Card &o) {
+                       return o.getNameOfCard() == this->card->getNameOfCard();
+                   }),
+                   hand.end());
         player.setHand(hand);
 
         // Update coins
@@ -44,37 +42,24 @@ namespace engine {
 
     // Check method
     bool BuildCommand::check(state::GameState &state) {
-        if (!Command::check(state)){
-            return false;
-        }
         state::Player player = state.getPlayer(authorPlayer);
 
-        // Check if the player owns the card
+        // find the card in player hand
         std::vector<state::Card> hand = player.getHand();
-        bool found = false;
-        for (auto i = hand.begin(); i < hand.end(); i++) {
-            if (hand[i - hand.begin()].getNameOfCard() == card->getNameOfCard()) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) return false; // If the player doesn't own the card, return
+        auto indexOfCard = std::find_if(hand.begin(), hand.end(), [this](const state::Card &c) {
+            return c.getNameOfCard() == this->card->getNameOfCard();
+        });
 
-        //  Check if the player hasn't already built the same card
+        //  find the card in player board (using name)
         std::vector<state::Card> board = player.getBoardOfPlayer();
-        for (const state::Card &c: board) {
-            if (c.getNameOfCard() == card->getNameOfCard()) {
-                return false; // If he did, return
-            }
-        }
+        auto indexOfCardInBoard = std::find_if(board.begin(), board.end(), [this](const state::Card &c) {
+            return c.getNameOfCard() == this->card->getNameOfCard();
+        });
 
-        // Check if the player has enough coins
-        if (player.getNumberOfCoins() < card->getCostOfCard()) {
-            return false;
-        }
-
-        return true;
+        return Command::check(state)
+               && indexOfCard != hand.end() //is player have the card in hand
+               && indexOfCardInBoard == board.end() // is the player not already built this building
+               && player.getNumberOfCoins() >= card->getCostOfCard(); //is the player can pay the card
     }
-
 
 }

@@ -39,9 +39,9 @@ namespace state {
         return (int) this->hand.size();
     }
 
-    void Player::setBoardOfPlayer(std::vector<Card> board) {
+    void Player::setBoardOfPlayer(std::vector<Card> newBoard) {
         this->board.clear();
-        this->board = std::move(board);
+        this->board = std::move(newBoard);
     }
 
 
@@ -57,13 +57,13 @@ namespace state {
         return this->character;
     }
 
-    void Player::setCharacter(CharacterType character) {
-        this->character = character;
+    void Player::setCharacter(CharacterType newCharacter) {
+        this->character = newCharacter;
     }
 
-    void Player::setHand(std::vector<Card> hand) {
+    void Player::setHand(std::vector<Card> newHand) {
         this->hand.clear();
-        this->hand = std::move(hand);
+        this->hand = std::move(newHand);
     }
 
     std::vector<Card> Player::getHand() const {

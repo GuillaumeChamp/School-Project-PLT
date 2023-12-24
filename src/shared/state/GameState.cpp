@@ -8,18 +8,25 @@ namespace state {
         this->gamePhase = Phase::START_GAME;
         this->listOfPlayers = std::move(players);
         this->currentCharacter = CharacterType::NO_CHARACTER;
+        this->playing=NO_PLAYER;
+        this->crownOwner= NO_PLAYER;
+        this->killedCharacter=NO_CHARACTER;
+        this->robbedCharacter=NO_CHARACTER;
     }
 
     GameState::GameState(std::string Name1, std::string Name2, std::string Name3, std::string Name4) {
         this->gamePhase = Phase::START_GAME;
         this->currentCharacter = CharacterType::NO_CHARACTER;
         //création de notre liste de player
-        Player playerA{Name1, PlayerId::PLAYER_A};
-        Player playerB{Name2, PlayerId::PLAYER_B};
-        Player playerC{Name3, PlayerId::PLAYER_C};
-        Player playerD{Name4, PlayerId::PLAYER_D};
+        Player playerA{std::move(Name1), PlayerId::PLAYER_A};
+        Player playerB{std::move(Name2), PlayerId::PLAYER_B};
+        Player playerC{std::move(Name3), PlayerId::PLAYER_C};
+        Player playerD{std::move(Name4), PlayerId::PLAYER_D};
         this->listOfPlayers = {playerA, playerB, playerC, playerD};
-
+        this->crownOwner= NO_PLAYER;
+        this->playing=NO_PLAYER;
+        this->killedCharacter=NO_CHARACTER;
+        this->robbedCharacter=NO_CHARACTER;
     }
 
     std::vector<Player> GameState::getListOfPlayer() const {
@@ -73,9 +80,9 @@ namespace state {
     }
 
     void GameState::updatePlayer(Player &player) {
-        for (int i = 0; i < (int) listOfPlayers.size(); i++) {
-            if (player.getIdOfPlayer() == listOfPlayers[i].getIdOfPlayer()) {
-                listOfPlayers[i] = player;
+        for (auto & p : listOfPlayers) {
+            if (player.getIdOfPlayer() == p.getIdOfPlayer()) {
+                p = player;
                 return;
             }
         }
@@ -98,9 +105,9 @@ namespace state {
         return this->drawableCards;
     }
 
-    void GameState::setStack(std::vector<Card> stack) {
+    void GameState::setStack(std::vector<Card> newStack) {
         this->stack.clear();
-        this->stack = std::move(stack);
+        this->stack = std::move(newStack);
     }
 
     void GameState::setKilledCharacter(CharacterType character) {
