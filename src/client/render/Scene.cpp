@@ -298,7 +298,7 @@ namespace render {
 
         std::vector<state::Player> listOfPlayer = state->getListOfPlayer();
         for (auto &player: listOfPlayer) {
-            if (player.getIdOfPlayer() == sceneId) {
+            if ((int)player.getIdOfPlayer() == sceneId) {
 
                 //Creation des cartes de la main du joueur
                 int posFirstCardHandX = 130;

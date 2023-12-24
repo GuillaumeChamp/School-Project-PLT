@@ -33,7 +33,7 @@ namespace engine {
             line.erase(0, pos + 1);
 
             pos = line.find(',');
-            name = line.substr(0, pos);
+            line.substr(0, pos);
             line.erase(0, pos + 1);
 
             pos = line.find(',');

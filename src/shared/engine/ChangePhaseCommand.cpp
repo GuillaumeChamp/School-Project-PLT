@@ -5,6 +5,9 @@ namespace engine {
 
     // Constructor
     ChangePhaseCommand::ChangePhaseCommand(state::PlayerId authorPlayer, state::Phase phase) {
+      this->authorPlayer=authorPlayer;
+      this->phase=phase;
+      
 
     }
 
@@ -14,6 +17,42 @@ namespace engine {
 
     // Execute method
     void ChangePhaseCommand::execute(state::GameState &state) {
+      state::Player currentPlayer = state.getPlayer(authorPlayer);
+      bool win = currentPlayer.getBoardOfPlayer().size() ==8;
+    
+       switch (this->phase) { 
+          case state::Phase::START_GAME :
+                this->phase = state::Phase::CHOOSE_CHARACTER;
+                break;
+          case state::Phase::CHOOSE_CHARACTER :
+                this->phase = state::Phase::CALL_CHARACTER;
+                        
+                //penser à remettre la liste des characters dispo dans son état intiale 
+                state.setAvailableCharacter({
+                  state::CharacterType::ASSASSIN,
+                  state::CharacterType::THIEF,
+                  state::CharacterType::MAGICIAN,
+                  state::CharacterType::KING,
+                  state::CharacterType::BISHOP,
+                  state::CharacterType::MERCHANT,
+                  state::CharacterType::ARCHITECT,
+                  state::CharacterType::WARLORD});
+                break;
+          case state::Phase::END_GAME:
+                break;
+          case state::Phase::CALL_CHARACTER :
+                  if(win){
+                  this->phase = state::Phase::END_GAME;
+                  }
+                  else{
+                  this->phase = state::Phase::CHOOSE_CHARACTER;
+                  }
+                
+                break;
+        }
+        
+        state.setGamePhase(this->phase);
+      
     }
 
     // Check method

@@ -7,10 +7,10 @@ using namespace ::engine;
 
 
 struct F {
-    F() : gameState({{"player1", state::PlayerId::PLAYER_A},
-                     {"player2", state::PlayerId::PLAYER_B},
-                     {"player3", state::PlayerId::PLAYER_C},
-                     {"player4", state::PlayerId::PLAYER_D}}) { BOOST_TEST_MESSAGE("setup fixture"); }
+    F() : gameState("player1",
+                     "player2",
+                     "player3",
+                     "player4") { BOOST_TEST_MESSAGE("setup fixture"); }
 
     ~F() { BOOST_TEST_MESSAGE("teardown fixture"); }
 
