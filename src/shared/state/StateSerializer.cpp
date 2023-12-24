@@ -45,18 +45,20 @@ Json::Value state::StateSerializer::serialize(GameState &state) {
     json[CURRENT] = state.getCurrentCharacter();
     json[PHASE] = state.getGamePhase();
 
-    std::vector<Card> cards = state.getStack();
+    std::list<Card> cards = state.getStack();
     for (int i = 0; i < (int) cards.size(); i++) {
-        json[STACK][i][NAME] = cards[i].getNameOfCard();
-        json[STACK][i][COLOR] = cards[i].getColorOfCard();
-        json[STACK][i][COST] = cards[i].getCostOfCard();
+        auto it = cards.begin();
+        std::advance(it,i);
+        json[STACK][i][NAME] = it->getNameOfCard();
+        json[STACK][i][COLOR] = it->getColorOfCard();
+        json[STACK][i][COST] = it->getCostOfCard();
     }
 
-    cards = state.getDrawableCards();
+    auto cardsDraw = state.getDrawableCards();
     for (int i = 0; i < (int) cards.size(); i++) {
-        json[DRAW][i][NAME] = cards[i].getNameOfCard();
-        json[DRAW][i][COLOR] = cards[i].getColorOfCard();
-        json[DRAW][i][COST] = cards[i].getCostOfCard();
+        json[DRAW][i][NAME] = cardsDraw[i].getNameOfCard();
+        json[DRAW][i][COLOR] = cardsDraw[i].getColorOfCard();
+        json[DRAW][i][COST] = cardsDraw[i].getCostOfCard();
     }
 
     std::vector<CharacterType> available = state.getAvailableCharacter();
@@ -82,7 +84,7 @@ GameState state::StateSerializer::deserialize(Json::Value &data) {
     object.setGamePhase(static_cast<Phase>(data[PHASE].asInt()));
 
     //stack
-    std::vector<Card> stack;
+    std::list<Card> stack;
     int i = 0;
     while (!data[STACK][i].isNull()) {
         std::string cardString = data[STACK][i][NAME].asString();

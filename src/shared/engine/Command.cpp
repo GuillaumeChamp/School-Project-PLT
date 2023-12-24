@@ -4,7 +4,11 @@
 namespace engine {
 
     // Constructor
-    Command::Command() = default;
+    Command::Command(){
+        this->targetPlayer=state::NO_PLAYER;
+        this->authorPlayer=state::NO_PLAYER;
+        this->commandTypeId =CommandTypeId::SWITCH_PHASE; //bancale
+    };
 
     // Destructor
     Command::~Command() = default;

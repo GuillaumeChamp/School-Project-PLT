@@ -54,12 +54,21 @@ namespace engine {
             else // or if he didn't target any character, he switches his cards with the stack
             {
                 // Getting the current stack and initializing a new hand for the player
-                std::vector<state::Card> stack = state.getStack();
+                std::list<state::Card> stack = state.getStack();
                 std::vector<state::Card> newHand;
 
-                // Switching the cards
-                newHand.insert(newHand.end(), stack.begin(), stack.begin() + (int) authorHand.size());
-                stack.insert(stack.begin(), authorHand.begin(), authorHand.end());
+                // Switching the cards from stack to new hand
+                for(int i=0;i<authorHand.size();i++){
+                    state::Card card = stack.back();
+                    authorHand.pop_back();
+                    newHand.push_back(card);
+                }
+                // Switching the cards from old hand to stack
+                for(int i=0;i<authorHand.size();i++){
+                    state::Card card = authorHand.back();
+                    authorHand.pop_back();
+                    stack.push_back(card);
+                }
 
                 // Updating the state
                 player.setHand(newHand);
