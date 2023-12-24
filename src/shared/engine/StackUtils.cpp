@@ -3,18 +3,19 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-#include <ctime>
+#include <random>
 #include "config.h"
 #include "StackUtils.h"
+#include <functional> //needed for shuffle manipulation from list to vect
 
 namespace engine {
 
-  // Method to initialize the stack based on the csv file of all cards
-  std::vector<state::Card> StackUtils::initStack() {
-    std::string res = RES_DIR;
-    const std::string& filename = res + "cards.csv";
-    std::vector<state::Card> cards;
-    std::ifstream file(filename);
+    // Method to initialize the stack based on the csv file of all cards
+    std::list<state::Card> StackUtils::initStack() {
+        std::string res = RES_DIR;
+        const std::string &filename = res + "cards.csv";
+        std::list<state::Card> cards;
+        std::ifstream file(filename);
 
         if (!file.is_open()) {
             std::cerr << "Error opening file: " << filename << std::endl;
@@ -67,10 +68,15 @@ namespace engine {
                 cards.push_back(card);
             }
         }
-
-        std::srand(static_cast<unsigned int>(std::time(nullptr)));
-        std::random_shuffle(cards.begin(), cards.end());
-
+        // create a vector of (wrapped) references to elements in the list
+        // http://en.cppreference.com/w/cpp/utility/functional/reference_wrapper
+        std::vector<std::reference_wrapper<const state::Card> > vec(cards.cbegin(), cards.cend());
+        // shuffle (the references in) the vector
+        std::shuffle(vec.begin(), vec.end(), std::mt19937{std::random_device{}()});
+        // copy the shuffled sequence into a new list
+        std::list<state::Card> shuffled_list{vec.begin(), vec.end()};
+        // swap the old list with the shuffled list
+        cards.swap(shuffled_list);
 
         file.close();
 

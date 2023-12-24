@@ -89,7 +89,7 @@ void GameState::updatePlayer(Player &player) {
     throw std::exception();
 }
 
-std::vector<Card> GameState::getStack() const {
+std::list<Card> GameState::getStack() const {
     return this->stack;
 }
 
@@ -105,7 +105,7 @@ std::vector<Card> GameState::getDrawableCards() const {
     return this->drawableCards;
 }
 
-void GameState::setStack(std::vector<Card> newStack) {
+void GameState::setStack(std::list<Card> newStack) {
     this->stack.clear();
     this->stack = std::move(newStack);
 }
