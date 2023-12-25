@@ -16,7 +16,7 @@ namespace engine {
     void PlayCardCommand::execute(state::GameState& state) {
         // 
         auto* command = new ChooseCardCommand(authorPlayer, card);
-        Engine::getInstance(state)->addCommand(command);
+        Engine::getInstance(state).addCommand(command);
     }
 
     // Check method
