@@ -3,12 +3,12 @@
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
-#include <state.h>
 #include "render.h"
 #include "engine.h"
 
 using namespace std;
 using namespace state;
+using namespace engine;
 
 void test();
 void generateSampleState(state::GameState& gameStateSample);
@@ -60,11 +60,9 @@ int main(int argc, char *argv[]) {
 
             state::GameState gameState("Simon","Karl","Nordine","Guillaume"); 
 
-            engine::Engine* gameEngine = engine::Engine::getInstance(gameState);
-
             auto* startGameCmd = new engine::StartGameCommand(gameState.getPlaying());
-            gameEngine->addCommand(startGameCmd);
-            gameEngine->executeAllCommands();
+            Engine::getInstance(gameState).addCommand(startGameCmd);
+            Engine::getInstance(gameState).executeAllCommands();
 
             generateSampleState(gameState);
 
