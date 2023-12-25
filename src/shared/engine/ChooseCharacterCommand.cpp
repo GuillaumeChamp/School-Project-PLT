@@ -1,53 +1,46 @@
 // ChooseCharacterCommand.cpp
 #include "ChooseCharacterCommand.h"
-#include <vector>
-#include <iostream>
-#include <algorithm>
-#include <iostream>
+#include "algorithm"
 
-namespace engine {
+using namespace engine;
 
-    // Constructor
-    ChooseCharacterCommand::ChooseCharacterCommand(state::PlayerId authorPlayer, state::CharacterType characterType)
-            : Command() {
-        this->authorPlayer = authorPlayer;
-        this->character = characterType;
-    }
+// Constructor
+ChooseCharacterCommand::ChooseCharacterCommand(state::PlayerId authorPlayer, state::CharacterType characterType)
+        : Command() {
+    this->authorPlayer = authorPlayer;
+    this->character = characterType;
+    this->commandTypeId = CommandTypeId::CHOOSE_CHARACTER;
+}
 
-    // Destructor
-    ChooseCharacterCommand::~ChooseCharacterCommand() = default;
+// Destructor
+ChooseCharacterCommand::~ChooseCharacterCommand() = default;
 
-    // Execute method
-    void ChooseCharacterCommand::execute(state::GameState &state) {
+// Execute method
+void ChooseCharacterCommand::execute(state::GameState &state) {
+    //recover player and list of remaining character
+    state::Player player = state.getPlayer(this->authorPlayer);
+    std::vector<state::CharacterType> availableCharacters = state.getAvailableCharacter();
 
-        //on récupère les characters disponible pour pouvoir valider la commande
-        state::Player player = state.getPlayer(this->authorPlayer);
-        std::vector<state::CharacterType> availableCharacters = state.getAvailableCharacter();
-
-        //on efface de la liste des characters dispo le character selectionné par le joueur
-        availableCharacters.erase(
+    player.setCharacter(this->character);
+    //Remove the selected character
+    availableCharacters.erase(
             std::remove(availableCharacters.begin(), availableCharacters.end(), this->character),
             availableCharacters.end()
-        );
-        
-        state.setAvailableCharacter(availableCharacters);
-        player.setCharacter(this->character);
-        state.updatePlayer(player);
+    );
 
-    }
+    //update the state
+    state.setAvailableCharacter(availableCharacters);
+    state.updatePlayer(player);
+}
 
-    // Check method
-    bool ChooseCharacterCommand::check(state::GameState &state) {
-        state::Player player = state.getPlayer(this->authorPlayer);
-        bool characterIsAvaible;
-        bool noCharacter = state::CharacterType::NO_CHARACTER==player.getCharacter();
-        std::vector<state::CharacterType> availableCharacters = state.getAvailableCharacter();
-        auto it = std::find(availableCharacters.begin(), availableCharacters.end(), this->character);
+// Check method
+bool ChooseCharacterCommand::check(state::GameState &state) {
+    state::Player player = state.getPlayer(this->authorPlayer);
+    std::vector<state::CharacterType> availableCharacters = state.getAvailableCharacter();
 
-        if (it != availableCharacters.end()) { characterIsAvaible=true;} 
-        else {characterIsAvaible=false;}
-        return (Command::check(state) && characterIsAvaible && noCharacter);
-    }
-
-
-} // namespace engine
+    auto indexOfCharacter = std::find(availableCharacters.begin(), availableCharacters.end(), this->character);
+    return Command::check(state)
+           && state::CharacterType::NO_CHARACTER == player.getCharacter() //NO_CHARACTER cannot be picked
+           && indexOfCharacter !=
+              availableCharacters.end(); //targeted character must be found is the list of available characters
+}

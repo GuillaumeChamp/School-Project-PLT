@@ -356,7 +356,7 @@
             <dia:string>#stack#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::vector&lt;Card&gt;#</dia:string>
+            <dia:string>#std::list&lt;Card&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -821,7 +821,7 @@
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::vector&lt;Card&gt;#</dia:string>
+            <dia:string>#std::list&lt;Card&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -1141,7 +1141,7 @@
                 <dia:string>#stack#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#std::vector&lt;Card&gt;#</dia:string>
+                <dia:string>#std::list&lt;Card&gt;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>

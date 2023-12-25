@@ -24,7 +24,7 @@ namespace engine {
         //Change phase if curent player is lastplayer
         if (currentPlayer==lastPlayer){
             auto* command = new ChangePhaseCommand(authorPlayer, state.getGamePhase());
-            Engine::getInstance(state)->addCommand(command);
+            Engine::getInstance(state).addCommand(command);
             //on execute ici ou on laisse l'engine gérer plus tard ?
             }
         

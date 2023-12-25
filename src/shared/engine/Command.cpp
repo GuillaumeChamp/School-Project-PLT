@@ -4,7 +4,11 @@
 namespace engine {
 
     // Constructor
-    Command::Command() = default;
+    Command::Command(){
+        this->targetPlayer=state::NO_PLAYER;
+        this->authorPlayer=state::NO_PLAYER;
+        this->commandTypeId =CommandTypeId::NO_COMMAND;
+    };
 
     // Destructor
     Command::~Command() = default;
@@ -15,11 +19,7 @@ namespace engine {
     }
 
     // Execute method
-    void Command::execute(state::GameState &state) {
-
-        // Implement the logic to execute the command on the game state
-        // You may use the 'playing' and 'card' attributes in this method
-    }
+    void Command::execute(state::GameState &state) {}
 
     bool Command::check(state::GameState &state) {
         return authorPlayer==state.getPlaying();

@@ -51,7 +51,9 @@ BOOST_AUTO_TEST_CASE(TestState) {
     BOOST_CHECK_EQUAL(plr.getCharacter(), CharacterType::WARLORD);
 
     GameState gameState(std::vector<Player>{plr,plr1,plr2,plr3});
-    gameState.setStack(hand);
+    std::list<Card> stack{};
+    stack.push_back(card);
+    gameState.setStack(stack);
     BOOST_CHECK_EQUAL(gameState.getListOfPlayer().size(), 4);
     BOOST_CHECK_EQUAL(gameState.getCurrentCharacter(), CharacterType::NO_CHARACTER);
     BOOST_CHECK_EQUAL(gameState.getGamePhase(), Phase::START_GAME);
