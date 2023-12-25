@@ -19,11 +19,7 @@ namespace engine {
     }
 
     // Execute method
-    void Command::execute(state::GameState &state) {
-
-        // Implement the logic to execute the command on the game state
-        // You may use the 'playing' and 'card' attributes in this method
-    }
+    void Command::execute(state::GameState &state) {}
 
     bool Command::check(state::GameState &state) {
         return authorPlayer==state.getPlaying();

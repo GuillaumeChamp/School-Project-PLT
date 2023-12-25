@@ -3,15 +3,13 @@
 
 
 namespace engine {
-    Engine *Engine::INSTANCE = nullptr;
-
     Engine::Engine(state::GameState &state) : currentState(state) {
         // Other initialization if needed
         init();
     }
 
     // Destructor
-    Engine::~Engine() = default;
+    Engine::~Engine()= default;
 
     void Engine::init() {
         // Perform initialization tasks here
@@ -36,10 +34,8 @@ namespace engine {
         listOfCommands.clear();
     }
 
-    Engine *Engine::getInstance(state::GameState &state) {
-        if (!INSTANCE) {
-            INSTANCE = new Engine(state);
-        }
-        return INSTANCE;
+    Engine & Engine::getInstance(state::GameState &state) {
+        static Engine inst{state};
+        return inst;
     }
 }
