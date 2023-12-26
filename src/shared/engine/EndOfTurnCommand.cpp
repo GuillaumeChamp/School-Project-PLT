@@ -95,6 +95,14 @@ namespace engine {
                     calledCharacterId = static_cast<state::CharacterType>((static_cast<int>(calledCharacterId) % 7) + 1);
                 }
             }
+            if (calledCharacterId == state.getRobbedCharacter()) {
+            auto coins = playerToInit.getNumberOfCoins();
+            playerToInit.setNumberOfCoins(0);
+            auto thief = state.getPlayer(state.getPlayerIdByCharacter(state::CharacterType::THIEF));
+            thief.setNumberOfCoins(coins + thief.getNumberOfCoins());
+            state.updatePlayer(thief);
+            state.updatePlayer(playerToInit);
+        }
             }
         }
         //Mise à jour du state 
