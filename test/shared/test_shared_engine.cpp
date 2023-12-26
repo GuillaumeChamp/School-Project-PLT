@@ -1,16 +1,15 @@
 #include <boost/test/unit_test.hpp>
 
 #include "../../src/shared/engine.h"
-#include "../../src/shared/state.h"
 
 using namespace ::engine;
 
 
 struct F {
-    F() : gameState({{"player1", state::PlayerId::PLAYER_A},
-                     {"player2", state::PlayerId::PLAYER_B},
-                     {"player3", state::PlayerId::PLAYER_C},
-                     {"player4", state::PlayerId::PLAYER_D}}) { BOOST_TEST_MESSAGE("setup fixture"); }
+    F() : gameState("player1",
+                    "player2",
+                    "player3",
+                    "player4") { BOOST_TEST_MESSAGE("setup fixture"); }
 
     ~F() { BOOST_TEST_MESSAGE("teardown fixture"); }
 
@@ -19,7 +18,11 @@ struct F {
 
 //____________________________________________________________________________//
 
-BOOST_FIXTURE_TEST_SUITE(s, F)
+BOOST_FIXTURE_TEST_SUITE(CommandTestCase, F)
+    BOOST_AUTO_TEST_CASE(ShouldCommandBeCovered){
+        Command c{};
+        BOOST_CHECK_NO_THROW(c.execute(gameState));
+ }
 
     BOOST_AUTO_TEST_CASE(TestBuildCommand) {
 
@@ -27,8 +30,8 @@ BOOST_FIXTURE_TEST_SUITE(s, F)
 
         state::Card card{"1", state::CardType::RELIGIOUS, 3};
 
-    auto* command= new BuildCommand(state::PLAYER_A,&card);
-    Engine* gameEngine = Engine::getInstance(gameState);
+        auto *command = new BuildCommand(state::PLAYER_A, card);
+        BOOST_CHECK_EQUAL(command->getCommandTypeId(),CommandTypeId::BUILD);
 
         //Command not executed because not my turn
         BOOST_CHECK_EQUAL(command->check(gameState), false);
@@ -58,8 +61,8 @@ BOOST_FIXTURE_TEST_SUITE(s, F)
         //True this time
         BOOST_CHECK_EQUAL(command->check(gameState), true);
 
-        gameEngine->addCommand(command);
-        gameEngine->executeAllCommands();
+        Engine::getInstance(gameState).addCommand(command);
+        Engine::getInstance(gameState).executeAllCommands();
         plr1 = gameState.getPlayer(state::PLAYER_A);
 
         BOOST_CHECK_EQUAL(plr1.getNumberOfCoins(), 1);
@@ -75,8 +78,8 @@ BOOST_FIXTURE_TEST_SUITE(s, F)
         gameState.setPlaying(state::PLAYER_B);
 
         auto *command = new DrawCommand(state::PlayerId::PLAYER_A, 2);
-        Engine *gameEngine = Engine::getInstance(gameState);
         BOOST_CHECK_EQUAL(gameState.getDrawableCards().size(), 0);
+        BOOST_CHECK_EQUAL(command->getCommandTypeId(),CommandTypeId::DRAW_CARD);
 
         //Command not executed because not my turn
         BOOST_CHECK_EQUAL(command->check(gameState), false);
@@ -91,15 +94,15 @@ BOOST_FIXTURE_TEST_SUITE(s, F)
         BOOST_CHECK_EQUAL(command->check(gameState), true);
         BOOST_CHECK_EQUAL(gameState.getStack().size(), 0);
 
-        gameEngine->addCommand(command);
-        gameEngine->executeAllCommands();
+        Engine::getInstance(gameState).addCommand(command);
+        Engine::getInstance(gameState).executeAllCommands();
 
         BOOST_CHECK_EQUAL(gameState.getDrawableCards().size(), 2);
         BOOST_CHECK_EQUAL(gameState.getStack().size(), 63);
 
         command = new DrawCommand(state::PlayerId::PLAYER_A, 3);
-        gameEngine->addCommand(command);
-        gameEngine->executeAllCommands();
+        Engine::getInstance(gameState).addCommand(command);
+        Engine::getInstance(gameState).executeAllCommands();
 
         BOOST_CHECK_EQUAL(gameState.getDrawableCards().size(), 3);
         BOOST_CHECK_EQUAL(gameState.getStack().size(), 60);
@@ -108,38 +111,38 @@ BOOST_FIXTURE_TEST_SUITE(s, F)
 
     BOOST_AUTO_TEST_CASE(TestEndOfTurnCommand) {
         state::Player plr1 = gameState.getPlayer(state::PLAYER_A);
-
+        gameState.setCrownOwner(state::PLAYER_A);
         gameState.setPlaying(state::PLAYER_A);
+        gameState.setGamePhase(state::CHOOSE_CHARACTER);
 
         auto *command = new EndOfTurnCommand(state::PlayerId::PLAYER_A);
-        Engine *gameEngine = Engine::getInstance(gameState);
         BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_A);
 
         BOOST_CHECK_EQUAL(command->check(gameState), true);
         BOOST_CHECK_EQUAL(gameState.getStack().size(), 0);
 
-        gameEngine->addCommand(command);
-        gameEngine->executeAllCommands();
+        Engine::getInstance(gameState).addCommand(command);
+        Engine::getInstance(gameState).executeAllCommands();
 
         BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_B);
         command = new EndOfTurnCommand(state::PlayerId::PLAYER_B);
-        gameEngine->addCommand(command);
-        gameEngine->executeAllCommands();
+        Engine::getInstance(gameState).addCommand(command);
+        Engine::getInstance(gameState).executeAllCommands();
 
         BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_C);
         command = new EndOfTurnCommand(state::PlayerId::PLAYER_C);
-        gameEngine->addCommand(command);
-        gameEngine->executeAllCommands();
+        Engine::getInstance(gameState).addCommand(command);
+        Engine::getInstance(gameState).executeAllCommands();
 
         BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_D);
         command = new EndOfTurnCommand(state::PlayerId::PLAYER_D);
-        gameEngine->addCommand(command);
-        gameEngine->executeAllCommands();
+        Engine::getInstance(gameState).addCommand(command);
+        Engine::getInstance(gameState).executeAllCommands();
 
-        BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_A);
-        command = new EndOfTurnCommand(state::PlayerId::PLAYER_A);
-        gameEngine->addCommand(command);
-        gameEngine->executeAllCommands();
+        //still player D turn because he is the last to play (A hold crown)
+        BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_D);
+        command = new EndOfTurnCommand(state::PlayerId::PLAYER_D);
+
     }
 
 BOOST_AUTO_TEST_SUITE_END()

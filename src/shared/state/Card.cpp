@@ -3,25 +3,24 @@
 #include <utility>
 
 
-namespace state {
+using namespace state;
 
-Card::Card(std::string name, state::CardType color, int cost){
+Card::Card(std::string name, state::CardType color, int cost) {
     this->nameOfCard = std::move(name);
     this->colorOfCard = color;
     this->costOfCard = cost;
 }
 
-Card::~Card()=default;
+Card::~Card() = default;
 
-std::string Card::getNameOfCard() const{
+std::string Card::getNameOfCard() const {
     return this->nameOfCard;
 }
 
-CardType Card::getColorOfCard() const{
+CardType Card::getColorOfCard() const {
     return this->colorOfCard;
 }
 
-int Card::getCostOfCard() const{
+int Card::getCostOfCard() const {
     return this->costOfCard;
-}
 }

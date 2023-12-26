@@ -1,28 +1,76 @@
 // EndOfTurnCommand.cpp
 #include "EndOfTurnCommand.h"
 
-namespace engine {
+using namespace engine;
+using namespace state;
 
-    // Constructor
-    EndOfTurnCommand::EndOfTurnCommand(state::PlayerId authorPlayer) {
-        this->authorPlayer = authorPlayer;
-    }
+// Constructor
+EndOfTurnCommand::EndOfTurnCommand(PlayerId authorPlayer) {
+    this->authorPlayer = authorPlayer;
+}
 
-    // Destructor
-    EndOfTurnCommand::~EndOfTurnCommand() = default;
+// Destructor
+EndOfTurnCommand::~EndOfTurnCommand() = default;
 
-    // Execute method
-    void EndOfTurnCommand::execute(state::GameState &state) {
-        // Switch to the next player
-        auto nextPlayer = static_cast<state::PlayerId>(static_cast<int>(authorPlayer) % 4 + 1);
-        // Updating the state
+// Execute method
+void EndOfTurnCommand::execute(GameState &state) {
+
+    Player player = state.getPlayer(authorPlayer);
+    PlayerId currentPlayer = state.getPlaying();
+
+    //In choose character phase the next player is resolved by player
+    if (state.getGamePhase() == state::CHOOSE_CHARACTER) {
+        auto lastPlayer = static_cast<PlayerId>((state.getCrownOwner() + 2) % 4 + 1);
+        //Change phase if current player is the last player
+        if (currentPlayer == lastPlayer) {
+            auto *command = new ChangePhaseCommand(authorPlayer, state.getGamePhase());
+            Engine::getInstance(state).addCommand(command);
+            return;
+        }
+        auto nextPlayer = static_cast<PlayerId>(currentPlayer % 4 + 1 );
         state.setPlaying(nextPlayer);
+        return;
     }
+    //In call character phase, the next player is resolved by character
+    else if ((state.getGamePhase() == Phase::CALL_CHARACTER)) {
 
-    // Check method
-    bool EndOfTurnCommand::check(state::GameState &state) {
-        return Command::check(state);
+        auto nextPlayer = NO_PLAYER;
+        auto calledCharacterId = static_cast<CharacterType>(state.getCurrentCharacter() + 1);
+
+        while (calledCharacterId < 8) {
+            if (calledCharacterId != state.getKilledCharacter()) {
+                if ((nextPlayer = state.getPlayerIdByCharacter(calledCharacterId)) != NO_PLAYER) {
+                    break;
+                }
+            }
+            calledCharacterId = static_cast<CharacterType>(calledCharacterId + 1);
+        }
+        if (calledCharacterId == 8) {
+            //All characters have been called, change phase
+            auto *command = new ChangePhaseCommand(authorPlayer, state.getGamePhase());
+            Engine::getInstance(state).addCommand(command);
+            return;
+        }
+        Player playerToInit = state.getPlayer(nextPlayer);
+        // We check if player have been robbed before calling it
+        if (calledCharacterId == state.getRobbedCharacter()) {
+            auto coins = playerToInit.getNumberOfCoins();
+            playerToInit.setNumberOfCoins(0);
+            auto thief = state.getPlayer(state.getPlayerIdByCharacter(THIEF));
+            thief.setNumberOfCoins(coins + thief.getNumberOfCoins());
+            state.updatePlayer(thief);
+        }
+        //reset player options
+        playerToInit.setDrawAvailability(true);
+        playerToInit.setCapacityAvailability(true);
+        state.updatePlayer(playerToInit);
+        //Update state
+        state.setPlaying(nextPlayer);
+        state.setCurrentCharacter(calledCharacterId);
     }
+}
 
-
-} // namespace engine
+// Check method
+bool EndOfTurnCommand::check(GameState &state) {
+    return Command::check(state);
+}

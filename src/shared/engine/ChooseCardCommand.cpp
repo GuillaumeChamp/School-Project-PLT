@@ -1,25 +1,22 @@
 #include "ChooseCardCommand.h"
 
-namespace engine {
+using namespace engine;
 
-    // Constructor
-    ChooseCardCommand::ChooseCardCommand(state::PlayerId authorPlayer, state::Card card) : card(card) {
-        this->authorPlayer = authorPlayer;
-        this->card = card;
-    }
+// Constructor
+ChooseCardCommand::ChooseCardCommand(state::PlayerId authorPlayer, const state::Card &card) : card(card) {
+    this->authorPlayer = authorPlayer;
+    this->commandTypeId = CommandTypeId::CHOOSE_CARD;
+}
 
-    // Destructor
-    ChooseCardCommand::~ChooseCardCommand() {
-    }
+// Destructor
+ChooseCardCommand::~ChooseCardCommand() = default;
 
-    // Execute method
-    void ChooseCardCommand::execute(state::GameState& state) {
+// Execute method
+void ChooseCardCommand::execute(state::GameState &state) {
 
-    }
+}
 
-    // Check method
-    bool ChooseCardCommand::check(state::GameState& state) {
-        return true;
-    }
-
-} // namespace engine
+// Check method
+bool ChooseCardCommand::check(state::GameState &state) {
+    return Command::check(state);
+}

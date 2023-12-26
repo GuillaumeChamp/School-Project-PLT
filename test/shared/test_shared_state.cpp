@@ -1,12 +1,13 @@
 #include <boost/test/unit_test.hpp>
 
-#include "../../src/shared/state/Player.h"
-#include "../../src/shared/state/GameState.h"
+#include "state.h"
+#include <json/json.h>
+
 
 using namespace ::state;
 
 
-BOOST_AUTO_TEST_CASE(TestState){
+BOOST_AUTO_TEST_CASE(TestState) {
 
     Card card{"card1", CardType::MILITARY, 2};
     BOOST_CHECK_EQUAL(card.getNameOfCard(), std::string("card1"));
@@ -29,8 +30,11 @@ BOOST_AUTO_TEST_CASE(TestState){
     Card cardWonder{"card1", CardType::WONDER, 2};
     BOOST_CHECK_EQUAL(cardWonder.getColorOfCard(), CardType::WONDER);
 
-    std::string playerName = "player1";
-    Player plr{playerName, PlayerId::PLAYER_A};
+    Player plr{"player1", PlayerId::PLAYER_A};
+    Player plr1{"player2", PlayerId::PLAYER_B};
+    Player plr2{"player3", PlayerId::PLAYER_C};
+    Player plr3{"player4", PlayerId::PLAYER_D};
+
     BOOST_CHECK_EQUAL(plr.getNameOfPlayer(), "player1");
     BOOST_CHECK_EQUAL(plr.getIdOfPlayer(), PlayerId::PLAYER_A);
     BOOST_CHECK_EQUAL(plr.getCharacter(), CharacterType::NO_CHARACTER);
@@ -40,19 +44,21 @@ BOOST_AUTO_TEST_CASE(TestState){
     BOOST_CHECK_EQUAL(plr.getNumberOfCards(), 1);
     plr.setNumberOfCoins(5);
     BOOST_CHECK_EQUAL(plr.getNumberOfCoins(), 5);
-    std::vector<Card> board;
+    std::vector<Card> board{cardCommercial,cardReligious};
     plr.setBoardOfPlayer(board);
     BOOST_CHECK_EQUAL(plr.getBoardOfPlayer().size(), board.size());
     plr.setCharacter(CharacterType::WARLORD);
     BOOST_CHECK_EQUAL(plr.getCharacter(), CharacterType::WARLORD);
 
-    GameState gameState{std::vector<Player>{plr}};
-    gameState.setStack(hand);
-    BOOST_CHECK_EQUAL(gameState.getListOfPlayer().size(), 1);
+    GameState gameState(std::vector<Player>{plr,plr1,plr2,plr3});
+    std::list<Card> stack{};
+    stack.push_back(card);
+    gameState.setStack(stack);
+    BOOST_CHECK_EQUAL(gameState.getListOfPlayer().size(), 4);
     BOOST_CHECK_EQUAL(gameState.getCurrentCharacter(), CharacterType::NO_CHARACTER);
-    BOOST_CHECK_EQUAL(gameState.getGamePhase(), Phase::CHOOSE_CHARACTER);
-    BOOST_CHECK_EQUAL(gameState.getStack().size(),1);
-    
+    BOOST_CHECK_EQUAL(gameState.getGamePhase(), Phase::START_GAME);
+    BOOST_CHECK_EQUAL(gameState.getStack().size(), 1);
+
     gameState.setCrownOwner(PlayerId::PLAYER_A);
     BOOST_CHECK_EQUAL((gameState.getCrownOwner()), plr.getIdOfPlayer());
 
@@ -63,31 +69,39 @@ BOOST_AUTO_TEST_CASE(TestState){
     BOOST_CHECK_EQUAL(gameState.getPlaying(), PLAYER_D);
 
     BOOST_CHECK_EQUAL(gameState.getPlayer(PLAYER_A).getNameOfPlayer(), plr.getNameOfPlayer());
-    BOOST_CHECK_THROW(gameState.getPlayer(PLAYER_D), std::exception);
+    BOOST_CHECK_THROW(gameState.getPlayer(NO_PLAYER), std::exception);
     BOOST_CHECK_NO_THROW(gameState.updatePlayer(plr));
 
     plr.setCapacityAvailability(true);
     plr.setDrawAvailability(true);
     gameState.updatePlayer(plr);
 
-    BOOST_CHECK_EQUAL(gameState.getPlayer(PLAYER_A).isCapacityAvailable(),true);
-    BOOST_CHECK_EQUAL(gameState.getPlayer(PLAYER_A).isDrawAvailable(),true);
+    BOOST_CHECK_EQUAL(gameState.getPlayer(PLAYER_A).isCapacityAvailable(), true);
+    BOOST_CHECK_EQUAL(gameState.getPlayer(PLAYER_A).isDrawAvailable(), true);
 
     gameState.setKilledCharacter(KING);
-    BOOST_CHECK_EQUAL(gameState.getKilledCharacter(),KING);
+    BOOST_CHECK_EQUAL(gameState.getKilledCharacter(), KING);
 
     gameState.setRobbedCharacter(KING);
-    BOOST_CHECK_EQUAL(gameState.getRobbedCharacter(),KING);
+    BOOST_CHECK_EQUAL(gameState.getRobbedCharacter(), KING);
 
     gameState.setDrawableCards(std::vector<Card>{card});
-    BOOST_CHECK_EQUAL(gameState.getDrawableCards().at(0).getNameOfCard(),"card1");
+    BOOST_CHECK_EQUAL(gameState.getDrawableCards().at(0).getNameOfCard(), "card1");
 
-    gameState.setAvailableCharacter(std::vector<CharacterType>{WARLORD,KING});
-    BOOST_CHECK_EQUAL(gameState.getAvailableCharacter().size(),2);
+    gameState.setAvailableCharacter(std::vector<CharacterType>{WARLORD, KING});
+    BOOST_CHECK_EQUAL(gameState.getAvailableCharacter().size(), 2);
 
     gameState.setGamePhase(CALL_CHARACTER);
-    BOOST_CHECK_EQUAL(gameState.getGamePhase(),CALL_CHARACTER);
+    BOOST_CHECK_EQUAL(gameState.getGamePhase(), CALL_CHARACTER);
 
+    Json::Value value = StateSerializer::serialize(gameState);
+
+    //TEST Deserialize
+    GameState newState = StateSerializer::deserialize(value);
+    BOOST_CHECK_EQUAL(newState.getListOfPlayer().size(), 4);
+    BOOST_CHECK_EQUAL(newState.getCurrentCharacter(), CharacterType::KING);
+    BOOST_CHECK_EQUAL(newState.getGamePhase(), Phase::CALL_CHARACTER);
+    BOOST_CHECK_EQUAL(newState.getStack().size(), 1);
 }
 
 /* vim: set sw=2 sts=2 et : */

@@ -3,15 +3,15 @@
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
-#include <state.h>
 #include "render.h"
 #include "engine.h"
 
 using namespace std;
 using namespace state;
+using namespace engine;
 
 void test();
-GameState generateSampleState();
+void generateSampleState(state::GameState& gameStateSample);
 void displayState(const state::GameState& gameState);
 
 
@@ -24,7 +24,6 @@ int main(int argc, char *argv[]) {
 
         else if (std::strcmp(argv[1], "state") == 0) {
            std::cout << "lancement des tests" << std::endl;
-           test();
            std::cout << "everything is fine" << std::endl;
         } 
 
@@ -32,12 +31,12 @@ int main(int argc, char *argv[]) {
            
              sf::RenderWindow window(sf::VideoMode(1600, 900), "Citadelles");
             window.setVerticalSyncEnabled(true);
+            state::GameState gamestate("Simon","Karl","Nordine","Guillaume"); 
 
-            GameState gamestate=generateSampleState();
+            generateSampleState(gamestate);
             gamestate.setCurrentCharacter(ARCHITECT);
             render::Scene sceneA(render::SceneId::PlayerA, &gamestate);
-            
-
+        
 
              while (window.isOpen()) {
                 sf::Event event{};
@@ -58,42 +57,43 @@ int main(int argc, char *argv[]) {
 
         
         else if (std::strcmp(argv[1], "engine") == 0) {
-            GameState gameState=generateSampleState();
-            engine::Engine* gameEngine = engine::Engine::getInstance(gameState);
 
-            auto* cmd = new engine::ChooseCharacterCommand(PlayerId::PLAYER_A,CharacterType::ASSASSIN);
-            auto* cmd1(new engine::ChooseCharacterCommand(PlayerId::PLAYER_B,CharacterType::THIEF));
-            auto* cmd2(new engine::ChooseCharacterCommand(PlayerId::PLAYER_C,CharacterType::MAGICIAN));
-            auto* cmd3(new engine::ChooseCharacterCommand(PlayerId::PLAYER_D,CharacterType::WARLORD));
+            state::GameState gameState("Simon","Karl","Nordine","Guillaume"); 
 
-            gameEngine->addCommand(cmd);
-            gameEngine->addCommand(cmd1);
-            gameEngine->addCommand(cmd2);
-            gameEngine->addCommand(cmd3);
+            auto* startGameCmd = new engine::StartGameCommand(gameState.getPlaying());
+            Engine::getInstance(gameState).addCommand(startGameCmd);
+            Engine::getInstance(gameState).executeAllCommands();
 
-            gameEngine->executeAllCommands();
+            generateSampleState(gameState);
+
+            
+             
+            //auto* cmd1 = new engine::ChooseCharacterCommand(gameState.getPlaying(),CharacterType::ASSASSIN);
+            //gameEngine->addCommand(cmd1);
+            
+            
             displayState(gameState);
-
 
 
         }
 
         else {
         // error if no argument
-        std::cout << "Wrong command. the correct command is  ../bin/client hello" << std::endl;
+        std::cout << "Wrong command. the correct command is  ../bin/client X" << std::endl;
         }
         return 0;
     }
     return 1;
 }
 
-void test(){
-    Card card {"card1", CardType::MILITARY, 2};
-    Player player {(string &) "player1", PlayerId::PLAYER_A};
-    GameState gameState {std::vector<Player>{player}};
-}
+ 
 
 void displayState(const state::GameState& gameState) {
+    std::cout << "---------------------------------\n | Phase : " << gameState.getGamePhase()<<"\n---------------------------------"<< std::endl;
+    std::cout << "---------------------------------\n | Avaible Characters : " <<std::endl;
+    for (auto& character : gameState.getAvailableCharacter()) {
+        std::cout << " | Character : " << character;
+    }std::cout<<"\n"<<std::endl;
     for (auto& player : gameState.getListOfPlayer()) {
         std::cout << " | Name: " << player.getNameOfPlayer()
                   << " | Character: " << player.getCharacter()
@@ -109,7 +109,8 @@ void displayState(const state::GameState& gameState) {
                       << std::endl;
         }
 
-        std::cout <<"---------------------------------\n Board of "<<player.getNameOfPlayer() << std::endl;
+        std::cout <<"---------------------------------\n Board of "<<player.getNameOfPlayer() << " Size : " <<player.getBoardOfPlayer().size() << std::endl;
+        
         for (auto& card : player.getBoardOfPlayer()) {
             std::cout << " | Name : " << card.getNameOfCard()
                       << " | Color : " << card.getColorOfCard()
@@ -120,21 +121,21 @@ void displayState(const state::GameState& gameState) {
 }
 
 
-GameState generateSampleState() {
-    Player playerA {"player1", PlayerId::PLAYER_A};
-    Player playerB {"player2", PlayerId::PLAYER_B};
-    Player playerC {"player3" , PlayerId::PLAYER_C};
-    Player playerD {"player4", PlayerId::PLAYER_D};
-
+void generateSampleState(state::GameState& gameStateSample) {
+    
     Card card1{"1",CardType::COMMERCIAL,2};
     Card card2{"2",CardType::COMMERCIAL,2};
     Card card3{"25",CardType::COMMERCIAL,2};
 
+    Player playerA=gameStateSample.getPlayer(PlayerId::PLAYER_A);
+    Player playerB=gameStateSample.getPlayer(PlayerId::PLAYER_B);
+    Player playerC=gameStateSample.getPlayer(PlayerId::PLAYER_C);
+    Player playerD=gameStateSample.getPlayer(PlayerId::PLAYER_D);
 
-    playerA.setCharacter(CharacterType::WARLORD);
-    playerB.setCharacter(CharacterType::BISHOP);
-    playerC.setCharacter(CharacterType::MERCHANT);
-    playerD.setCharacter(CharacterType::KING);
+    playerA.setCharacter(CharacterType::NO_CHARACTER);
+    playerB.setCharacter(CharacterType::NO_CHARACTER);
+    playerC.setCharacter(CharacterType::NO_CHARACTER);
+    playerD.setCharacter(CharacterType::NO_CHARACTER);
 
     std::vector<Card> playerABoard{card1};
     std::vector<Card> playerBBoard{card2};
@@ -146,8 +147,13 @@ GameState generateSampleState() {
     playerC.setBoardOfPlayer(playerCBoard);
     playerD.setBoardOfPlayer(playerDBoard);
 
-    GameState gameState {std::vector<Player>{playerA,playerB,playerC,playerD}};
-    return gameState;
+    gameStateSample.updatePlayer(playerA);
+    gameStateSample.updatePlayer(playerB);
+    gameStateSample.updatePlayer(playerC);
+    gameStateSample.updatePlayer(playerD);
+    
 }
+
+
 
 

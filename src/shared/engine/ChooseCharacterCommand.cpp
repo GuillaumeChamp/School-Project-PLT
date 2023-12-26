@@ -1,49 +1,46 @@
 // ChooseCharacterCommand.cpp
 #include "ChooseCharacterCommand.h"
+#include "algorithm"
 
-namespace engine {
+using namespace engine;
 
-    // Constructor
-    ChooseCharacterCommand::ChooseCharacterCommand(state::PlayerId authorPlayer, state::CharacterType characterType)
-            : Command() {
-        this->authorPlayer = authorPlayer;
-        this->character = characterType;
-    }
+// Constructor
+ChooseCharacterCommand::ChooseCharacterCommand(state::PlayerId authorPlayer, state::CharacterType characterType)
+        : Command() {
+    this->authorPlayer = authorPlayer;
+    this->character = characterType;
+    this->commandTypeId = CommandTypeId::CHOOSE_CHARACTER;
+}
 
-    // Destructor
-    ChooseCharacterCommand::~ChooseCharacterCommand() = default;
+// Destructor
+ChooseCharacterCommand::~ChooseCharacterCommand() = default;
 
-    // Execute method
-    void ChooseCharacterCommand::execute(state::GameState &state) {
-        /*switch (playing) {
+// Execute method
+void ChooseCharacterCommand::execute(state::GameState &state) {
+    //recover player and list of remaining character
+    state::Player player = state.getPlayer(this->authorPlayer);
+    std::vector<state::CharacterType> availableCharacters = state.getAvailableCharacter();
 
-            case state::Playing::PLAYERA:
-                std::cout <<"A is a "<< characterType << std::endl;
-                break;
+    player.setCharacter(this->character);
+    //Remove the selected character
+    availableCharacters.erase(
+            std::remove(availableCharacters.begin(), availableCharacters.end(), this->character),
+            availableCharacters.end()
+    );
 
-            case state::Playing::PLAYERB:
-                std::cout <<"B is a "<< characterType <<std::endl;
-                break;
+    //update the state
+    state.setAvailableCharacter(availableCharacters);
+    state.updatePlayer(player);
+}
 
-              case state::Playing::PLAYERC:
-                std::cout <<"C is a "<< characterType <<std::endl;
-                break;
+// Check method
+bool ChooseCharacterCommand::check(state::GameState &state) {
+    state::Player player = state.getPlayer(this->authorPlayer);
+    std::vector<state::CharacterType> availableCharacters = state.getAvailableCharacter();
 
-              case state::Playing::PLAYERD:
-                std::cout <<"D is a "<< characterType <<std::endl;
-                break;
-
-            default:
-
-                break;
-        }*/
-
-    }
-
-    // Check method
-    bool ChooseCharacterCommand::check(state::GameState &state) {
-        return Command::check(state);
-    }
-
-
-} // namespace engine
+    auto indexOfCharacter = std::find(availableCharacters.begin(), availableCharacters.end(), this->character);
+    return Command::check(state)
+           && state::CharacterType::NO_CHARACTER == player.getCharacter() //NO_CHARACTER cannot be picked
+           && indexOfCharacter !=
+              availableCharacters.end(); //targeted character must be found is the list of available characters
+}

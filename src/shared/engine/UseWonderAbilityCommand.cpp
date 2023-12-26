@@ -3,15 +3,14 @@
 namespace engine {
 
     // Constructor
-    UseWonderAbilityCommand::UseWonderAbilityCommand(state::PlayerId authorPlayer, state::PlayerId targetPlayer, state::Card card) : card(card) {
+    UseWonderAbilityCommand::UseWonderAbilityCommand(state::PlayerId authorPlayer, state::PlayerId targetPlayer, const state::Card& card) : card(card) {
         this->authorPlayer = authorPlayer;
         this->targetPlayer = targetPlayer;
         this->card = card;
     }
 
     // Destructor
-    UseWonderAbilityCommand::~UseWonderAbilityCommand() {
-    }
+    UseWonderAbilityCommand::~UseWonderAbilityCommand() = default;
 
     // Execute method
     void UseWonderAbilityCommand::execute(state::GameState& state) {
@@ -24,8 +23,6 @@ namespace engine {
         {
             // Une fois par tour, défausser une carte contre 1 pièce
             std::vector<state::Card> hand = player.getHand();
-            int coins = player.getNumberOfCoins();
-
         }
         else if (card.getNameOfCard() == "Manufacture") 
         { // Once per turn, you can use 3 coins to draw 3 cards
@@ -35,7 +32,7 @@ namespace engine {
 
             // Creating a DrawCommand of three cards
             auto* command = new DrawCommand(authorPlayer, 3);
-            Engine::getInstance(state)->addCommand(command);
+            Engine::getInstance(state).addCommand(command);
 
             // Deducing the coins
             coins = coins - 3;

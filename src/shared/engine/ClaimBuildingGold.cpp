@@ -1,71 +1,64 @@
 // ClaimBuildingGold.cpp
 #include "ClaimBuildingGold.h"
+#include "algorithm"
+#include "set"
 
+using namespace engine;
 
-namespace engine {
+// Constructor
+ClaimBuildingGold::ClaimBuildingGold(state::PlayerId authorPlayer) {
+    this->authorPlayer = authorPlayer;
+    this->targetPlayer = authorPlayer;
+    this->commandTypeId = CommandTypeId::CLAIM_BUILDING_GOLD;
+}
 
-  // Constructor
-  ClaimBuildingGold::ClaimBuildingGold(state::PlayerId authorPlayer) {
-    this->authorPlayer=authorPlayer;
-  }
+// Destructor
+ClaimBuildingGold::~ClaimBuildingGold() = default;
 
-  // Destructor
-  ClaimBuildingGold::~ClaimBuildingGold() {
-  }
-
-  // Execute method
-  void ClaimBuildingGold::execute(state::GameState& state) {
+// Execute method
+void ClaimBuildingGold::execute(state::GameState &state) {
     // Getting the player to execute the command on
     state::Player player = state.getPlayer(authorPlayer);
 
-    // Getting his board, coins and character
+    // Getting player board
     std::vector<state::Card> board = player.getBoardOfPlayer();
-    int coins = player.getNumberOfCoins();
-    state::CharacterType character = player.getCharacter();
 
-
-    //Checking how many cards on his board match his character's color and adding coins accordingly
-    if (character == state::CharacterType::KING)
-    {
-      for (state::Card card : board){
-        if (card.getColorOfCard() == state::CardType::NOBLE) {
-          coins++;
-        }
-      }
-    }
-    else if (character == state::CharacterType::BISHOP)
-    {
-      for (state::Card card : board){
-        if (card.getColorOfCard() == state::CardType::RELIGIOUS) {
-          coins++;
-        }
-      }
-    }
-    else if (character == state::CharacterType::MERCHANT)
-    {
-      for (state::Card card : board){
-        if (card.getColorOfCard() == state::CardType::COMMERCIAL) {
-          coins++;
-        }
-      }
-    }
-    else if (character == state::CharacterType::WARLORD)
-    {
-      for (state::Card card : board){
-        if (card.getColorOfCard() == state::CardType::MILITARY) {
-          coins++;
-        }
-      }
+    state::CardType color;
+    bool toCompute = false;
+    // Resolve color to look for using character
+    switch (player.getCharacter()) {
+        case state::CharacterType::KING:
+            toCompute = true;
+            color = state::NOBLE;
+            break;
+        case state::CharacterType::BISHOP:
+            toCompute = true;
+            color = state::RELIGIOUS;
+            break;
+        case state::CharacterType::MERCHANT:
+            toCompute = true;
+            color = state::COMMERCIAL;
+            break;
+        case state::CharacterType::WARLORD:
+            toCompute = true;
+            color = state::MILITARY;
+            break;
+        default:
+            break;
     }
 
+    int goldEarned = toCompute ? (int) std::count_if(board.begin(), board.end(), [color](const state::Card &card) {
+        return color == card.getColorOfCard();
+    }) : 0;
     // Setting the player's new number of coins
-    player.setNumberOfCoins(coins);
+    player.setNumberOfCoins(player.getNumberOfCoins() + goldEarned);
     state.updatePlayer(player);
-  }
+}
 
-  // Check method
-  bool check (state::GameState& state) {
-    
-  }
-
-} // namespace engine
+// Check method
+bool ClaimBuildingGold::check(state::GameState &state) {
+    std::set<state::CharacterType> mySet{state::KING, state::BISHOP, state::MERCHANT, state::WARLORD};
+    state::CharacterType character = state.getPlayer(authorPlayer).getCharacter();
+    return Command::check(state) &&
+           mySet.find(character) != mySet.end();
+}

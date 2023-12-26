@@ -3,20 +3,15 @@
 namespace engine {
 
     // Constructor
-    PlayCardCommand::PlayCardCommand(state::PlayerId authorPlayer, state::Card card) : card(card) {
-        this->authorPlayer = authorPlayer;
-        this->card = card;
-    }
 
     // Destructor
-    PlayCardCommand::~PlayCardCommand() {
-    }
+    PlayCardCommand::~PlayCardCommand() = default;
 
     // Execute method
     void PlayCardCommand::execute(state::GameState& state) {
         // 
         auto* command = new ChooseCardCommand(authorPlayer, card);
-        Engine::getInstance(state)->addCommand(command);
+        Engine::getInstance(state).addCommand(command);
     }
 
     // Check method

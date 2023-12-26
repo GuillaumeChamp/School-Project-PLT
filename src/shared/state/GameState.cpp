@@ -2,119 +2,135 @@
 
 #include <utility>
 
-namespace state {
+using namespace state;
 
-    GameState::GameState(std::vector<Player> listOfPlayer) {
-        this->listOfPlayers = std::move(listOfPlayer);
-        this->currentCharacter= CharacterType::NO_CHARACTER;
-        this->crownOwner = PLAYER_A;
-        this->gamePhase = Phase::CHOOSE_CHARACTER;
-        this->playing = NO_PLAYER;
-        this->killedCharacter = NO_CHARACTER;
-        this->robbedCharacter = NO_CHARACTER;
-    }
+GameState::GameState(std::vector<Player> players) {
+    this->gamePhase = Phase::START_GAME;
+    this->listOfPlayers = std::move(players);
+    this->currentCharacter = CharacterType::NO_CHARACTER;
+    this->playing = NO_PLAYER;
+    this->crownOwner = NO_PLAYER;
+    this->killedCharacter = NO_CHARACTER;
+    this->robbedCharacter = NO_CHARACTER;
+}
 
-    std::vector<Player> GameState::getListOfPlayer () const{
-        return this->listOfPlayers;
-    }
+GameState::GameState(std::string Name1, std::string Name2, std::string Name3, std::string Name4) {
+    this->gamePhase = Phase::START_GAME;
+    this->currentCharacter = CharacterType::NO_CHARACTER;
+    //création de notre liste de player
+    Player playerA{std::move(Name1), PlayerId::PLAYER_A};
+    Player playerB{std::move(Name2), PlayerId::PLAYER_B};
+    Player playerC{std::move(Name3), PlayerId::PLAYER_C};
+    Player playerD{std::move(Name4), PlayerId::PLAYER_D};
+    this->listOfPlayers = {playerA, playerB, playerC, playerD};
+    this->crownOwner = NO_PLAYER;
+    this->playing = NO_PLAYER;
+    this->killedCharacter = NO_CHARACTER;
+    this->robbedCharacter = NO_CHARACTER;
+}
 
-    void GameState::setCurrentCharacter(CharacterType character) {
-        this->currentCharacter=character;
-    }
+std::vector<Player> GameState::getListOfPlayer() const {
+    return this->listOfPlayers;
+}
 
-    CharacterType GameState::getCurrentCharacter() const{
-        return this->currentCharacter;
-    }
+void GameState::setCurrentCharacter(CharacterType character) {
+    this->currentCharacter = character;
+}
 
-    Phase GameState::getGamePhase() const{
-        return this->gamePhase;
-    }
+CharacterType GameState::getCurrentCharacter() const {
+    return this->currentCharacter;
+}
 
-    PlayerId GameState::getCrownOwner() const{
-        return this->crownOwner;
-    }
+Phase GameState::getGamePhase() const {
+    return this->gamePhase;
+}
 
-    void GameState::setCrownOwner(PlayerId player) {
-        this->crownOwner =player;
-    }
+PlayerId GameState::getCrownOwner() const {
+    return this->crownOwner;
+}
 
-    Player GameState::getPlayer(PlayerId playerId) const {
-        for(const Player& player : this->listOfPlayers){
-            if (player.getIdOfPlayer()==playerId){
-                return player;
-            }
-        }
-        throw std::exception();
-    }
+void GameState::setCrownOwner(PlayerId player) {
+    this->crownOwner = player;
+}
 
-    PlayerId GameState::getPlaying() const {
-        return this->playing;
-    }
-
-    void GameState::setPlaying(PlayerId playerId) {
-        this->playing=playerId;
-    }
-
-    std::vector<CharacterType> GameState::getAvailableCharacter () const{
-        return this->availableCharacter;
-    }
-
-    void GameState::setAvailableCharacter (std::vector<CharacterType> listOfCharacter){
-        this->availableCharacter.clear();
-        this->availableCharacter=std::move(listOfCharacter);
-    }
-
-    std::vector<Card> GameState::getDrawableCards() const {
-        return this->drawableCards;
-    }
-
-    void GameState::updatePlayer(Player& player) {
-        for (int i=0;i<listOfPlayers.size();i++){
-            if (player.getIdOfPlayer()==listOfPlayers[i].getIdOfPlayer()){
-                listOfPlayers[i]=player;
-                return;
-            }
+Player GameState::getPlayer(PlayerId playerId) const {
+    for (const Player &player: this->listOfPlayers) {
+        if (player.getIdOfPlayer() == playerId) {
+            return player;
         }
     }
+    throw std::exception();
+}
 
-    std::vector<Card> GameState::getStack() const {
-        return this->stack;
-    }
+PlayerId GameState::getPlaying() const {
+    return this->playing;
+}
 
-    CharacterType GameState::getKilledCharacter() const {
-        return this->killedCharacter;
-    }
+void GameState::setPlaying(PlayerId playerId) {
+    this->playing = playerId;
+}
 
-    CharacterType GameState::getRobbedCharacter() const {
-        return this->robbedCharacter;
-    }
+std::vector<CharacterType> GameState::getAvailableCharacter() const {
+    return this->availableCharacter;
+}
 
-    void GameState::setStack(std::vector<Card> stack) {
-        this->stack.clear();
-        this->stack=std::move(stack);
-    }
+void GameState::setAvailableCharacter(std::vector<CharacterType> listOfCharacter) {
+    this->availableCharacter.clear();
+    this->availableCharacter = std::move(listOfCharacter);
+}
 
-    void GameState::setKilledCharacter(CharacterType character) {
-        this->killedCharacter = character;
+void GameState::updatePlayer(Player &player) {
+    for (auto &p: listOfPlayers) {
+        if (player.getIdOfPlayer() == p.getIdOfPlayer()) {
+            p = player;
+            return;
+        }
     }
+    throw std::exception();
+}
 
-    void GameState::setDrawableCards(std::vector<Card> listOfDrawableCards) {
-        this->drawableCards.clear();
-        this->drawableCards = std::move(listOfDrawableCards);
-    }
+std::list<Card> GameState::getStack() const {
+    return this->stack;
+}
 
-    void GameState::setRobbedCharacter(CharacterType character) {
-        this->robbedCharacter = character;
-    }
+CharacterType GameState::getKilledCharacter() const {
+    return this->killedCharacter;
+}
 
-    void GameState::setGamePhase(Phase newPhase) {
-        this->gamePhase=newPhase;
-    }
+CharacterType GameState::getRobbedCharacter() const {
+    return this->robbedCharacter;
+}
 
-    void GameState::setSubPhase (SubPhase newSubPhase){
-        this->subPhase=newSubPhase;
+std::vector<Card> GameState::getDrawableCards() const {
+    return this->drawableCards;
+}
+
+void GameState::setStack(std::list<Card> newStack) {
+    this->stack.clear();
+    this->stack = std::move(newStack);
+}
+
+void GameState::setKilledCharacter(CharacterType character) {
+    this->killedCharacter = character;
+}
+
+void GameState::setDrawableCards(std::vector<Card> listOfDrawableCards) {
+    this->drawableCards.clear();
+    this->drawableCards = std::move(listOfDrawableCards);
+}
+
+void GameState::setRobbedCharacter(CharacterType character) {
+    this->robbedCharacter = character;
+}
+
+void GameState::setGamePhase(Phase newPhase) {
+    this->gamePhase = newPhase;
+}
+
+PlayerId GameState::getPlayerIdByCharacter(CharacterType character) {
+    for (const auto& p : listOfPlayers){
+        if (p.getCharacter()==character)
+            return p.getIdOfPlayer();
     }
-    SubPhase GameState::getSubPhase (){
-        return this->subPhase;
-    }
+    return NO_PLAYER;
 }
