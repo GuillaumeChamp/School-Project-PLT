@@ -68,13 +68,46 @@ int main(int argc, char *argv[]) {
 
             generateSampleState(gameState);
 
+            displayState(gameState);
+            auto* cmd1 = new engine::ChooseCharacterCommand(gameState.getPlaying(),state::CharacterType::ASSASSIN);
+            gameEngine->addCommand(cmd1);
+            auto* cmd2 = new engine::EndOfTurnCommand(gameState.getPlaying());
+            gameEngine->addCommand(cmd2);
+            gameEngine->executeAllCommands();
+
+            displayState(gameState);
+            auto* cmd3 = new engine::ChooseCharacterCommand(gameState.getPlaying(),state::CharacterType::THIEF);
+            gameEngine->addCommand(cmd3);
+            auto* cmd4 = new engine::EndOfTurnCommand(gameState.getPlaying());
+            gameEngine->addCommand(cmd4);
+            gameEngine->executeAllCommands();
+
+            displayState(gameState);
+            auto* cmd5 = new engine::ChooseCharacterCommand(gameState.getPlaying(),state::CharacterType::ARCHITECT);
+            gameEngine->addCommand(cmd5);
+            auto* cmd6 = new engine::EndOfTurnCommand(gameState.getPlaying());
+            gameEngine->addCommand(cmd6);
+            gameEngine->executeAllCommands();
+
+            displayState(gameState);
+            auto* cmd7 = new engine::ChooseCharacterCommand(gameState.getPlaying(),state::CharacterType::WARLORD);
+            gameEngine->addCommand(cmd7);
+            auto* cmd8 = new engine::EndOfTurnCommand(gameState.getPlaying());
+            gameEngine->addCommand(cmd8);
+            gameEngine->executeAllCommands();
+            displayState(gameState);
+
+            
+            
+
+
             
              
             //auto* cmd1 = new engine::ChooseCharacterCommand(gameState.getPlaying(),CharacterType::ASSASSIN);
             //gameEngine->addCommand(cmd1);
             
             
-            displayState(gameState);
+           
 
 
         }
@@ -92,11 +125,12 @@ int main(int argc, char *argv[]) {
 
 void displayState(const state::GameState& gameState) {
     std::cout << "---------------------------------\n | Phase : " << gameState.getGamePhase()<<"\n---------------------------------"<< std::endl;
+    std::cout << "\n | Playing " << gameState.getPlaying()<<"\n"<< std::endl;
     std::cout << "---------------------------------\n | Avaible Characters : " <<std::endl;
     for (auto& character : gameState.getAvailableCharacter()) {
         std::cout << " | Character : " << character;
     }std::cout<<"\n"<<std::endl;
-    for (auto& player : gameState.getListOfPlayer()) {
+    /*for (auto& player : gameState.getListOfPlayer()) {
         std::cout << " | Name: " << player.getNameOfPlayer()
                   << " | Character: " << player.getCharacter()
                   << " | Nb of cards: " << player.getNumberOfCards()
@@ -119,7 +153,7 @@ void displayState(const state::GameState& gameState) {
                       << " | Cost : " << card.getCostOfCard()<<"\n---------------------------------"  // Corrected
                       << std::endl;
         }
-    }
+    }*/
 }
 
 
