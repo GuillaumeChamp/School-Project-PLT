@@ -23,6 +23,7 @@ namespace engine {
 
         //Change phase if curent player is lastplayer
         if (currentPlayer==lastPlayer){
+
             auto* command = new ChangePhaseCommand(this->authorPlayer, state.getGamePhase());
             command->execute(state);
             //engine::Engine* gameEngine = engine::Engine::getInstance(state);
@@ -32,6 +33,7 @@ namespace engine {
             currentPlayer = static_cast<state::PlayerId>((static_cast<int>(currentPlayer)%4)+1 );
             //on ré-initialise alors ce current player avec ces capacitésS 
             state::Player playerToInit = state.getPlayer(currentPlayer);
+
             //reinitialise les capacité activables une fois par tour
             playerToInit.setDrawAvailability(true);
             playerToInit.setCapacityAvailability(true);
