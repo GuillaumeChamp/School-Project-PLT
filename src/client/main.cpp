@@ -68,45 +68,32 @@ int main(int argc, char *argv[]) {
 
             displayState(gameState);
             auto* cmd1 = new engine::ChooseCharacterCommand(gameState.getPlaying(),state::CharacterType::ASSASSIN);
-            gameEngine->addCommand(cmd1);
+            Engine::getInstance(gameState).addCommand(cmd1);
             auto* cmd2 = new engine::EndOfTurnCommand(gameState.getPlaying());
-            gameEngine->addCommand(cmd2);
-            gameEngine->executeAllCommands();
+            Engine::getInstance(gameState).addCommand(cmd2);
+            Engine::getInstance(gameState).executeAllCommands();
 
             displayState(gameState);
             auto* cmd3 = new engine::ChooseCharacterCommand(gameState.getPlaying(),state::CharacterType::THIEF);
-            gameEngine->addCommand(cmd3);
+            Engine::getInstance(gameState).addCommand(cmd3);
             auto* cmd4 = new engine::EndOfTurnCommand(gameState.getPlaying());
-            gameEngine->addCommand(cmd4);
-            gameEngine->executeAllCommands();
+            Engine::getInstance(gameState).addCommand(cmd4);
+            Engine::getInstance(gameState).executeAllCommands();
 
             displayState(gameState);
             auto* cmd5 = new engine::ChooseCharacterCommand(gameState.getPlaying(),state::CharacterType::ARCHITECT);
-            gameEngine->addCommand(cmd5);
+            Engine::getInstance(gameState).addCommand(cmd5);
             auto* cmd6 = new engine::EndOfTurnCommand(gameState.getPlaying());
-            gameEngine->addCommand(cmd6);
-            gameEngine->executeAllCommands();
+            Engine::getInstance(gameState).addCommand(cmd6);
+            Engine::getInstance(gameState).executeAllCommands();
 
             displayState(gameState);
             auto* cmd7 = new engine::ChooseCharacterCommand(gameState.getPlaying(),state::CharacterType::WARLORD);
-            gameEngine->addCommand(cmd7);
+            Engine::getInstance(gameState).addCommand(cmd7);
             auto* cmd8 = new engine::EndOfTurnCommand(gameState.getPlaying());
-            gameEngine->addCommand(cmd8);
-            gameEngine->executeAllCommands();
+            Engine::getInstance(gameState).addCommand(cmd8);
+            Engine::getInstance(gameState).executeAllCommands();
             displayState(gameState);
-
-            
-            
-
-
-            
-             
-            //auto* cmd1 = new engine::ChooseCharacterCommand(gameState.getPlaying(),CharacterType::ASSASSIN);
-            //gameEngine->addCommand(cmd1);
-            
-            
-           
-
 
         }
 
