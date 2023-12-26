@@ -126,3 +126,11 @@ void GameState::setRobbedCharacter(CharacterType character) {
 void GameState::setGamePhase(Phase newPhase) {
     this->gamePhase = newPhase;
 }
+
+PlayerId GameState::getPlayerIdByCharacter(CharacterType character) {
+    for (const auto& p : listOfPlayers){
+        if (p.getCharacter()==character)
+            return p.getIdOfPlayer();
+    }
+    return NO_PLAYER;
+}

@@ -3,15 +3,14 @@
 namespace engine {
 
     // Constructor
-    UseWonderAbilityCommand::UseWonderAbilityCommand(state::PlayerId authorPlayer, state::PlayerId targetPlayer, state::Card card) : card(card) {
+    UseWonderAbilityCommand::UseWonderAbilityCommand(state::PlayerId authorPlayer, state::PlayerId targetPlayer, const state::Card& card) : card(card) {
         this->authorPlayer = authorPlayer;
         this->targetPlayer = targetPlayer;
         this->card = card;
     }
 
     // Destructor
-    UseWonderAbilityCommand::~UseWonderAbilityCommand() {
-    }
+    UseWonderAbilityCommand::~UseWonderAbilityCommand() = default;
 
     // Execute method
     void UseWonderAbilityCommand::execute(state::GameState& state) {

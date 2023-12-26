@@ -5,7 +5,6 @@ using namespace engine;
 // Constructor
 ChooseCardCommand::ChooseCardCommand(state::PlayerId authorPlayer, const state::Card &card) : card(card) {
     this->authorPlayer = authorPlayer;
-    this->card = card;
     this->commandTypeId = CommandTypeId::CHOOSE_CARD;
 }
 

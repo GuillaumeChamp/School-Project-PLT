@@ -30,7 +30,7 @@ BOOST_FIXTURE_TEST_SUITE(CommandTestCase, F)
 
         state::Card card{"1", state::CardType::RELIGIOUS, 3};
 
-        auto *command = new BuildCommand(state::PLAYER_A, &card);
+        auto *command = new BuildCommand(state::PLAYER_A, card);
         BOOST_CHECK_EQUAL(command->getCommandTypeId(),CommandTypeId::BUILD);
 
         //Command not executed because not my turn
@@ -111,8 +111,9 @@ BOOST_FIXTURE_TEST_SUITE(CommandTestCase, F)
 
     BOOST_AUTO_TEST_CASE(TestEndOfTurnCommand) {
         state::Player plr1 = gameState.getPlayer(state::PLAYER_A);
-
+        gameState.setCrownOwner(state::PLAYER_A);
         gameState.setPlaying(state::PLAYER_A);
+        gameState.setGamePhase(state::CHOOSE_CHARACTER);
 
         auto *command = new EndOfTurnCommand(state::PlayerId::PLAYER_A);
         BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_A);
@@ -138,10 +139,10 @@ BOOST_FIXTURE_TEST_SUITE(CommandTestCase, F)
         Engine::getInstance(gameState).addCommand(command);
         Engine::getInstance(gameState).executeAllCommands();
 
-        BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_A);
-        command = new EndOfTurnCommand(state::PlayerId::PLAYER_A);
-        Engine::getInstance(gameState).addCommand(command);
-        Engine::getInstance(gameState).executeAllCommands();
+        //still player D turn because he is the last to play (A hold crown)
+        BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_D);
+        command = new EndOfTurnCommand(state::PlayerId::PLAYER_D);
+
     }
 
 BOOST_AUTO_TEST_SUITE_END()
