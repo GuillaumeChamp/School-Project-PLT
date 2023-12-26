@@ -18,7 +18,6 @@ namespace render {
         listOfButtons.emplace_back(ButtonType::draw, 900, 350);
         listOfButtons.emplace_back(ButtonType::endOfTurn, 780, 500);
         listOfButtons.emplace_back(ButtonType::hand, 1450,850);
-        //listOfButtons.emplace_back(ButtonType::hand, 600, 300);
         listOfButtons.emplace_back(ButtonType::help, 1500, 50);
 
         //Background
