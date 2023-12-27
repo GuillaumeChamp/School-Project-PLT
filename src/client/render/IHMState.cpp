@@ -5,7 +5,8 @@ namespace render {
     isHandDisplayed(false),
     isHelpDisplayed(false),
     hoverCard(nullptr),
-    hoverButton(nullptr) {
+    hoverButton(nullptr),
+    isCapacityButtonPressed(false) {
   }
 
   IHMState* IHMState::getInstance() {

@@ -105,6 +105,10 @@ std::vector<Card> GameState::getDrawableCards() const {
     return this->drawableCards;
 }
 
+SubPhase GameState::getSubPhase() const {
+    return this->subPhase;
+}
+
 void GameState::setStack(std::list<Card> newStack) {
     this->stack.clear();
     this->stack = std::move(newStack);
@@ -126,6 +130,11 @@ void GameState::setRobbedCharacter(CharacterType character) {
 void GameState::setGamePhase(Phase newPhase) {
     this->gamePhase = newPhase;
 }
+
+void GameState::setSubPhase(SubPhase newSubPhase) {
+    this->subPhase = newSubPhase;
+}
+
 
 PlayerId GameState::getPlayerIdByCharacter(CharacterType character) {
     for (const auto& p : listOfPlayers){
