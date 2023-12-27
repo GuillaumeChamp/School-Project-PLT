@@ -3,7 +3,7 @@
 
 namespace render {
     
-    InteractiveElement::InteractiveElement (int posX, int posY){
+    InteractiveElement::InteractiveElement (float posX, float posY){
         this->surface = sf::RectangleShape();
         this->surface.setPosition(posX, posY);
     }
@@ -15,11 +15,11 @@ namespace render {
     }
 
 
-    bool InteractiveElement::checkClick(int x,int y) {
+    bool InteractiveElement::checkClick(float x,float y) {
         return surface.getGlobalBounds().contains(x,y);
     }
 
-    bool InteractiveElement::checkHover(int x,int y) {
+    bool InteractiveElement::checkHover(float x,float y) {
         return (surface.getGlobalBounds().contains(x,y));
     }
 

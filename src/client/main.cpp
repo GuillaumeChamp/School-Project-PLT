@@ -61,9 +61,9 @@ int main(int argc, char *argv[]) {
 
             state::GameState gameState("Simon","Karl","Nordine","Guillaume"); 
 
-            auto* startGameCmd = new engine::StartGameCommand(gameState.getPlaying());
-            Engine::getInstance(gameState).addCommand(startGameCmd);
-            Engine::getInstance(gameState).executeAllCommands();
+            //auto* startGameCmd = new engine::StartGameCommand(gameState.getPlaying());
+            //Engine::getInstance(gameState).addCommand(startGameCmd);
+            //Engine::getInstance(gameState).executeAllCommands();
 
             generateSampleState(gameState);
 

@@ -7,6 +7,7 @@ namespace render {
 
     Scene::Scene(SceneId sceneId, state::GameState *state) {
         std::string res = RES_DIR;
+        this->isPlayingScene = false;
         this->sceneId = sceneId;
         this->state = state;
         this->height = 900;
@@ -17,7 +18,7 @@ namespace render {
         listOfButtons.emplace_back(ButtonType::bank, 700, 350);
         listOfButtons.emplace_back(ButtonType::draw, 900, 350);
         listOfButtons.emplace_back(ButtonType::endOfTurn, 780, 500);
-        listOfButtons.emplace_back(ButtonType::hand, 1450,800);
+        listOfButtons.emplace_back(ButtonType::hand, 1450, 800);
         listOfButtons.emplace_back(ButtonType::help, 1500, 50);
 
         //Background
@@ -60,7 +61,7 @@ namespace render {
         displayedCard.clear();
 
         //Determine si la scene est celle du joueur entrain de jouer
-        isPlayingScene=(static_cast<int>(state->getPlaying())==static_cast<int>(sceneId));
+        isPlayingScene = (static_cast<int>(state->getPlaying()) == static_cast<int>(sceneId));
 
         //Background
         window.draw(background);
@@ -68,7 +69,7 @@ namespace render {
 
 
         //Affichage des fonds boards + emplacements cartes
-        std::vector<std::pair<int, int>> coordinatesList = {
+        std::vector<std::pair<float, float>> coordinatesList = {
                 {615,  622}, //en bas
                 {0,    311},  //a gauche
                 {615,  0}, //en haut
@@ -79,8 +80,8 @@ namespace render {
             //Board background
             sf::RectangleShape board(sf::Vector2f(360, 278));
 
-            int x = coordinates.first;
-            int y = coordinates.second;
+            float x = coordinates.first;
+            float y = coordinates.second;
 
             board.setPosition(x, y);
             board.setFillColor(sf::Color(165, 134, 105));
@@ -93,7 +94,7 @@ namespace render {
 
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 2; j++) {
-                    cardsLocation.setPosition(x + 10 + 90 * i, y + 10 + 134 * j);
+                    cardsLocation.setPosition(x + 10 + 90 * (float) i, y + 10 + 134 * (float) j);
                     window.draw(cardsLocation);
                 }
             }
@@ -131,7 +132,7 @@ namespace render {
             window.draw(cardIcon);
         }
 
-        
+
 
         //Affichage des cartes des joueurs
 
@@ -184,22 +185,22 @@ namespace render {
 
 
         //Capacity button
-        
-        state::Player currentPlayer = listOfPlayerOrder[0];
-        bool found=false;
 
-        for(const auto& button: listOfButtons){
-            if(button.name==capacity){
-                found=true;
+        state::Player currentPlayer = listOfPlayerOrder[0];
+        bool found = false;
+
+        for (const auto &button: listOfButtons) {
+            if (button.name == capacity) {
+                found = true;
             }
         }
 
-        if (currentPlayer.isCapacityAvailable() && !found){
-            listOfButtons.emplace_back(ButtonType::capacity, 1500, 700);  
+        if (currentPlayer.isCapacityAvailable() && !found) {
+            listOfButtons.emplace_back(ButtonType::capacity, 1500, 700);
 
         }
 
-        if (!currentPlayer.isCapacityAvailable() && found){
+        if (!currentPlayer.isCapacityAvailable() && found) {
             for (auto it = listOfButtons.begin(); it != listOfButtons.end();) {
                 if (it->name == capacity) {
                     it = listOfButtons.erase(it);
@@ -208,14 +209,14 @@ namespace render {
                 }
             }
         }
-        
-        
+
+
         // Affichage des boutons 
-        for (auto& button : listOfButtons) {
+        for (auto &button: listOfButtons) {
             button.draw(window);
         }
 
-        
+
 
 
         //IDF
@@ -252,56 +253,55 @@ namespace render {
         }
         if (IHMState::getInstance()->hoverButton != nullptr) {
             std::cout << "you are hover a button : " << IHMState::getInstance()->hoverButton->name << std::endl;
-        
-        //Todo add highlight
-
         }
-        if (IHMState::getInstance()->hoverCard != nullptr){
-            std::cout<<"you are hover a card : " <<std::endl;
+        if (IHMState::getInstance()->hoverCard != nullptr) {
+            std::cout << "you are hover a card : " << std::endl;
         }
 
 
         //Choose Character
-        if (state->getGamePhase()==0 && isPlayingScene){
+        if (state->getGamePhase() == 0 && isPlayingScene) {
             promptCharacterSelection(true, window);
         }
 
         //Pre Draw  
-        if (state->getSubPhase() ==1 && isPlayingScene){
+        if (state->getSubPhase() == 1 && isPlayingScene) {
             drawCard(window);
         }
-        
+
         //Pre Capacity  
-        if (state->getSubPhase() ==2 && isPlayingScene){
-            
-            if (currentPlayer.getCharacter()==0 || currentPlayer.getCharacter()==1){ //Si le choix de la cible est un personnage (Assassin, Voleur)
+        if (state->getSubPhase() == 2 && isPlayingScene) {
+
+            if (currentPlayer.getCharacter() == 0 ||
+                currentPlayer.getCharacter() == 1) { //Si le choix de la cible est un personnage (Assassin, Voleur)
                 promptCharacterSelection(false, window);
             }
 
-            if (currentPlayer.getCharacter()==2){ //Si le choix de la cible est un joueur (Magicien)
+            if (currentPlayer.getCharacter() == 2) { //Si le choix de la cible est un joueur (Magicien)
                 //On affiche un message pour demander au joueur de cliquer sur le board du joueur qu'il souhaite cibler
                 sf::Text magicianMessage;
                 magicianMessage.setFont(fontTitle);
                 magicianMessage.setFillColor(sf::Color::White);
-                magicianMessage.setOutlineThickness(2.0f); 
+                magicianMessage.setOutlineThickness(2.0f);
                 magicianMessage.setOutlineColor(sf::Color::Black);
                 magicianMessage.setString("Veuillez choisir un joueur adverse");
                 magicianMessage.setCharacterSize(25);
-                magicianMessage.setPosition((1600-magicianMessage.getLocalBounds().width)/2, (900-magicianMessage.getLocalBounds().height)/2);
+                magicianMessage.setPosition((1600 - magicianMessage.getLocalBounds().width) / 2,
+                                            (900 - magicianMessage.getLocalBounds().height) / 2);
                 window.draw(magicianMessage);
-            }   
+            }
         }
-        
+
         //Draft, choix du personnage à bannir
-        if(state->getSubPhase()==3 && isPlayingScene){
-            promptCharacterSelection(true,window);
+        if (state->getSubPhase() == 3 && isPlayingScene) {
+            promptCharacterSelection(true, window);
         }
 
         // Card Zoom
-        VisualCard * cardToZoom = (IHMState::getInstance()->hoverCard);
-        if (cardToZoom != nullptr){
-        (*cardToZoom).zoomCard();
-        (*cardToZoom).draw(window);
+        VisualCard *cardToZoom = (IHMState::getInstance()->hoverCard);
+        if (cardToZoom != nullptr) {
+            (*cardToZoom).zoomCard();
+            (*cardToZoom).draw(window);
         }
 
     }
@@ -311,14 +311,14 @@ namespace render {
         if (event.type == sf::Event::MouseMoved) {
             IHMState::getInstance()->hoverCard = nullptr;
             for (auto &cards: displayedCard) {
-                if (cards.checkHover(event.mouseMove.x, event.mouseMove.y)) {
+                if (cards.checkHover((float) event.mouseMove.x, (float) event.mouseMove.y)) {
                     cards.onHoverEvent();
                     break;
                 }
             }
             IHMState::getInstance()->hoverButton = nullptr;
             for (auto &button: listOfButtons) {
-                if (button.checkHover(event.mouseMove.x, event.mouseMove.y)) {
+                if (button.checkHover((float) event.mouseMove.x, (float) event.mouseMove.y)) {
                     button.onHoverEvent();
                     break;
                 }
@@ -326,7 +326,7 @@ namespace render {
         }
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
             for (auto &cards: displayedCard) {
-                if (cards.checkClick(event.mouseButton.x, event.mouseButton.y)) {
+                if (cards.checkClick((float) event.mouseButton.x, (float) event.mouseButton.y)) {
                     // Pour les capacités qui ciblent des personnages ou batiments, les cibles disponibles sont des cards donc la cible est renvoyée normalement, et est ignorée par l'engine si elle n'est pas valable
                     // Pour la Draft de même, un personnages disponible pour etre choisi ou banni est une cards
                     cards.onClickEvent();
@@ -334,28 +334,28 @@ namespace render {
                 }
             }
             for (auto &button: listOfButtons) {
-                if (button.checkClick(event.mouseButton.x, event.mouseButton.y)) {
+                if (button.checkClick((float) event.mouseButton.x, (float) event.mouseButton.y)) {
                     button.onClickEvent();
                     break;
                 }
             }
             //Capacity
-            if (state->getSubPhase()==2){
-                if (state->getCurrentCharacter()==2){ //Si le choix de la cible est un joueur (Magicien)
+            if (state->getSubPhase() == 2) {
+                if (state->getCurrentCharacter() == 2) { //Si le choix de la cible est un joueur (Magicien)
                     sf::Vector2i boardsPos[4] = {
-                    {615, 622}, // en bas
-                    {0, 311},   // à gauche
-                    {615, 0},   // en haut
-                    {1240, 311} // à droite
+                            {615,  622}, // en bas
+                            {0,    311},   // à gauche
+                            {615,  0},   // en haut
+                            {1240, 311} // à droite
                     };
                     for (int i = 0; i < 4; ++i) {
-                    if (event.mouseButton.x >= boardsPos[i].x &&
-                        event.mouseButton.y >= boardsPos[i].y &&
-                        event.mouseButton.x < boardsPos[i].x + 360 &&
-                        event.mouseButton.y < boardsPos[i].y + 278) {
-                        // Le clic est dans la zone i
-                        std::cout << "Capacité effectuée sur le joueur " << i + 1 << std::endl;
-                        break;
+                        if (event.mouseButton.x >= boardsPos[i].x &&
+                            event.mouseButton.y >= boardsPos[i].y &&
+                            event.mouseButton.x < boardsPos[i].x + 360 &&
+                            event.mouseButton.y < boardsPos[i].y + 278) {
+                            // Le clic est dans la zone i
+                            std::cout << "Capacité effectuée sur le joueur " << i + 1 << std::endl;
+                            break;
                         }
                     }
                 }
@@ -373,7 +373,7 @@ namespace render {
 
         std::vector<state::Player> listOfPlayer = state->getListOfPlayer();
         for (auto &player: listOfPlayer) {
-            if ((int)player.getIdOfPlayer() == sceneId) {
+            if ((int) player.getIdOfPlayer() == sceneId) {
 
                 //Creation des cartes de la main du joueur
                 int posFirstCardHandX = 130;
@@ -400,57 +400,59 @@ namespace render {
         window.draw(helpMenuText);
     }
 
-    void Scene::promptCharacterSelection(bool isPartial, sf::RenderWindow& window) {
-    const char *CharacterTypeString[] = {
-        "Assassin",
-        "Thief",
-        "Magician",
-        "King",
-        "Bishop",
-        "Merchant",
-        "Architect",
-        "Warlord",
-        "NoCharacter"
-    };
+    void Scene::promptCharacterSelection(bool isPartial, sf::RenderWindow &window) {
+        const char *CharacterTypeString[] = {
+                "Assassin",
+                "Thief",
+                "Magician",
+                "King",
+                "Bishop",
+                "Merchant",
+                "Architect",
+                "Warlord",
+                "NoCharacter"
+        };
 
-    std::vector<state::CharacterType> availableCharacter;
+        std::vector<state::CharacterType> availableCharacter;
 
-    int indexFirstCharacterX = 445;
-    int indexFirstCharacterY = 388;
+        int indexFirstCharacterX = 445;
+        int indexFirstCharacterY = 388;
 
-    sf::RectangleShape characterChoiceBackground;
+        sf::RectangleShape characterChoiceBackground;
 
-    if (isPartial) {
-        availableCharacter = state->getAvailableCharacter();
-        indexFirstCharacterX += (8 - availableCharacter.size()) / 2 * 90;
-        characterChoiceBackground.setSize(sf::Vector2f(90 * availableCharacter.size() + 10, 134));
-    } else {
-        characterChoiceBackground.setSize(sf::Vector2f(730, 134));
-    }
+        if (isPartial) {
+            availableCharacter = state->getAvailableCharacter();
+            indexFirstCharacterX += (8 - (int) availableCharacter.size()) / 2 * 90;
+            characterChoiceBackground.setSize(sf::Vector2f(90 * (float) availableCharacter.size() + 10, 134));
+        } else {
+            characterChoiceBackground.setSize(sf::Vector2f(730, 134));
+        }
 
-    characterChoiceBackground.setFillColor(sf::Color(76, 68, 53));
-    window.draw(characterChoiceBackground);
+        characterChoiceBackground.setFillColor(sf::Color(76, 68, 53));
+        window.draw(characterChoiceBackground);
 
-    for (size_t i = 0; i < (isPartial ? availableCharacter.size() : 8); i++) {
-        std::string characterName = CharacterTypeString[i];
-        
-        VisualCard characterCard = VisualCard(characterName, indexFirstCharacterX + 90 * i, indexFirstCharacterY);
-        characterCard.draw(window);
-        displayedCard.push_back(characterCard);
+        for (size_t i = 0; i < (isPartial ? availableCharacter.size() : 8); i++) {
+            std::string characterName = CharacterTypeString[i];
+
+            VisualCard characterCard = VisualCard(characterName, (float) indexFirstCharacterX + 90 * (float) i,
+                                                  (float) indexFirstCharacterY);
+            characterCard.draw(window);
+            displayedCard.push_back(characterCard);
         }
     }
 
 
-    void Scene::drawCard(sf::RenderWindow& window){
+    void Scene::drawCard(sf::RenderWindow &window) {
         std::vector<state::Card> drawableCards = state->getDrawableCards();
 
-        sf::RectangleShape characterChoiceBackground = sf::RectangleShape(sf::Vector2f(90*drawableCards.size()+10,134));
+        sf::RectangleShape characterChoiceBackground = sf::RectangleShape(
+                sf::Vector2f(90 * (float) drawableCards.size() + 10, 134));
         characterChoiceBackground.setFillColor(sf::Color(76, 68, 53));
         window.draw(characterChoiceBackground);
-        int i =0;
-        for(auto& card: drawableCards){
-            std::string cardName=card.Card::getNameOfCard();
-            VisualCard drawableCard = VisualCard(cardName, 760+90*i, 388);
+        int i = 0;
+        for (auto &card: drawableCards) {
+            std::string cardName = card.Card::getNameOfCard();
+            VisualCard drawableCard = VisualCard(cardName, 760 + 90 * (float) i, 388);
             i++;
             drawableCard.draw(window);
             displayedCard.push_back(drawableCard);

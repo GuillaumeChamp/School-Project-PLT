@@ -1,16 +1,16 @@
 #include "VisualCard.h"
 #include <iostream>
+#include <utility>
 #include "config.h"
 
 namespace render {
-    VisualCard::VisualCard(std::string filename, int posX, int posY):InteractiveElement(posX, posY)  {
-        this->name = filename;
+    VisualCard::VisualCard(std::string filename, float posX, float posY):InteractiveElement(posX, posY)  {
+        this->name = std::move(filename);
         surface.setPosition(posX, posY);
         surface.setSize(sf::Vector2f(80, 124));
     }
 
-    VisualCard::~VisualCard() {
-    }
+    VisualCard::~VisualCard() = default;
 
     void VisualCard::onHoverEvent() {
         IHMState::getInstance()->hoverCard = this;

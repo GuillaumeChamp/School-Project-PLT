@@ -6,14 +6,14 @@ namespace render {
     std::vector<VisualCard> PlayerRender::drawPlayer(sf::RenderWindow& window, state::Player* playerToRender, int positionId, bool isCrownOwner, bool isRevealed, sf::Font& font) {
         
         std::vector<VisualCard> boardCards;
-        std::vector<std::pair<int, int>> coordinatesList = {
+        std::vector<std::pair<float, float>> coordinatesList = {
             {615,622}, //en bas
             {0,311},  //a gauche
             {615,0}, //en haut
             {1240,311} // a droite
         };
 
-        std::vector<std::pair<int, int>> posCrown = {
+        std::vector<std::pair<float, float>> posCrown = {
             //Coordonné du pixel en haut a gauche du logo couronne de chaqe board
                 {985,624}, //en bas
                 {370,313},  //a gauche
@@ -21,11 +21,11 @@ namespace render {
                 {1150,313} // a droite
              };
         
-        int boardX = coordinatesList[positionId].first;
-        int boardY = coordinatesList[positionId].second;
+        float boardX = coordinatesList[positionId].first;
+        float boardY = coordinatesList[positionId].second;
 
-        int crownX = posCrown[positionId].first;
-        int crownY = posCrown[positionId].second;
+        float crownX = posCrown[positionId].first;
+        float crownY = posCrown[positionId].second;
 
         //logo couronne
         if (isCrownOwner){
@@ -105,7 +105,7 @@ namespace render {
         for (auto& card : playerToRender->getBoardOfPlayer()){
                 //Creation des cartes des boards
                 std::string filename=card.getNameOfCard ();
-                VisualCard visualCard(filename, boardX+10 + (indexOfCard % 4) * 90, boardY + 10 + 124 * (indexOfCard / 4));
+                VisualCard visualCard(filename, boardX+10.0 + (indexOfCard % 4) * 90.0, boardY + 10 + 124.0 * (indexOfCard / 4));
                 visualCard.draw(window);
                 boardCards.push_back(visualCard);
                 indexOfCard++;

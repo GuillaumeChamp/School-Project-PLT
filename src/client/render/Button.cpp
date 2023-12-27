@@ -4,7 +4,7 @@
 #include "config.h"
 
 namespace render {
-    Button::Button(ButtonType buttonType, int posX, int posY):InteractiveElement(posX, posY) {
+    Button::Button(ButtonType buttonType, float posX, float posY):InteractiveElement(posX, posY) {
         this->name=buttonType;
         this->surface.setPosition(posX,posY);
         this->surface.setSize(sf::Vector2f(50, 50));
