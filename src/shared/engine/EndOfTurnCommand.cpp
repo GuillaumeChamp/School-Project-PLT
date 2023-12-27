@@ -21,18 +21,16 @@ void EndOfTurnCommand::execute(GameState &state) {
     //In choose character phase the next player is resolved by player
     if (state.getGamePhase() == state::CHOOSE_CHARACTER) {
         auto lastPlayer = static_cast<PlayerId>((state.getCrownOwner() + 2) % 4 + 1);
+        auto nextPlayer = static_cast<PlayerId>(currentPlayer % 4 + 1 );
+        state.setPlaying(nextPlayer);
         //Change phase if current player is the last player
         if (currentPlayer == lastPlayer) {
             auto *command = new ChangePhaseCommand(authorPlayer, state.getGamePhase());
-            Engine::getInstance(state).addCommand(command);
-            return;
+            command->execute(state);
         }
-        auto nextPlayer = static_cast<PlayerId>(currentPlayer % 4 + 1 );
-        state.setPlaying(nextPlayer);
-        return;
     }
     //In call character phase, the next player is resolved by character
-    else if ((state.getGamePhase() == Phase::CALL_CHARACTER)) {
+    if (state.getGamePhase() == Phase::CALL_CHARACTER) {
 
         auto nextPlayer = NO_PLAYER;
         auto calledCharacterId = static_cast<CharacterType>(state.getCurrentCharacter() + 1);
@@ -48,7 +46,7 @@ void EndOfTurnCommand::execute(GameState &state) {
         if (calledCharacterId == 8) {
             //All characters have been called, change phase
             auto *command = new ChangePhaseCommand(authorPlayer, state.getGamePhase());
-            Engine::getInstance(state).addCommand(command);
+            command->execute(state);
             return;
         }
         Player playerToInit = state.getPlayer(nextPlayer);
