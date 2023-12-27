@@ -27,7 +27,6 @@ namespace render {
         background.setFillColor(sf::Color(21, 25, 29));
 
         //logo crown + gold + cartes
-
         sf::Texture crown, gold, card;
         crown.loadFromFile(res + "noCrown.png");
         gold.loadFromFile(res + "coin.png");
@@ -36,7 +35,7 @@ namespace render {
         this->goldTexture = gold;
         this->cardTexture = card;
 
-        // Texte pour le helpMenu
+        // Fill help menu
 
         this->helpMenuText = sf::Text();
         helpMenuText.setFont(fontText);
@@ -57,18 +56,15 @@ namespace render {
     }
 
     void Scene::draw(sf::RenderWindow &window) {
-        // dessine les éléments communs à toutes les scenes
         displayedCard.clear();
 
-        //Determine si la scene est celle du joueur entrain de jouer
+        // is the owner of the scene currently playing
         isPlayingScene = (static_cast<int>(state->getPlaying()) == static_cast<int>(sceneId));
 
-        //Background
+        // Background
         window.draw(background);
 
-
-
-        //Affichage des fonds boards + emplacements cartes
+        // Draw board background and card display
         std::vector<std::pair<float, float>> coordinatesList = {
                 {615,  622}, //en bas
                 {0,    311},  //a gauche
@@ -99,9 +95,7 @@ namespace render {
                 }
             }
 
-
         }
-
 
         std::vector<std::pair<float, float>> posLogo = {
                 //Coordonné du pixel en haut a gauche du logo couronne de chaqe board
@@ -132,10 +126,7 @@ namespace render {
             window.draw(cardIcon);
         }
 
-
-
         //Affichage des cartes des joueurs
-
         std::vector<state::Player> listOfPlayer = state->getListOfPlayer();
         std::vector<state::Player> listOfPlayerOrder;
 
@@ -153,20 +144,16 @@ namespace render {
             }
         }
 
-
-
         //Affichage info par joueur
         int i = 0;
         int indexCurrentCharacter, indexCharacterPlayer;
 
         for (auto &player: listOfPlayerOrder) {
-
             bool isCrownOwner = false;
             bool isRevealed = false;
             if (player.getIdOfPlayer() == state->getCrownOwner()) {
                 isCrownOwner = true;
             }
-
             for (int k = 0; k < 8; ++k) {
                 if (static_cast<state::CharacterType>(k) == player.getCharacter()) {
                     indexCharacterPlayer = k;
@@ -185,24 +172,22 @@ namespace render {
 
 
         //Capacity button
-
         state::Player currentPlayer = listOfPlayerOrder[0];
         bool found = false;
 
         for (const auto &button: listOfButtons) {
-            if (button.name == capacity) {
+            if (button.getType() == capacity) {
                 found = true;
             }
         }
 
         if (currentPlayer.isCapacityAvailable() && !found) {
             listOfButtons.emplace_back(ButtonType::capacity, 1500, 700);
-
         }
 
         if (!currentPlayer.isCapacityAvailable() && found) {
             for (auto it = listOfButtons.begin(); it != listOfButtons.end();) {
-                if (it->name == capacity) {
+                if (it->getType() == capacity) {
                     it = listOfButtons.erase(it);
                 } else {
                     ++it;
@@ -251,22 +236,15 @@ namespace render {
         if (IHMState::getInstance()->isHelpDisplayed) {
             drawHelp(window);
         }
-        if (IHMState::getInstance()->hoverButton != nullptr) {
-            std::cout << "you are hover a button : " << IHMState::getInstance()->hoverButton->name << std::endl;
-        }
-        if (IHMState::getInstance()->hoverCard != nullptr) {
-            std::cout << "you are hover a card : " << std::endl;
-        }
 
-
-        //Choose Character
+        //Show character to pick if game ask to pick
         if (state->getGamePhase() == 0 && isPlayingScene) {
             promptCharacterSelection(true, window);
         }
 
-        //Pre Draw  
+        //Show card to pick if game ask to pick
         if (state->getSubPhase() == 1 && isPlayingScene) {
-            drawCard(window);
+            DisplayDrawableCard(window);
         }
 
         //Pre Capacity  
@@ -364,7 +342,6 @@ namespace render {
     }
 
     void Scene::drawPlayerHand(sf::RenderWindow &window) {
-
         // fond
         sf::RectangleShape boardBackground(sf::Vector2f(1360, 144));
         boardBackground.setPosition(120, 600);
@@ -374,13 +351,11 @@ namespace render {
         std::vector<state::Player> listOfPlayer = state->getListOfPlayer();
         for (auto &player: listOfPlayer) {
             if ((int) player.getIdOfPlayer() == sceneId) {
-
                 //Creation des cartes de la main du joueur
                 int posFirstCardHandX = 130;
                 int posFirstCardHandY = 610;
                 int i = 0;
                 for (auto &card: player.getHand()) {
-
                     std::string filename = card.getNameOfCard();
                     displayedCard.emplace_back(filename, posFirstCardHandX + 90 * i, posFirstCardHandY);
                     i++;
@@ -434,19 +409,18 @@ namespace render {
         for (size_t i = 0; i < (isPartial ? availableCharacter.size() : 8); i++) {
             std::string characterName = CharacterTypeString[i];
 
-            VisualCard characterCard = VisualCard(characterName, (float) indexFirstCharacterX + 90 * (float) i,
+            VisualCard characterCard = VisualCard(characterName,
+                                                  (float) indexFirstCharacterX + 90 * (float) i,
                                                   (float) indexFirstCharacterY);
             characterCard.draw(window);
             displayedCard.push_back(characterCard);
         }
     }
 
-
-    void Scene::drawCard(sf::RenderWindow &window) {
+    void Scene::DisplayDrawableCard(sf::RenderWindow &window) {
         std::vector<state::Card> drawableCards = state->getDrawableCards();
 
-        sf::RectangleShape characterChoiceBackground = sf::RectangleShape(
-                sf::Vector2f(90 * (float) drawableCards.size() + 10, 134));
+        sf::RectangleShape characterChoiceBackground = sf::RectangleShape(sf::Vector2f(90 * (float) drawableCards.size() + 10, 134));
         characterChoiceBackground.setFillColor(sf::Color(76, 68, 53));
         window.draw(characterChoiceBackground);
         int i = 0;

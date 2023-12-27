@@ -14,13 +14,12 @@ namespace render {
         return this->surface;
     }
 
-
     bool InteractiveElement::checkClick(float x,float y) {
         return surface.getGlobalBounds().contains(x,y);
     }
 
     bool InteractiveElement::checkHover(float x,float y) {
-        return (surface.getGlobalBounds().contains(x,y));
+        return surface.getGlobalBounds().contains(x,y);
     }
 
     void InteractiveElement::onClickEvent() {
