@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
 
             generateSampleState(gamestate);
             gamestate.setCurrentCharacter(ARCHITECT);
+            gamestate.setSubPhase(Default);
             render::Scene sceneA(render::SceneId::PlayerA, &gamestate);
         
 

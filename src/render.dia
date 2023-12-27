@@ -3230,10 +3230,10 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>##</dia:string>
+            <dia:string>#isPlayingScene#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>##</dia:string>
+            <dia:string>#bool#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>

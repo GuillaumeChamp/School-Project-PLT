@@ -64,7 +64,7 @@ namespace render {
                 texture.loadFromFile(res+"help.png");
                 break;
             case capacity:
-                texture.loadFromFile(res+"capacity.jpg");
+                texture.loadFromFile(res+"capacity.png");
                 break;
         }
         this->surface.setTexture(&texture);

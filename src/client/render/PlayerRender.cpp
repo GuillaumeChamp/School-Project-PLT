@@ -63,7 +63,7 @@ namespace render {
             //Personnage secret
             sf::Texture characterBackgroundTexture;
             std::string res = RES_DIR;
-            characterBackgroundTexture.loadFromFile(res+"dos_rouge.jpg");
+            characterBackgroundTexture.loadFromFile(res+"NoCharacter.jpg");
             sf::RectangleShape characterBackgroundShape(sf::Vector2f(80,124));
             characterBackgroundShape.setTexture(&characterBackgroundTexture);
 
