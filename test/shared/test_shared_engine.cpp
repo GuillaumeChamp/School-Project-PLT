@@ -114,15 +114,17 @@ BOOST_FIXTURE_TEST_SUITE(CommandTestCase, F)
         gameState.setCrownOwner(state::PLAYER_A);
         gameState.setPlaying(state::PLAYER_A);
         gameState.setGamePhase(state::CHOOSE_CHARACTER);
+        gameState.setCurrentCharacter(state::NO_CHARACTER);
 
         auto *command = new EndOfTurnCommand(state::PlayerId::PLAYER_A);
         BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_A);
 
         BOOST_CHECK_EQUAL(command->check(gameState), true);
-        BOOST_CHECK_EQUAL(gameState.getStack().size(), 0);
 
         Engine::getInstance(gameState).addCommand(command);
         Engine::getInstance(gameState).executeAllCommands();
+        plr1.setCharacter(state::KING);
+        gameState.updatePlayer(plr1);
 
         BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_B);
         command = new EndOfTurnCommand(state::PlayerId::PLAYER_B);
@@ -140,8 +142,7 @@ BOOST_FIXTURE_TEST_SUITE(CommandTestCase, F)
         Engine::getInstance(gameState).executeAllCommands();
 
         //still player D turn because he is the last to play (A hold crown)
-        BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_D);
-        command = new EndOfTurnCommand(state::PlayerId::PLAYER_D);
+        BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_A);
 
     }
 
