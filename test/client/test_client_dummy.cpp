@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_CASE(TestSFML)
     BOOST_CHECK(texture.getSize() == ::sf::Vector2<unsigned int>{});
 
     render::Button button{render::ButtonType::hand, 10, 20};
-    BOOST_CHECK_EQUAL(button.name, render::ButtonType::hand);
+    BOOST_CHECK_EQUAL(button.getType(), render::ButtonType::hand);
     BOOST_CHECK_EQUAL(button.getSurface().getPosition().x, 10);
     BOOST_CHECK_EQUAL(button.getSurface().getPosition().y, 20);
 
