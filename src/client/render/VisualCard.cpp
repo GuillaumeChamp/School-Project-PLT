@@ -30,7 +30,7 @@ void VisualCard::draw(sf::RenderWindow &window) {
 
     sf::Texture texture;
     std::string path = RES_DIR;
-    path.append(name).append(".jpg");
+    path.append(name).append(".png");
     texture.loadFromFile(path);
     this->surface.setTexture(&texture);
     window.draw(this->getSurface());

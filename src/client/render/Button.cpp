@@ -59,7 +59,7 @@ void Button::draw(sf::RenderWindow &render) {
             texture.loadFromFile(res + "end_of_turn_icon.png");
             break;
         case hand:
-            texture.loadFromFile(res + "dos_vert.jpg");
+            texture.loadFromFile(res + "dos.png");
             break;
         case help:
             texture.loadFromFile(res + "help.png");
