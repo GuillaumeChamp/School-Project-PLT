@@ -24,9 +24,12 @@ namespace engine {
         }
         else // If there are cards to draw, this means the expected action is to add a card to the player's hand
         {
+            state::Player player = state.getPlayer(authorPlayer);
+            std::vector<state::Card> hand = player.getHand();
 
+            hand.insert(hand.end(), card);
+            drawableCards.erase(drawableCards.begin(), drawableCards.end());
         }
-
     }
 
     // Check method

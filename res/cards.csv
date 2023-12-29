@@ -19,10 +19,13 @@ ID,Name,Multiplicity,Type,Cost
 18,Cour des miracles,1,Wonder,2
 19,Donjon,2,Wonder,3
 20,Laboratoire,1,Wonder,5
-21,Manufacture,1,Wonder,5
+21,Forge,1,Wonder,5
 22,Observatoire,1,Wonder,5
 23,Cimetière,1,Wonder,5
 24,Bibliothèque,1,Wonder,6
 25,Ecole de magie,1,Wonder,6
 26,Université,1,Wonder,6
 27,Dracoport,1,Wonder,6
+28,Grande Muraille,Wonder,6
+29,Salle des Cartes,Wonder,5
+30,Trésor Impérial,Wonder,5
