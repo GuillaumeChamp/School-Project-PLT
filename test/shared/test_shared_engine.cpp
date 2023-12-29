@@ -4,7 +4,7 @@
 
 using namespace ::engine;
 
-
+#define STACK_SIZE 66
 struct F {
     F() : gameState("player1",
                     "player2",
@@ -98,14 +98,14 @@ BOOST_FIXTURE_TEST_SUITE(CommandTestCase, F)
         Engine::getInstance(gameState).executeAllCommands();
 
         BOOST_CHECK_EQUAL(gameState.getDrawableCards().size(), 2);
-        BOOST_CHECK_EQUAL(gameState.getStack().size(), 63);
+        BOOST_CHECK_EQUAL(gameState.getStack().size(), STACK_SIZE);
 
         command = new DrawCommand(state::PlayerId::PLAYER_A, 3);
         Engine::getInstance(gameState).addCommand(command);
         Engine::getInstance(gameState).executeAllCommands();
 
         BOOST_CHECK_EQUAL(gameState.getDrawableCards().size(), 3);
-        BOOST_CHECK_EQUAL(gameState.getStack().size(), 60);
+        BOOST_CHECK_EQUAL(gameState.getStack().size(), STACK_SIZE-3);
 
     }
 
