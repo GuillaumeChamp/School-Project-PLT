@@ -11,16 +11,22 @@ requestHandler::handlePost(http::request<http::string_body> &request, http::resp
     std::string requestTarget = (string) request.target();
     response.set(http::field::content_type, "text/plain");
     if (requestTarget == "/command") {
+        if (LiveGame::getInstance().getState() == nullptr) {
+            beast::ostream(response.body()) << "Game is not started yet\r\n";
+            return;
+        }
         string content = request.body();
         LiveGame::getInstance().addCommand(content);
         beast::ostream(response.body()) << "Command registered\r\n";
-    } else if (requestTarget == "/player") {
+        return;
+    }
+    if (requestTarget == "/player") {
         std::string playerName = request.body();
         beast::ostream(response.body()) << LiveGame::getInstance().handlePlayerJoin(playerName);
-    } else {
-        response.result(http::status::not_found);
-        beast::ostream(response.body()) << "File not found\r\n";
+        return;
     }
+    response.result(http::status::not_found);
+    beast::ostream(response.body()) << "File not found\r\n";
 }
 
 // Determine what needs to be done with the request message.
@@ -62,16 +68,23 @@ requestHandler::handleGet(http::request<http::string_body> &request, http::respo
     if (primaryTarget == "/state") {
         response.set(http::field::content_type, "application/json");
         auto state1 = LiveGame::getInstance().getState();
+        if (state1 == nullptr) {
+            beast::ostream(response.body()) << "Game is not started yet \r\n";
+            return;
+        }
         beast::ostream(response.body()) << state::StateSerializer::serialize(*state1);
-    } else if (primaryTarget == "/command") {
+        return;
+    }
+    if (primaryTarget == "/command") {
         std::string playerName = requestTarget.substr(pos, requestTarget.size());
         auto strings = LiveGame::getInstance().retrieveCommands(playerName);
         beast::ostream(response.body()) << strings;
-    } else {
-        response.result(http::status::not_found);
-        response.set(http::field::content_type, "text/plain");
-        beast::ostream(response.body()) << "File not found\r\n";
+        return;
     }
+    response.result(http::status::not_found);
+    response.set(http::field::content_type, "text/plain");
+    beast::ostream(response.body()) << "File not found\r\n";
+
 }
 
 state::GameState requestHandler::generateSampleState() {

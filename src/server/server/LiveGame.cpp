@@ -25,23 +25,29 @@ void LiveGame::addCommand(std::string command) {
 }
 
 string LiveGame::handlePlayerJoin(std::string playerName) {
-    state::PlayerId playerId = findPlayer(players, playerName);
+    // handle game full
     if (players.size() >= 4) {
         return "This game is full\r\n";
     }
-    if (playerId == state::NO_PLAYER) {
-        players.emplace_back(playerName, static_cast<state::PlayerId>(players.size() + 1));
-        if (players.size() == 4) {
-            this->game = new state::GameState{players[0].getClientName(), players[1].getClientName(),
-                                              players[2].getClientName(), players[3].getClientName()};
-            this->eng = std::addressof(engine::Engine::getInstance(*game));
-            //TODO use start game command
-            return "OK, game is starting.\r\n";
-
+    // find if player exist
+    state::PlayerId playerId = state::NO_PLAYER;
+    for (auto p: players) {
+        if (p.getClientName() == playerName) {
+            return "You are already in the game\r\n";
         }
-        return "OK\r\n";
     }
-    return "You are already in the game\r\n";
+
+    players.emplace_back(playerName, static_cast<state::PlayerId>(players.size() + 1));
+    if (players.size() == 4) {
+        this->game = new state::GameState{players[0].getClientName(), players[1].getClientName(),
+                                          players[2].getClientName(), players[3].getClientName()};
+        this->eng = std::addressof(engine::Engine::getInstance(*game));
+        //TODO use start game command
+        return "OK, game is starting.\r\n";
+
+    }
+    return "OK\r\n";
+
 }
 
 state::GameState *LiveGame::getState() {
@@ -52,6 +58,7 @@ string LiveGame::retrieveCommands(string playerName) {
     for (auto p: players) {
         if (p.getClientName() == playerName) {
             distributedCommands.retrieveCommands(p.getLastUpdate());
+            p.updateTimestamp(std::chrono::high_resolution_clock::now());
         }
     }
     return std::string();

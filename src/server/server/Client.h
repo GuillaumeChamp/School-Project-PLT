@@ -13,26 +13,25 @@
 using namespace std::chrono;
 namespace server {
 
-  /// class Client - 
-  class Client {
-    // Attributes
-  private:
-    std::string clientName;
-    state::PlayerId playerId;
-    time_point<high_resolution_clock> lastUpdate;
-    // Operations
-  public:
-    Client (std::string name,state::PlayerId);
+    /// class Client -
+    class Client {
+        // Attributes
+    private:
+        std::string clientName;
+        state::PlayerId playerId;
+        time_point<high_resolution_clock> lastUpdate;
+        // Operations
+    public:
+        Client(std::string name, state::PlayerId);
 
-      const std::string &getClientName() const;
+        const std::string &getClientName() const;
 
-      state::PlayerId getPlayerId() const;
+        state::PlayerId getPlayerId() const;
 
-      const time_point<high_resolution_clock> &getLastUpdate() const;
+        const time_point<high_resolution_clock> &getLastUpdate() const;
 
-      // Setters and Getters
-    friend state::PlayerId findPlayer(std::vector<Client> &clientList,std::string name);
-  };
+        void updateTimestamp(const time_point<high_resolution_clock> &lastUpdate);
+    };
 
 }
 

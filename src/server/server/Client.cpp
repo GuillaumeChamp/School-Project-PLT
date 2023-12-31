@@ -30,3 +30,7 @@ state::PlayerId Client::getPlayerId() const {
 const time_point<high_resolution_clock> &Client::getLastUpdate() const {
     return lastUpdate;
 }
+
+void Client::updateTimestamp(const time_point<high_resolution_clock> &lastUpdate) {
+    this->lastUpdate=lastUpdate;
+}
