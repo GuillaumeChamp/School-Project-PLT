@@ -11,14 +11,16 @@ namespace http = beast::http;           // from <boost/beast/http.hpp>
 namespace server {
     class requestHandler {
     public:
-        static void
-        handlePost(http::request <http::string_body> &request, http::response <http::dynamic_body> &response);
-
-        static void
-        handleGet(http::request <http::string_body> &request, http::response <http::dynamic_body> &response);
-
+        // handle request and dispense
         static void
         process_request(http::request <http::string_body> &request, http::response <http::dynamic_body> &response);
+    private:
+        // handle all post type request
+        static void
+        handlePost(http::request <http::string_body> &request, http::response <http::dynamic_body> &response);
+        // handle all get request
+        static void
+        handleGet(http::request <http::string_body> &request, http::response <http::dynamic_body> &response);
     };
 }
 

@@ -4,6 +4,10 @@
 
 #include "LiveGame.h"
 
+#include <algorithm>
+#include <sstream>
+#include <iterator>
+
 using namespace server;
 
 LiveGame::LiveGame() {
@@ -56,8 +60,18 @@ state::GameState *LiveGame::getState() {
 string LiveGame::retrieveCommands(const string& playerName) {
     for (auto p: players) {
         if (p.getClientName() == playerName) {
-            distributedCommands.retrieveCommands(p.getLastUpdate());
+            auto commandList = distributedCommands.retrieveCommands(p.getLastUpdate());
             p.updateTimestamp(std::chrono::high_resolution_clock::now());
+            std::ostringstream vts;
+            if (commandList.empty()){
+                return {};
+            }
+            // Convert all but the last element to avoid a trailing
+            std::copy(commandList.begin(), commandList.end()-1,std::ostream_iterator<string>(vts, ";"));
+
+            // Now add the last element with no delimiter
+            vts << commandList.back();
+            return vts.str();
         }
     }
     return {};
