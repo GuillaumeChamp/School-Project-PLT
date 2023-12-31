@@ -25,7 +25,7 @@ namespace server {
         /**
          *  Add a command in the commandQueue
          */
-        void addCommand(string);
+        void addCommand(const string&);
         /**
          * allow to retrieve new command
          * @param lastUpdate last command update

@@ -16,21 +16,21 @@ LiveGame &LiveGame::getInstance() {
     return inst;
 }
 
-void LiveGame::addCommand(std::string command) {
+void LiveGame::addCommand(const std::string& command) {
     distributedCommands.addCommand(command);
     //TODO : create command using an engine util method
-    engine::Command *command1 = new engine::Command();
+    auto *command1 = new engine::Command();
     eng->addCommand(command1);
     eng->executeAllCommands();
 }
 
-string LiveGame::handlePlayerJoin(std::string playerName) {
+string LiveGame::handlePlayerJoin(const std::string& playerName) {
     // handle game full
     if (players.size() >= 4) {
         return "This game is full\r\n";
     }
     // find if player exist
-    for (auto p: players) {
+    for (const auto& p: players) {
         if (p.getClientName() == playerName) {
             return "You are already in the game\r\n";
         }
@@ -53,14 +53,14 @@ state::GameState *LiveGame::getState() {
     return game;
 }
 
-string LiveGame::retrieveCommands(string playerName) {
+string LiveGame::retrieveCommands(const string& playerName) {
     for (auto p: players) {
         if (p.getClientName() == playerName) {
             distributedCommands.retrieveCommands(p.getLastUpdate());
             p.updateTimestamp(std::chrono::high_resolution_clock::now());
         }
     }
-    return std::string();
+    return {};
 }
 
 LiveGame::~LiveGame() {

@@ -6,28 +6,28 @@
 
 using namespace server;
 
-CommandQueue::CommandQueue() {}
+CommandQueue::CommandQueue() = default;
 
 CommandQueue::~CommandQueue() {
     commandList.clear();
 }
 
-void CommandQueue::addCommand(string commandContent){
-    if (commandList.size()>20){
+void CommandQueue::addCommand(const string &commandContent) {
+    if (commandList.size() > 20) {
         commandList.pop_back();
     }
-    this->commandList.emplace_front(commandContent,high_resolution_clock::now());
+    this->commandList.emplace_front(commandContent, high_resolution_clock::now());
 }
 
-vector<string> CommandQueue::retrieveCommands(time_point<high_resolution_clock> lastUpdate){
+vector<string> CommandQueue::retrieveCommands(time_point<high_resolution_clock> lastUpdate) {
     vector<string> output;
     int i;
-    for (i=0;i<commandList.size();i++){
-        if(commandList[i].second>lastUpdate){
+    for (i = 0; i < (int) commandList.size(); i++) {
+        if (commandList[i].second > lastUpdate) {
             break;
         }
     }
-    for(;i<commandList.size();i++){
+    for (; i < (int) commandList.size(); i++) {
         output.emplace_back(commandList[i].first);
     }
     return output;

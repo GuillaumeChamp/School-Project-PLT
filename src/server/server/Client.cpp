@@ -14,10 +14,6 @@ const std::string &Client::getClientName() const {
     return clientName;
 }
 
-state::PlayerId Client::getPlayerId() const {
-    return playerId;
-}
-
 const time_point<high_resolution_clock> &Client::getLastUpdate() const {
     return lastUpdate;
 }

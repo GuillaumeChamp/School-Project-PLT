@@ -1,7 +1,3 @@
-//
-// Created by guillaume on 12/31/23.
-//
-
 #include "http_connection.h"
 
 using namespace server;

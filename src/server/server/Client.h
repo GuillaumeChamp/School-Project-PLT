@@ -1,6 +1,3 @@
-//
-// Created by guillaume on 12/31/23.
-//
 #ifndef PLT__CLIENT__H
 #define PLT__CLIENT__H
 
@@ -25,8 +22,6 @@ namespace server {
         Client(std::string name, state::PlayerId);
 
         const std::string &getClientName() const;
-
-        state::PlayerId getPlayerId() const;
 
         const time_point<high_resolution_clock> &getLastUpdate() const;
 

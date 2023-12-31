@@ -1,16 +1,3 @@
-//
-// Created by guillaume on 12/31/23.
-//
-
-#include <boost/beast/core.hpp>
-#include <boost/beast/http.hpp>
-#include <boost/beast/version.hpp>
-#include <boost/asio.hpp>
-#include <chrono>
-#include <cstdlib>
-#include <iostream>
-#include <memory>
-#include <string>
 #include "requestHandler.h"
 
 #ifndef PLT_HTTP_CONNECTION_H

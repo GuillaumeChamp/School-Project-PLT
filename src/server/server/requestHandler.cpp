@@ -34,15 +34,14 @@ void requestHandler::process_request(http::request<http::string_body> &request,
                                      http::response<http::dynamic_body> &response) {
     response.version(request.version());
     response.keep_alive(false);
+    response.set(http::field::server, "Citadel Main Server");
     switch (request.method()) {
         case http::verb::get:
             response.result(http::status::ok);
-            response.set(http::field::server, "Beast");
             requestHandler::handleGet(request, response);
             break;
         case http::verb::post:
             response.result(http::status::ok);
-            response.set(http::field::server, "Beast");
             requestHandler::handlePost(request, response);
             break;
         default:
