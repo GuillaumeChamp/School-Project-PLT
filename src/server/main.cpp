@@ -15,6 +15,7 @@
 
 #include "server.h"
 
+using namespace server;
 namespace net = boost::asio;            // from <boost/asio.hpp>
 using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 
@@ -30,7 +31,6 @@ void http_server(tcp::acceptor &acceptor, tcp::socket &socket) {
 }
 
 int main(int argc, char *argv[]) {
-
     try {
         // Check command line arguments.
         if (argc != 3) {

@@ -4,23 +4,19 @@
 
 #include "requestHandler.h"
 
+using namespace server;
 
-void requestHandler::log_command(http::request<http::string_body> &request,http::response<http::dynamic_body> &response) {
+void
+requestHandler::handlePost(http::request<http::string_body> &request, http::response<http::dynamic_body> &response) {
+    std::string requestTarget = (string) request.target();
     response.set(http::field::content_type, "text/plain");
-    if (request.target() == "/command") {
-        std::string content = request.body();
-        //parsing
-        auto pos = content.find(',');
-        std::string token1 = content.substr(0, pos);
-        content.erase(0, pos + 1);
-        pos = content.find(',');
-        std::string token2 = content.substr(0, pos);
-        content.erase(0, pos + 1);
-        pos = content.find(',');
-        std::string token3 = content.substr(0, pos);
-        content.erase(0, pos + 1);
-        std::cout << "source : " << token1 << " object : " << token2 << " target : " << token3 << std::endl;
+    if (requestTarget == "/command") {
+        string content = request.body();
+        LiveGame::getInstance().addCommand(content);
         beast::ostream(response.body()) << "Command registered\r\n";
+    } else if (requestTarget == "/player") {
+        std::string playerName = request.body();
+        beast::ostream(response.body()) << LiveGame::getInstance().handlePlayerJoin(playerName);
     } else {
         response.result(http::status::not_found);
         beast::ostream(response.body()) << "File not found\r\n";
@@ -28,19 +24,20 @@ void requestHandler::log_command(http::request<http::string_body> &request,http:
 }
 
 // Determine what needs to be done with the request message.
-void requestHandler::process_request(http::request<http::string_body> &request,http::response<http::dynamic_body> &response) {
+void requestHandler::process_request(http::request<http::string_body> &request,
+                                     http::response<http::dynamic_body> &response) {
     response.version(request.version());
     response.keep_alive(false);
     switch (request.method()) {
         case http::verb::get:
             response.result(http::status::ok);
             response.set(http::field::server, "Beast");
-            requestHandler::create_response(request,response);
+            requestHandler::handleGet(request, response);
             break;
         case http::verb::post:
             response.result(http::status::ok);
             response.set(http::field::server, "Beast");
-            requestHandler::log_command(request,response);
+            requestHandler::handlePost(request, response);
             break;
         default:
             // We return responses indicating an error if
@@ -56,11 +53,20 @@ void requestHandler::process_request(http::request<http::string_body> &request,h
 }
 
 // Construct a response message based on the program state.
-void requestHandler::create_response(http::request<http::string_body> &request,http::response<http::dynamic_body> &response) {
-    if (request.target() == "/state") {
+void
+requestHandler::handleGet(http::request<http::string_body> &request, http::response<http::dynamic_body> &response) {
+    auto pos = request.target().find('#');
+    std::string requestTarget = (string) request.target();
+    std::string primaryTarget = requestTarget.substr(0, pos);
+
+    if (primaryTarget == "/state") {
         response.set(http::field::content_type, "application/json");
-        state::GameState state1 = requestHandler::generateSampleState();
-        beast::ostream(response.body()) << state::StateSerializer::serialize(state1);
+        auto state1 = LiveGame::getInstance().getState();
+        beast::ostream(response.body()) << state::StateSerializer::serialize(*state1);
+    } else if (primaryTarget == "/command") {
+        std::string playerName = requestTarget.substr(pos, requestTarget.size());
+        auto strings = LiveGame::getInstance().retrieveCommands(playerName);
+        beast::ostream(response.body()) << strings;
     } else {
         response.result(http::status::not_found);
         response.set(http::field::content_type, "text/plain");

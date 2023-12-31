@@ -4,6 +4,8 @@
 
 #include "http_connection.h"
 
+using namespace server;
+
 void http_connection::start() {
     read_request();
     check_deadline();
@@ -47,4 +49,7 @@ void http_connection::check_deadline() {
                     self->socket_.close(ec);
                 }
             });
+}
+
+http_connection::http_connection(tcp::socket socket) : socket_(std::move(socket)) {
 }
