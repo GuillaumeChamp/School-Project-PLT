@@ -30,7 +30,6 @@ string LiveGame::handlePlayerJoin(std::string playerName) {
         return "This game is full\r\n";
     }
     // find if player exist
-    state::PlayerId playerId = state::NO_PLAYER;
     for (auto p: players) {
         if (p.getClientName() == playerName) {
             return "You are already in the game\r\n";

@@ -10,15 +10,6 @@ Client::Client(std::string name,state::PlayerId id) {
     this->lastUpdate = high_resolution_clock::now();
 }
 
-state::PlayerId server::findPlayer(std::vector<Client> &clientList, std::string name) {
-    for (auto c : clientList){
-        if (c.clientName==name){
-            return c.playerId;
-        }
-    }
-    return state::NO_PLAYER;
-}
-
 const std::string &Client::getClientName() const {
     return clientName;
 }

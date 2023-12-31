@@ -32,9 +32,6 @@ namespace server {
 
         static void
         process_request(http::request <http::string_body> &request, http::response <http::dynamic_body> &response);
-
-    private:
-        static state::GameState generateSampleState();
     };
 }
 

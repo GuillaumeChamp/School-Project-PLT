@@ -61,58 +61,27 @@ void requestHandler::process_request(http::request<http::string_body> &request,
 // Construct a response message based on the program state.
 void
 requestHandler::handleGet(http::request<http::string_body> &request, http::response<http::dynamic_body> &response) {
-    auto pos = request.target().find('#');
-    std::string requestTarget = (string) request.target();
-    std::string primaryTarget = requestTarget.substr(0, pos);
-
-    if (primaryTarget == "/state") {
-        response.set(http::field::content_type, "application/json");
-        auto state1 = LiveGame::getInstance().getState();
-        if (state1 == nullptr) {
-            beast::ostream(response.body()) << "Game is not started yet \r\n";
-            return;
-        }
-        beast::ostream(response.body()) << state::StateSerializer::serialize(*state1);
+    if (request.body().empty()){
+        beast::ostream(response.body()) << "No content ! Did you forget to include playerName ? \r\n";
         return;
     }
-    if (primaryTarget == "/command") {
-        std::string playerName = requestTarget.substr(pos, requestTarget.size());
+    std::string requestTarget = (string) request.target();
+    if (LiveGame::getInstance().getState() == nullptr) {
+        beast::ostream(response.body()) << "Game is not started yet \r\n";
+        return;
+    }
+    if (requestTarget == "/state") {
+        response.set(http::field::content_type, "application/json");
+        beast::ostream(response.body()) << state::StateSerializer::serialize(*LiveGame::getInstance().getState());
+        return;
+    }
+    if (requestTarget == "/command") {
+        std::string playerName = request.body();
         auto strings = LiveGame::getInstance().retrieveCommands(playerName);
         beast::ostream(response.body()) << strings;
         return;
     }
     response.result(http::status::not_found);
     response.set(http::field::content_type, "text/plain");
-    beast::ostream(response.body()) << "File not found\r\n";
-
-}
-
-state::GameState requestHandler::generateSampleState() {
-    state::Player playerA{"player1", state::PlayerId::PLAYER_A};
-    state::Player playerB{"player2", state::PlayerId::PLAYER_B};
-    state::Player playerC{"player3", state::PlayerId::PLAYER_C};
-    state::Player playerD{"player4", state::PlayerId::PLAYER_D};
-
-    state::Card card1{"1", state::CardType::COMMERCIAL, 2};
-    state::Card card2{"2", state::CardType::COMMERCIAL, 2};
-    state::Card card3{"25", state::CardType::COMMERCIAL, 2};
-
-
-    playerA.setCharacter(state::CharacterType::WARLORD);
-    playerB.setCharacter(state::CharacterType::BISHOP);
-    playerC.setCharacter(state::CharacterType::MERCHANT);
-    playerD.setCharacter(state::CharacterType::KING);
-
-    std::vector<state::Card> playerABoard{card1};
-    std::vector<state::Card> playerBBoard{card2};
-    std::vector<state::Card> playerCBoard{card2, card1, card3};
-    std::vector<state::Card> playerDBoard{card1, card2};
-
-    playerA.setBoardOfPlayer(playerABoard);
-    playerB.setBoardOfPlayer(playerBBoard);
-    playerC.setBoardOfPlayer(playerCBoard);
-    playerD.setBoardOfPlayer(playerDBoard);
-
-    state::GameState gameState{std::vector<state::Player>{playerA, playerB, playerC, playerD}};
-    return gameState;
+    beast::ostream(response.body()) << "Invalid endpoint \r\n";
 }
