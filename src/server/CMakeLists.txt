@@ -4,7 +4,7 @@ set(lib_server_target server_static)
 #generate_dia_header("${CMAKE_CURRENT_SOURCE_DIR}/../server.dia")
 
 # Find all source files to include in library
-file(GLOB_RECURSE server_sources *.cpp)
+file(GLOB_RECURSE server_sources *.cpp *.h)
 list(REMOVE_ITEM server_sources "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
 
 # Build the "server" library, add required include and link against dependencies
