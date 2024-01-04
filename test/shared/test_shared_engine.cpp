@@ -110,40 +110,93 @@ BOOST_FIXTURE_TEST_SUITE(CommandTestCase, F)
     }
 
     BOOST_AUTO_TEST_CASE(TestEndOfTurnCommand) {
-        state::Player plr1 = gameState.getPlayer(state::PLAYER_A);
-        gameState.setCrownOwner(state::PLAYER_A);
-        gameState.setPlaying(state::PLAYER_A);
+        state::Player playerC=gameState.getPlayer(state::PlayerId::PLAYER_C);
+        playerC.setNumberOfCoins(10);
+        gameState.updatePlayer(playerC);
+        state::Player playerD=gameState.getPlayer(state::PlayerId::PLAYER_D);
+        playerD.setNumberOfCoins(5);
+        gameState.updatePlayer(playerD);
+        
+        gameState.setCrownOwner(state::PLAYER_B);
+        gameState.setPlaying(state::PLAYER_B);
         gameState.setGamePhase(state::CHOOSE_CHARACTER);
         gameState.setCurrentCharacter(state::NO_CHARACTER);
+        gameState.setAvailableCharacter({state::CharacterType::ASSASSIN,
+                                             state::CharacterType::THIEF,
+                                             state::CharacterType::MAGICIAN,
+                                             state::CharacterType::KING,
+                                             state::CharacterType::BISHOP,
+                                             state::CharacterType::MERCHANT,
+                                             state::CharacterType::ARCHITECT,
+                                             state::CharacterType::WARLORD});
+        
 
-        auto *command = new EndOfTurnCommand(state::PlayerId::PLAYER_A);
-        BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_A);
-
-        BOOST_CHECK_EQUAL(command->check(gameState), true);
-
-        Engine::getInstance(gameState).addCommand(command);
-        Engine::getInstance(gameState).executeAllCommands();
-        plr1.setCharacter(state::KING);
-        gameState.updatePlayer(plr1);
-
+        
+        auto* command = new EndOfTurnCommand(state::PlayerId::PLAYER_B);
+        auto* chooseCharacter = new ChooseCharacterCommand(state::PlayerId::PLAYER_B,state::CharacterType::KING);
         BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_B);
-        command = new EndOfTurnCommand(state::PlayerId::PLAYER_B);
+        BOOST_CHECK_EQUAL(command->check(gameState), true);
+        Engine::getInstance(gameState).addCommand(chooseCharacter);
         Engine::getInstance(gameState).addCommand(command);
         Engine::getInstance(gameState).executeAllCommands();
 
         BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_C);
         command = new EndOfTurnCommand(state::PlayerId::PLAYER_C);
+        chooseCharacter = new ChooseCharacterCommand(state::PlayerId::PLAYER_C,state::CharacterType::WARLORD);
+        Engine::getInstance(gameState).addCommand(chooseCharacter);
         Engine::getInstance(gameState).addCommand(command);
         Engine::getInstance(gameState).executeAllCommands();
 
         BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_D);
         command = new EndOfTurnCommand(state::PlayerId::PLAYER_D);
+        chooseCharacter = new ChooseCharacterCommand(state::PlayerId::PLAYER_D,state::CharacterType::THIEF);
+        Engine::getInstance(gameState).addCommand(chooseCharacter);
         Engine::getInstance(gameState).addCommand(command);
         Engine::getInstance(gameState).executeAllCommands();
 
-        //still player D turn because he is the last to play (A hold crown)
         BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_A);
+        command = new EndOfTurnCommand(state::PlayerId::PLAYER_A);
+        chooseCharacter = new ChooseCharacterCommand(state::PlayerId::PLAYER_A,state::CharacterType::MERCHANT);
+        Engine::getInstance(gameState).addCommand(chooseCharacter);
+        Engine::getInstance(gameState).addCommand(command);
+        Engine::getInstance(gameState).executeAllCommands();
 
+        //Check if the switch pahse is OK
+        BOOST_CHECK_EQUAL(gameState.getGamePhase(), state::Phase::CALL_CHARACTER);
+
+        //Check for the nextplayers during this phase
+        //PlayerD=Assasin--PlayerB=King--PlayerA=Merchant--PlayerC=Warlord
+        BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_D);
+        gameState.setRobbedCharacter(state::CharacterType::WARLORD);
+        //PlayerC will be roobed by PlayerD
+        gameState.setKilledCharacter(state::CharacterType::MERCHANT);
+        //PlayerA will pass his turn
+        command = new EndOfTurnCommand(state::PlayerId::PLAYER_D);
+        Engine::getInstance(gameState).addCommand(command);
+        Engine::getInstance(gameState).executeAllCommands();
+
+        BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_B);
+        command = new EndOfTurnCommand(state::PlayerId::PLAYER_B);
+        gameState.setCrownOwner(state::PlayerId::PLAYER_B);
+        //at the end of this phase B will be the first player
+        Engine::getInstance(gameState).addCommand(command);
+        Engine::getInstance(gameState).executeAllCommands();
+
+        //playerA is supposed to be killed because he is the MERCHANT
+        //It's supposed to be PlayerC turn, but he got robbed by D
+
+        BOOST_CHECK_EQUAL(gameState.getPlayer(state::PlayerId::PLAYER_C).getNumberOfCoins(),0);
+        BOOST_CHECK_EQUAL(gameState.getPlayer(state::PlayerId::PLAYER_D).getNumberOfCoins(),15);
+
+        BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_C);
+        command = new EndOfTurnCommand(state::PlayerId::PLAYER_C);
+        Engine::getInstance(gameState).addCommand(command);
+        Engine::getInstance(gameState).executeAllCommands();
+        
+         //Check if the switch phase is OK
+        BOOST_CHECK_EQUAL(gameState.getGamePhase(), state::Phase::CHOOSE_CHARACTER);
+        BOOST_CHECK_EQUAL(gameState.getPlaying(), state::PlayerId::PLAYER_B);
+        
     }
 
 BOOST_AUTO_TEST_SUITE_END()
