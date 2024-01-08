@@ -34,10 +34,10 @@ void EndOfTurnCommand::execute(GameState &state) {
 
         auto nextPlayer = NO_PLAYER;
         auto calledCharacterId = static_cast<CharacterType>(state.getCurrentCharacter() + 1);
-
+        
         while (calledCharacterId < 9) {
             if (calledCharacterId != state.getKilledCharacter()) {
-                if ((nextPlayer = state.getPlayerIdByCharacter(calledCharacterId)) != NO_PLAYER) {
+                if ((nextPlayer = state.getPlayerIdByCharacter(calledCharacterId)) != NO_PLAYER) {         
                     break;
                 }
             }
@@ -47,6 +47,7 @@ void EndOfTurnCommand::execute(GameState &state) {
             //All characters have been called, change phase
             auto *command = new ChangePhaseCommand(authorPlayer, state.getGamePhase());
             command->execute(state);
+            state.setPlaying(state.getCrownOwner());
             return;
         }
         Player playerToInit = state.getPlayer(nextPlayer);
