@@ -30,8 +30,8 @@ namespace engine {
             std::vector<state::Card> hand = player.getHand();
             int coins = player.getNumberOfCoins();
 
-            // Creating a DrawCommand of three cards
-            auto* command = new DrawCommand(authorPlayer, 3);
+            // Creating a DrawCommand
+            auto* command = new DrawCommand(authorPlayer);
             Engine::getInstance(state).addCommand(command);
 
             // Deducing the coins
