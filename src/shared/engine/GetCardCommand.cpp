@@ -1,19 +1,19 @@
-#include "PlayCardCommand.h"
+#include "GetCardCommand.h"
 
 namespace engine {
 
     // Constructor
-    PlayCardCommand::PlayCardCommand(state::PlayerId authorPlayer, const state::Card& card) : card(card){
+    GetCardCommand::GetCardCommand(state::PlayerId authorPlayer, const state::Card& card) : card(card){
         this->authorPlayer = authorPlayer;
         this->card = card;
         this->commandTypeId = CommandTypeId::CHOOSE_CARD;
     }
 
     // Destructor
-    PlayCardCommand::~PlayCardCommand() = default;
+    GetCardCommand::~GetCardCommand() = default;
 
     // Execute method
-    void PlayCardCommand::execute(state::GameState& state) {
+    void GetCardCommand::execute(state::GameState& state) {
         // Getting the player to execute the command on and his hand
         state::Player player = state.getPlayer(authorPlayer);
         std::vector<state::Card> hand = player.getHand();
@@ -27,7 +27,7 @@ namespace engine {
     }
 
     // Check method
-    bool PlayCardCommand::check(state::GameState& state) {
+    bool GetCardCommand::check(state::GameState& state) {
         return true;
     }
 
