@@ -100,6 +100,10 @@ BOOST_FIXTURE_TEST_SUITE(CommandTestCase, F)
         BOOST_CHECK_EQUAL(gameState.getDrawableCards().size(), 2);
         BOOST_CHECK_EQUAL(gameState.getStack().size(), STACK_SIZE);
 
+        state::Card cardWonder{"Observatoire", state::CardType::WONDER, 5};
+        std::vector<state::Card> newBoard;
+        newBoard.push_back(cardWonder);
+        plr1.setBoardOfPlayer(newBoard);
         command = new DrawCommand(state::PlayerId::PLAYER_A);
         Engine::getInstance(gameState).addCommand(command);
         Engine::getInstance(gameState).executeAllCommands();

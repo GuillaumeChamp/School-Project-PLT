@@ -19,19 +19,18 @@ void DrawCommand::execute(state::GameState &state) {
     // Init variable and query data
     state::Player player = state.getPlayer(authorPlayer);
     std::vector<state::Card> hand = player.getHand();
+    std::vector<state::Card> board = player.getBoardOfPlayer();
     std::list<state::Card> stack = state.getStack();
 
     std::vector<state::Card> drawnCards;
-    int nbOfCards;
-
-    // Checking if the player has the Observatory card
-    for (const auto& card : hand) {
-        if (card.getNameOfCard() == "Observatoire") {
+    
+    int nbOfCards = 2; // The number of cards to draw is 2 for all the cases except :
+    for (const auto& card : board) {
+        if (card.getNameOfCard() == "Observatoire") { // If the player has the Observatory card
             nbOfCards = 3; // In which case he can draw 2 cards out of 3
             break;
         }
-    }
-    if (nbOfCards != 3) {nbOfCards = 2;} // Else it is 2 for all the other cases
+    } 
 
     //Checking that the stack has enough cards to draw from
     if ((int) stack.size() < nbOfCards) { //if not, re-initializing the stack
@@ -49,7 +48,7 @@ void DrawCommand::execute(state::GameState &state) {
 
     // Checking if he has a Library Card
     bool hasLibrary = false;
-    for (const auto& card : hand) {
+    for (const auto& card : board) {
         if (card.getNameOfCard() == "Bibliothèque") {
             hasLibrary = true;
             break;
@@ -77,8 +76,9 @@ void DrawCommand::execute(state::GameState &state) {
             hand.insert(hand.end(), card);
         }
         
-        // Setting the player's new hand and updating the state
+        // Setting the player's new hand and power availability and updating the state
         player.setHand(hand);
+        player.setCapacityAvailability(false);
         state.updatePlayer(player);
         // In the case of the Architect, he keeps his drawing availability
         drawnCards.clear();

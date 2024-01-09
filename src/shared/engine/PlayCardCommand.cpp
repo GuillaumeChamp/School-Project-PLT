@@ -23,7 +23,6 @@ namespace engine {
         
         // Setting the player's new hand, his draw availability and updating the state
         player.setHand(hand);
-        player.setDrawAvailability(false);
         state.updatePlayer(player);
     }
 
