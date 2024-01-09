@@ -100,7 +100,7 @@ BOOST_FIXTURE_TEST_SUITE(CommandTestCase, F)
         BOOST_CHECK_EQUAL(gameState.getDrawableCards().size(), 2);
         BOOST_CHECK_EQUAL(gameState.getStack().size(), STACK_SIZE);
 
-        state::Card cardWonder{"Observatoire", state::CardType::WONDER, 5};
+        state::Card cardWonder{"22", state::CardType::WONDER, 5};
         std::vector<state::Card> newBoard;
         newBoard.push_back(cardWonder);
         plr1.setBoardOfPlayer(newBoard);

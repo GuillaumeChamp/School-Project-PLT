@@ -26,7 +26,7 @@ void DrawCommand::execute(state::GameState &state) {
     
     int nbOfCards = 2; // The number of cards to draw is 2 for all the cases except :
     for (const auto& card : board) {
-        if (card.getNameOfCard() == "Observatoire") { // If the player has the Observatory card
+        if (card.getNameOfCard() == "22") { // If the player has the Observatory card
             nbOfCards = 3; // In which case he can draw 2 cards out of 3
             break;
         }
