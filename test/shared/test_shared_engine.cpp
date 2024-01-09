@@ -104,6 +104,7 @@ BOOST_FIXTURE_TEST_SUITE(CommandTestCase, F)
         std::vector<state::Card> newBoard;
         newBoard.push_back(cardWonder);
         plr1.setBoardOfPlayer(newBoard);
+        gameState.updatePlayer(plr1);
         command = new DrawCommand(state::PlayerId::PLAYER_A);
         Engine::getInstance(gameState).addCommand(command);
         Engine::getInstance(gameState).executeAllCommands();
