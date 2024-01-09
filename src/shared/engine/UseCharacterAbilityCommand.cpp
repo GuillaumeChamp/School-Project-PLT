@@ -81,7 +81,7 @@ namespace engine {
             state.updatePlayer(player);
         } else if (character == state::CharacterType::ARCHITECT) {
             // Creating a DrawCommand of two cards
-            auto *command = new DrawCommand(authorPlayer, 2);
+            auto *command = new DrawCommand(authorPlayer);
             Engine::getInstance(state).addCommand(command);
         } else if (character == state::CharacterType::WARLORD) {
             // Getting the targeted player's board

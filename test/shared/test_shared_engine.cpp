@@ -77,7 +77,7 @@ BOOST_FIXTURE_TEST_SUITE(CommandTestCase, F)
 
         gameState.setPlaying(state::PLAYER_B);
 
-        auto *command = new DrawCommand(state::PlayerId::PLAYER_A, 2);
+        auto *command = new DrawCommand(state::PlayerId::PLAYER_A);
         BOOST_CHECK_EQUAL(gameState.getDrawableCards().size(), 0);
         BOOST_CHECK_EQUAL(command->getCommandTypeId(),CommandTypeId::DRAW_CARD);
 
@@ -100,7 +100,12 @@ BOOST_FIXTURE_TEST_SUITE(CommandTestCase, F)
         BOOST_CHECK_EQUAL(gameState.getDrawableCards().size(), 2);
         BOOST_CHECK_EQUAL(gameState.getStack().size(), STACK_SIZE);
 
-        command = new DrawCommand(state::PlayerId::PLAYER_A, 3);
+        state::Card cardWonder{"22", state::CardType::WONDER, 5};
+        std::vector<state::Card> newBoard;
+        newBoard.push_back(cardWonder);
+        plr1.setBoardOfPlayer(newBoard);
+        gameState.updatePlayer(plr1);
+        command = new DrawCommand(state::PlayerId::PLAYER_A);
         Engine::getInstance(gameState).addCommand(command);
         Engine::getInstance(gameState).executeAllCommands();
 
