@@ -18,6 +18,7 @@ namespace server {
         time_point<high_resolution_clock> lastUpdate;
     public:
         Client(std::string name, state::PlayerId);
+        ~Client();
         // update the lastUpdate timestamp
         void updateTimestamp(const time_point<high_resolution_clock> &lastUpdate);
 
