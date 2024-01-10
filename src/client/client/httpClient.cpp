@@ -25,10 +25,8 @@ void session::run(char const *host, char const *port, const std::string &target,
     req_.set(http::field::content_type, "text/plain");
     req_.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
     req_.set(http::field::content_length, boost::lexical_cast<std::string>(body.size()));
-    req_.set(http::field::body, body);
-    req_.prepare_payload();
-
     req_.body() = body;
+    req_.prepare_payload();
 
     // Look up the domain name
     resolver_.async_resolve(
