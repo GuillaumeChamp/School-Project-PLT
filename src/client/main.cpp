@@ -2,9 +2,9 @@
 #include <cstring>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
-#include <SFML/Graphics.hpp>
 #include "render.h"
 #include "engine.h"
+#include "client.h"
 
 using namespace std;
 using namespace state;
@@ -19,7 +19,6 @@ int main(int argc, char *argv[]) {
         if (std::strcmp(argv[1], "hello") == 0) {
             std::cout << "hello my dear" << std::endl;
         } else if (std::strcmp(argv[1], "state") == 0) {
-            std::cout << "lancement des tests" << std::endl;
             std::cout << "everything is fine" << std::endl;
         } else if (std::strcmp(argv[1], "render") == 0) {
             sf::RenderWindow window(sf::VideoMode(1600, 900), "Citadelles");
@@ -45,6 +44,12 @@ int main(int argc, char *argv[]) {
         } else if (std::strcmp(argv[1], "engine") == 0) {
             state::GameState gameState("Simon", "Karl", "Nordine", "Guillaume");
             generateSampleState(gameState);
+        } else if (std::strcmp(argv[1], "network") == 0){
+            if (argc<4){
+                std::cout << "Invalid argument for target network, expected /client network ${host} ${port}"<<endl;
+            }
+            ApiManager::initNetwork(argv[2],argv[3]);
+            std::cout << ApiManager::sendMessage("/player","Simon")<<endl;
         } else {
             // error if no argument
             std::cout << "Wrong command. the correct command is  ../bin/client X" << std::endl;
