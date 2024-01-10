@@ -21,8 +21,14 @@ void ChangePhaseCommand::execute(state::GameState &state) {
     switch (this->phase) {
         case state::Phase::START_GAME :
         case state::Phase::CALL_CHARACTER :
-            if (!isPlayerWin) {
+            if (isPlayerWin) {
+                this->phase = state::Phase::END_GAME;
+            } else {
                 this->phase = state::Phase::CHOOSE_CHARACTER;
+                state.setKilledCharacter(state::NO_CHARACTER);
+                state.setRobbedCharacter(state::NO_CHARACTER);
+                state.setPlaying(state.getCrownOwner());
+                state.setCurrentCharacter(state::NO_CHARACTER);
                 //reset character list
                 state.setAvailableCharacter({state::CharacterType::ASSASSIN,
                                              state::CharacterType::THIEF,
@@ -32,8 +38,6 @@ void ChangePhaseCommand::execute(state::GameState &state) {
                                              state::CharacterType::MERCHANT,
                                              state::CharacterType::ARCHITECT,
                                              state::CharacterType::WARLORD});
-            } else {
-                this->phase = state::Phase::END_GAME;
             }
             break;
         case state::Phase::CHOOSE_CHARACTER :

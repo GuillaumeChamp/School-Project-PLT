@@ -1,20 +1,21 @@
 #include "IHMState.h"
 
-namespace render {
-  IHMState::IHMState() :
-    isHandDisplayed(false),
-    isHelpDisplayed(false),
-    hoverCard(nullptr),
-    hoverButton(nullptr),
-    isCapacityButtonPressed(false) {
-  }
+using namespace render;
 
-  IHMState* IHMState::getInstance() {
+IHMState::IHMState() :
+        isHandDisplayed(false),
+        isHelpDisplayed(false),
+        hoverCard(nullptr),
+        hoverButton(nullptr),
+        isCapacityButtonPressed(false) {
+}
+
+IHMState *IHMState::getInstance() {
     if (!INSTANCE) {
-      INSTANCE = new IHMState();
+        INSTANCE = new IHMState();
     }
     return INSTANCE;
-  }
-
-  IHMState* IHMState::INSTANCE = nullptr;
 }
+
+IHMState *IHMState::INSTANCE = nullptr;
+
