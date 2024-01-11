@@ -17,7 +17,6 @@ namespace engine {
 
     void Engine::addCommand(Command *cmd) {
         listOfCommands.push_back(cmd);
-        executeAllCommands();
     }
 
     void Engine::executeAllCommands() {

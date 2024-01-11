@@ -122,21 +122,37 @@ void generateAndStartWindow() {
 }
 
 void commandGenerator(state::GameState &state) {
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance(state).startThread();
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     Engine::getInstance(state).addCommand(new StartGameCommand(PLAYER_A));
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     Engine::getInstance(state).addCommand(new ChooseCharacterCommand(PLAYER_A, KING));
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     Engine::getInstance(state).addCommand(new ChooseCharacterCommand(PLAYER_B, THIEF));
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     Engine::getInstance(state).addCommand(new ChooseCharacterCommand(PLAYER_C, MAGICIAN));
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     Engine::getInstance(state).addCommand(new ChooseCharacterCommand(PLAYER_D, BISHOP));
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     Engine::getInstance(state).addCommand(new DrawCommand(PLAYER_B));
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     Engine::getInstance(state).addCommand(new ChooseCardCommand(PLAYER_B, state.getDrawableCards().front()));
     std::this_thread::sleep_for(std::chrono::seconds(2));
+    
+    std::cout<<state.getPlayer(state::PLAYER_B).getHand().size()<<endl;
+    state::Player plr1 = state.getPlayer(state::PLAYER_B);
+    plr1.setNumberOfCoins(10);
+    state.updatePlayer(plr1);
+    Engine::getInstance(state).addCommand(new ChooseCardCommand(PLAYER_B, state.getPlayer(PLAYER_B).getHand().front()));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance(state).addCommand(new UseCharacterAbilityCommand(PLAYER_B, NO_PLAYER, KING));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance(state).addCommand(new EndOfTurnCommand(PLAYER_B));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance(state).addCommand(new DrawCommand(PLAYER_C));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+
     terminate();
 }
 
