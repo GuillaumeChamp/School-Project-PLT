@@ -123,7 +123,14 @@ void commandGenerator(const std::shared_ptr<state::GameState>& state) {
     std::this_thread::sleep_for(std::chrono::seconds(2));
     Engine::getInstance().addCommand(new ChooseCardCommand(PLAYER_B, state->getDrawableCards().front()));
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    terminate();
+    Engine::getInstance().addCommand(new ChooseCardCommand(PLAYER_B, state->getPlayer(PLAYER_B).getHand().front()));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new UseCharacterAbilityCommand(PLAYER_B, NO_PLAYER, KING));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new EndOfTurnCommand(PLAYER_B));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new DrawCommand(PLAYER_C));
+    std::this_thread::sleep_for(std::chrono::seconds(1));terminate();
 }
 
 

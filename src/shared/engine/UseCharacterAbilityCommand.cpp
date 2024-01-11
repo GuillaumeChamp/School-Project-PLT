@@ -3,8 +3,8 @@
 namespace engine {
 
     UseCharacterAbilityCommand::UseCharacterAbilityCommand(state::PlayerId authorPlayer,
-                                                           state::PlayerId targetPlayer = state::NO_PLAYER,
-                                                           state::CharacterType targetCharacter = state::NO_CHARACTER,
+                                                           state::PlayerId targetPlayer,
+                                                           state::CharacterType targetCharacter,
                                                            state::Card *targetCard) {
         this->authorPlayer = authorPlayer;
         this->targetPlayer = targetPlayer;

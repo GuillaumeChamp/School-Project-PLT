@@ -17,7 +17,6 @@ namespace engine {
         // Getting the player to execute the command on and his hand
         state::Player player = state.getPlayer(authorPlayer);
         std::vector<state::Card> hand = player.getHand();
-
         // Adding the new card to the player's hand
         hand.insert(hand.end(), card);
         

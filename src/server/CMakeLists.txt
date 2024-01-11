@@ -20,12 +20,12 @@ target_link_libraries(${lib_server_target} PUBLIC
 )
 
 # Compile "server" executable
-set(server_target server)
-add_executable(${server_target} main.cpp)
-target_link_libraries(${server_target} ${lib_server_target})
-if (BUILD_CODE_COVERAGE)
-    add_dependencies(code-coverage ${server_target})
-endif ()
+#set(server_target server)
+#add_executable(${server_target} main.cpp)
+#target_link_libraries(${server_target} ${lib_server_target})
+#if (BUILD_CODE_COVERAGE)
+#    add_dependencies(code-coverage ${server_target})
+#endif ()
 
 # vim: set sw=2 sts=2 et:
 
