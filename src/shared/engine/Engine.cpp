@@ -1,6 +1,6 @@
 // Engine.cpp
 #include "Engine.h"
-
+#include <thread>
 
 namespace engine {
     Engine::Engine(state::GameState &state) : currentState(state) {
@@ -18,7 +18,6 @@ namespace engine {
     void Engine::addCommand(Command *cmd) {
         listOfCommands.push_back(cmd);
     }
-
 
     void Engine::executeAllCommands() {
         //execute all the commands but check before
@@ -38,4 +37,14 @@ namespace engine {
         static Engine inst{state};
         return inst;
     }
+
+    void Engine::startThread() {
+        std::thread thread1([this]() {
+            while (true) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(500));
+                this->executeAllCommands();
+            }
+        });
+    }
+
 }
