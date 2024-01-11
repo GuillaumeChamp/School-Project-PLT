@@ -4,33 +4,32 @@
 
 #include "ActiveGame.h"
 
-ActiveGame::ActiveGame(state::PlayerId playerId, std::string name, bool &notif) {
-    myId = playerId;
-    myName = name;
+ActiveGame::ActiveGame(state::PlayerId playerId, const std::string& name, bool &notif) {
+    this->myId = playerId;
+    this->myName = name;
     switch (playerId) {
         case state::PLAYER_A:
-            this->game = new state::GameState(name, "chicken", "bean", "car");
+            this->game = std::make_shared<state::GameState>(name, "chicken", "bean", "car");
             break;
         case state::PLAYER_B:
-            this->game = new state::GameState("raptor", name, "bean", "car");
+            this->game = std::make_shared<state::GameState>("raptor", name, "bean", "car");
             break;
         case state::PLAYER_C:
-            this->game = new state::GameState("raptor", "chicken", name, "car");
+            this->game = std::make_shared<state::GameState>("raptor", "chicken", name, "car");
             break;
         default:
-            this->game = new state::GameState("raptor", "chicken", "bean", name);
+            this->game = std::make_shared<state::GameState>("raptor", "chicken", "bean", name);
             break;
     }
-    std::thread t3(networkLookup, std::ref(notif), myName);
+    engine::Engine::init(*this->game);
+    std::thread t3(networkLookup, std::ref(notif), myName,myId);
     t3.detach();
 }
 
-ActiveGame::~ActiveGame() {
+ActiveGame::~ActiveGame() = default;
 
-}
-
-void ActiveGame::networkLookup(bool &notif, std::string name) {
-    while (1) {
+void ActiveGame::networkLookup(bool &notif, const std::string& name,const state::PlayerId myId) {
+    while (true) {
         if (notif) {
             notif = false;
             std::string content;
@@ -46,13 +45,20 @@ void ActiveGame::networkLookup(bool &notif, std::string name) {
         }
         ApiManager::sendMessage("GET", "/command", name);
         std::string answer = ApiManager::readAnswer();
-        if (!answer.empty()) {
-            //TODO parse command
+        if (!answer.empty() && answer !=" ") {
+            std::istringstream iss(answer);
+            std::string token;
+
+            // Tokenize the input string based on commas
+            while (std::getline(iss, token, ';')) {
+                auto newCommand = engine::CommandCreator::createCommand(token);
+                if (newCommand!= nullptr) { engine::Engine::getInstance().addCommand(newCommand); }
+            }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 }
 
-state::GameState *ActiveGame::getGame() const {
+std::shared_ptr<state::GameState> ActiveGame::getGame() const {
     return game;
 }

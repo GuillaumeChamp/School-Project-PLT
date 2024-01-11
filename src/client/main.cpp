@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <utility>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include "render.h"
@@ -12,9 +13,9 @@ using namespace engine;
 
 void test();
 
-void generateSampleState(state::GameState &gameStateSample);
+void generateSampleState(const std::shared_ptr<state::GameState>& gameStateSample);
 
-void startRender(state::GameState state, bool& notifier);
+void startRender(std::shared_ptr<state::GameState> state, bool& notifier);
 
 int main(int argc, char *argv[]) {
     if (argc >= 2) {
@@ -23,19 +24,20 @@ int main(int argc, char *argv[]) {
         } else if (std::strcmp(argv[1], "state") == 0) {
             std::cout << "everything is fine" << std::endl;
         } else if (std::strcmp(argv[1], "render") == 0) {
-            state::GameState gamestate("Simon", "Karl", "Nordine", "Guillaume");
-            generateSampleState(gamestate);
+            std::shared_ptr<state::GameState> gameState= std::make_shared<GameState>("Simon", "Karl", "Nordine", "Guillaume");
+            generateSampleState(gameState);
             bool notif;
-            startRender(gamestate, notif);
+            startRender(gameState, notif);
         } else if (std::strcmp(argv[1], "engine") == 0) {
-            state::GameState gameState("Simon", "Karl", "Nordine", "Guillaume");
+            std::shared_ptr<state::GameState> gameState= std::make_shared<GameState>("Simon", "Karl", "Nordine", "Guillaume");
             generateSampleState(gameState);
         } else if (std::strcmp(argv[1], "network") == 0) {
             if (argc < 4) {
                 std::cout << "Invalid argument for target network, expected /client network ${host} ${port}" << endl;
             }
             ApiManager::initNetwork(argv[2], argv[3]);
-            ApiManager::sendMessage("POST", "/player", "Simon");
+            string myName = argc > 4 ? argv[4] : "Me";
+            ApiManager::sendMessage("POST", "/player", myName);
             string registerString = ApiManager::readAnswer();
             auto pos = registerString.find('/');
             if (pos == string::npos) {
@@ -44,9 +46,10 @@ int main(int argc, char *argv[]) {
             }
             auto id = static_cast<PlayerId>(registerString.at(pos + 1) - '0');
             bool notifier = false;
-            ActiveGame game = ActiveGame(id, "Simon", notifier);
-            GameState *gameState = game.getGame();
-            startRender(*gameState, notifier);
+            ActiveGame game = ActiveGame(id, myName, notifier);
+            auto gameState = game.getGame();
+            Engine::getInstance().startThread();
+            startRender(gameState, notifier);
         } else {
             // error if no argument
             std::cout << "Wrong command. the correct command is  ../bin/client X" << std::endl;
@@ -56,16 +59,16 @@ int main(int argc, char *argv[]) {
     return 1;
 }
 
-void generateSampleState(state::GameState &gameStateSample) {
+void generateSampleState(const shared_ptr<GameState>& gameStateSample) {
 
     Card card1{"1", CardType::COMMERCIAL, 2};
     Card card2{"2", CardType::COMMERCIAL, 2};
     Card card3{"25", CardType::COMMERCIAL, 2};
 
-    Player playerA = gameStateSample.getPlayer(PlayerId::PLAYER_A);
-    Player playerB = gameStateSample.getPlayer(PlayerId::PLAYER_B);
-    Player playerC = gameStateSample.getPlayer(PlayerId::PLAYER_C);
-    Player playerD = gameStateSample.getPlayer(PlayerId::PLAYER_D);
+    Player playerA = gameStateSample->getPlayer(PlayerId::PLAYER_A);
+    Player playerB = gameStateSample->getPlayer(PlayerId::PLAYER_B);
+    Player playerC = gameStateSample->getPlayer(PlayerId::PLAYER_C);
+    Player playerD = gameStateSample->getPlayer(PlayerId::PLAYER_D);
 
     playerA.setCharacter(CharacterType::KING);
     playerA.setCapacityAvailability(true);
@@ -83,20 +86,20 @@ void generateSampleState(state::GameState &gameStateSample) {
     playerC.setBoardOfPlayer(playerCBoard);
     playerD.setBoardOfPlayer(playerDBoard);
 
-    gameStateSample.updatePlayer(playerA);
-    gameStateSample.updatePlayer(playerB);
-    gameStateSample.updatePlayer(playerC);
-    gameStateSample.updatePlayer(playerD);
+    gameStateSample->updatePlayer(playerA);
+    gameStateSample->updatePlayer(playerB);
+    gameStateSample->updatePlayer(playerC);
+    gameStateSample->updatePlayer(playerD);
 
-    gameStateSample.setCurrentCharacter(KING);
-    gameStateSample.setGamePhase(CALL_CHARACTER);
-    gameStateSample.setSubPhase(Default);
-    gameStateSample.setPlaying(PLAYER_A);
-    gameStateSample.setCrownOwner(PLAYER_B);
+    gameStateSample->setCurrentCharacter(KING);
+    gameStateSample->setGamePhase(CALL_CHARACTER);
+    gameStateSample->setSubPhase(Default);
+    gameStateSample->setPlaying(PLAYER_A);
+    gameStateSample->setCrownOwner(PLAYER_B);
 }
 
-void startRender(state::GameState state, bool& notifier) {
-    render::Scene scene(render::SceneId::PlayerA, &state, notifier);
+void startRender(std::shared_ptr<state::GameState> state, bool& notifier) {
+    render::Scene scene(render::SceneId::PlayerA, std::move(state), notifier);
     sf::RenderWindow window(sf::VideoMode(1600, 900), "Citadelles");
     window.setVerticalSyncEnabled(true);
     while (window.isOpen()) {

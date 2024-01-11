@@ -2,6 +2,7 @@
 #include <iostream>
 #include "config.h"
 #include <fstream>
+#include <utility>
 
 #define PATH "/tmp/cit_ihm.txt"
 
@@ -19,11 +20,11 @@ const char *CharacterTypeString[] = {
         "Warlord",
 };
 
-Scene::Scene(SceneId sceneId, state::GameState *state,bool & notifier) : notifier(notifier) {
+Scene::Scene(SceneId sceneId, std::shared_ptr<state::GameState> state,bool & notifier) : notifier(notifier) {
     std::string res = RES_DIR;
     this->isPlayingScene = false;
     this->sceneId = sceneId;
-    this->state = state;
+    this->state = std::move(state);
     this->height = 900;
     this->width = 1600;
     this->fontText.loadFromFile(res + "Garet-Book.ttf");

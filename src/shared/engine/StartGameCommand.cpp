@@ -3,54 +3,50 @@
 
 namespace engine {
 
-  // Constructor
-  StartGameCommand::StartGameCommand(state::PlayerId authorPlayer) {
+    // Constructor
+    StartGameCommand::StartGameCommand(state::PlayerId authorPlayer) {
 
-    this->authorPlayer=authorPlayer;
+        this->authorPlayer = authorPlayer;
 
-  }
+    }
 
-  // Destructor
-  StartGameCommand::~StartGameCommand() {
-    
-  }
+    // Destructor
+    StartGameCommand::~StartGameCommand() {
 
-  // Execute method
-  void StartGameCommand::execute(state::GameState& state){
+    }
 
-            //initialisation de type constructeur 
-            state.setCurrentCharacter(state::CharacterType::NO_CHARACTER);
-            state.setCrownOwner(state::PlayerId::PLAYER_A);
-            state.setPlaying(state::PlayerId::PLAYER_A);
-            state.setKilledCharacter(state::CharacterType::NO_CHARACTER);
-            state.setRobbedCharacter(state::CharacterType::NO_CHARACTER);
+    // Execute method
+    void StartGameCommand::execute(state::GameState &state) {
 
-            //Initialisation des personnages dispo 
-            state.setAvailableCharacter({
-             state::CharacterType::ASSASSIN,
-             state::CharacterType::THIEF,
-             state::CharacterType::MAGICIAN,
-             state::CharacterType::KING,
-             state::CharacterType::BISHOP,
-             state::CharacterType::MERCHANT,
-             state::CharacterType::ARCHITECT,
-             state::CharacterType::WARLORD});
+        //initialisation de type constructeur
+        state.setCurrentCharacter(state::CharacterType::NO_CHARACTER);
+        state.setCrownOwner(state::PlayerId::PLAYER_A);
+        state.setPlaying(state::PlayerId::PLAYER_A);
+        state.setKilledCharacter(state::CharacterType::NO_CHARACTER);
+        state.setRobbedCharacter(state::CharacterType::NO_CHARACTER);
 
-            //quand toutes les initialisations sont faites 
-            //on peut passer à la choose characterPhase automatiquement
+        //Initialisation des personnages dispo
+        state.setAvailableCharacter({
+                                            state::CharacterType::ASSASSIN,
+                                            state::CharacterType::THIEF,
+                                            state::CharacterType::MAGICIAN,
+                                            state::CharacterType::KING,
+                                            state::CharacterType::BISHOP,
+                                            state::CharacterType::MERCHANT,
+                                            state::CharacterType::ARCHITECT,
+                                            state::CharacterType::WARLORD});
 
-            state.setGamePhase(state::Phase::CHOOSE_CHARACTER);
+        //quand toutes les initialisations sont faites
+        //on peut passer à la choose characterPhase automatiquement
 
+        state.setGamePhase(state::Phase::CHOOSE_CHARACTER);
+    }
 
-            
-             
-  } 
+    // Check method
+    bool StartGameCommand::check(state::GameState &state) {
 
-  // Check method
-  bool StartGameCommand::check(state::GameState& state) {
-    
-    return (state.getGamePhase()==state::Phase::START_GAME);
-    
-  }
+        return (state.getGamePhase() == state::Phase::START_GAME);
+
+    }
 
 } // namespace engine

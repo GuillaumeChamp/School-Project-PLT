@@ -12,15 +12,15 @@
 
 class ActiveGame {
 private:
-    state::GameState* game;
-    static state::PlayerId myId;
+    std::shared_ptr<state::GameState> game;
+    state::PlayerId myId;
     std::string myName;
 public:
-    ActiveGame(state::PlayerId id,std::string name,bool& notif);
+    ActiveGame(state::PlayerId id,const std::string& name,bool& notif);
     ~ActiveGame();
 
-    static void networkLookup(bool& notif,std::string name);
-    state::GameState *getGame() const;
+    static void networkLookup(bool& notif,const std::string& name,state::PlayerId playerId);
+    std::shared_ptr<state::GameState> getGame() const;
 };
 
 

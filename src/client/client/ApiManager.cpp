@@ -28,8 +28,9 @@ void ApiManager::sendMessage(const std::string& requestType, const std::string& 
         cmd +=':';
         cmd.append(port).append(target);
         if (!content.empty()){
-            cmd.append(" -d ").append(content).append(" > ").append(TEMP_DEST);
+            cmd.append(" -d ").append(content);
         }
+        cmd.append(" > ").append(TEMP_DEST);
         system(cmd.c_str());
     } else{
         net::io_context ioc;
@@ -42,13 +43,8 @@ std::string ApiManager::readAnswer() {
     std::ifstream answerFile;
     answerFile.open(TEMP_DEST);
     std::string ans{};
-    std::string word{};
     if (!answerFile.is_open()) {
         return "ERROR";
-    }
-    while(answerFile){
-        answerFile >> word;
-        ans.append(" ").append(word);
     }
     answerFile >> ans;
     return ans;

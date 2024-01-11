@@ -4,16 +4,10 @@
 
 namespace engine {
     Engine::Engine(state::GameState &state) : currentState(state) {
-        // Other initialization if needed
-        init();
     }
 
     // Destructor
-    Engine::~Engine()= default;
-
-    void Engine::init() {
-        // Perform initialization tasks here
-    }
+    Engine::~Engine() = default;
 
     void Engine::addCommand(Command *cmd) {
         listOfCommands.push_back(cmd);
@@ -33,9 +27,8 @@ namespace engine {
         listOfCommands.clear();
     }
 
-    Engine & Engine::getInstance(state::GameState &state) {
-        static Engine inst{state};
-        return inst;
+    void Engine::init(state::GameState &state) {
+        getInstanceImpl(&state);
     }
 
     void Engine::startThread() {
@@ -45,6 +38,16 @@ namespace engine {
                 this->executeAllCommands();
             }
         });
+        thread1.detach();
+    }
+
+    engine::Engine &Engine::getInstance() {
+        return getInstanceImpl();
+    }
+
+    Engine &Engine::getInstanceImpl(state::GameState *const state) {
+        static Engine instance{*state};
+        return instance;
     }
 
 }
