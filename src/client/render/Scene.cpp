@@ -345,8 +345,6 @@ void Scene::handleEvent(sf::Event event) {
             if (cards.checkClick((float) event.mouseButton.x, (float) event.mouseButton.y)) {
                 // Pour les capacités qui ciblent des personnages ou batiments, les cibles disponibles sont des cards donc la cible est renvoyée normalement, et est ignorée par l'engine si elle n'est pas valable
                 // Pour la Draft de même, un personnages disponible pour etre choisi ou banni est une cards
-
-
                 std::string payload = cards.onClickEvent() +","+ std::to_string(target);
                 sendData(payload);
                 return;
