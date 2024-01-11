@@ -32,12 +32,13 @@ BOOST_AUTO_TEST_CASE(TestSFML)
     state::Player playerC{player3, state::PlayerId::PLAYER_C};
     state::Player playerD{player4, state::PlayerId::PLAYER_D};
 
-    state::GameState gameState(player1, player2, player3, player4);
-    gameState.updatePlayer(playerA);
-    gameState.updatePlayer(playerB);
-    gameState.updatePlayer(playerC);
-    gameState.updatePlayer(playerD);
-    render::Scene scene{render::SceneId::PlayerA, &gameState};
+    std::shared_ptr<state::GameState> gameState= std::make_shared<state::GameState>(player1, player2, player3, player4);
+    gameState->updatePlayer(playerA);
+    gameState->updatePlayer(playerB);
+    gameState->updatePlayer(playerC);
+    gameState->updatePlayer(playerD);
+    bool notif = false;
+    render::Scene scene{render::SceneId::PlayerA, gameState,notif};
 
     sf::RenderWindow render{};
     sf::Event event{};

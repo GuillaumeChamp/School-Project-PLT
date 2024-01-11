@@ -1,5 +1,4 @@
 #include "ChooseCardCommand.h"
-#include <iostream>
 
 using namespace engine;
 
