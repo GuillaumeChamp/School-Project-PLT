@@ -16,14 +16,14 @@ void CommandQueue::addCommand(const string &commandContent) {
     if (commandList.size() > 20) {
         commandList.pop_back();
     }
-    this->commandList.emplace_front(commandContent, high_resolution_clock::now());
+    this->commandList.emplace_back(commandContent, high_resolution_clock::now());
 }
 
 vector<string> CommandQueue::retrieveCommands(time_point<high_resolution_clock> lastUpdate) {
     vector<string> output;
     int i;
     for (i = 0; i < (int) commandList.size(); i++) {
-        if (commandList[i].second < lastUpdate) {
+        if (commandList[i].second > lastUpdate) {
             break;
         }
     }
