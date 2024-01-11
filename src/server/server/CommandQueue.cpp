@@ -23,9 +23,7 @@ vector<string> CommandQueue::retrieveCommands(time_point<high_resolution_clock> 
     vector<string> output;
     int i;
     for (i = 0; i < (int) commandList.size(); i++) {
-        bool hello = commandList[i].second  > lastUpdate;
-        
-        if (commandList[i].second  > lastUpdate) {
+        if (commandList[i].second.time_since_epoch().count() - lastUpdate.time_since_epoch().count()>0) {
             break;
         }
     }

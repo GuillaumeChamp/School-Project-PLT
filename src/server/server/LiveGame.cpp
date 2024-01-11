@@ -12,7 +12,6 @@ using namespace server;
 
 LiveGame::LiveGame() {
     this->game = nullptr;
-    this->eng = nullptr;
 }
 
 LiveGame &LiveGame::getInstance() {
@@ -22,10 +21,8 @@ LiveGame &LiveGame::getInstance() {
 
 void LiveGame::addCommand(const std::string& command) {
     distributedCommands.addCommand(command);
-    //TODO : create command using an engine util method
-    auto *command1 = new engine::Command();
-    eng->addCommand(command1);
-    eng->executeAllCommands();
+    auto newCommand = engine::CommandCreator::createCommand(const_cast<string &>(command));
+    engine::Engine::getInstance().addCommand(newCommand);
 }
 
 string LiveGame::handlePlayerJoin(const std::string& playerName) {
@@ -44,12 +41,13 @@ string LiveGame::handlePlayerJoin(const std::string& playerName) {
     if (players.size() == 4) {
         this->game = new state::GameState{players[0].getClientName(), players[1].getClientName(),
                                           players[2].getClientName(), players[3].getClientName()};
-        this->eng = std::addressof(engine::Engine::getInstance(*game));
-        //TODO use start game command
+        engine::Engine::init(*game);
+        engine::Engine::getInstance().startThread();
+        string magicCommand = "1,0,1";
+        this->addCommand(magicCommand);
         return "OK, game is starting.\r\n";
-
     }
-    return "OK\r\n";
+    return "OK/" + to_string(players.size()) +"\r\n";
 
 }
 
@@ -58,10 +56,9 @@ state::GameState *LiveGame::getState() {
 }
 
 string LiveGame::retrieveCommands(const string& playerName) {
-    for (auto p: players) {
+    for (Client& p: players) {
         if (p.getClientName() == playerName) {
             auto commandList = distributedCommands.retrieveCommands(p.getLastUpdate());
-            p.updateTimestamp(std::chrono::high_resolution_clock::now());
             std::ostringstream vts;
             if (commandList.empty()){
                 return {};
@@ -71,6 +68,7 @@ string LiveGame::retrieveCommands(const string& playerName) {
 
             // Now add the last element with no delimiter
             vts << commandList.back();
+            p.updateTimestamp(std::chrono::high_resolution_clock::now());
             return vts.str();
         }
     }

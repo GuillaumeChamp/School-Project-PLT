@@ -32,7 +32,7 @@ namespace engine {
 
             // Creating a DrawCommand
             auto* command = new DrawCommand(authorPlayer);
-            Engine::getInstance(state).addCommand(command);
+            Engine::getInstance().addCommand(command);
 
             // Deducing the coins
             coins = coins - 3;

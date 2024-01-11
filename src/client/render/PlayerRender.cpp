@@ -62,7 +62,7 @@ std::vector<VisualCard> PlayerRender::drawPlayer(sf::RenderWindow &window, state
         //Personnage secret
         sf::Texture characterBackgroundTexture;
         std::string res = RES_DIR;
-        characterBackgroundTexture.loadFromFile(res + "NoCharacter.jpg");
+        characterBackgroundTexture.loadFromFile(res + "NoCharacter.png");
         sf::RectangleShape characterBackgroundShape(sf::Vector2f(80, 124));
         characterBackgroundShape.setTexture(&characterBackgroundTexture);
 
