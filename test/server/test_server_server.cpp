@@ -84,15 +84,15 @@ BOOST_AUTO_TEST_CASE(TestRetrieveCommands)
     // Récupérer les commandes après le début du temps, devrait inclure 2 et 3 mais pas 1
 
     //Vérifie que la commande "Command1" n'est pas incluse dans la liste des commandes récupérées.
-    auto retrievedCommands = commandQueue.retrieveCommands(NewstartTime);
-    //BOOST_CHECK(std::find(retrievedCommands.begin(), retrievedCommands.end(), commandContent1) == retrievedCommands.end());
+    auto retrievedCommands2 = commandQueue.retrieveCommands(NewstartTime);
+    BOOST_CHECK(std::find(retrievedCommands2.begin(), retrievedCommands2.end(), commandContent1) == retrievedCommands2.end());
    
 
     // Vérifie que les commandes "Command2" et "Command3" sont incluses dans la liste des commandes récupérées.
-    //BOOST_CHECK(std::find(retrievedCommands.begin(), retrievedCommands.end(), commandContent2) != retrievedCommands.end());
-    //BOOST_CHECK(std::find(retrievedCommands.begin(), retrievedCommands.end(), commandContent3) != retrievedCommands.end());
+    BOOST_CHECK(std::find(retrievedCommands2.begin(), retrievedCommands2.end(), commandContent2) != retrievedCommands2.end());
+    BOOST_CHECK(std::find(retrievedCommands2.begin(), retrievedCommands2.end(), commandContent3) != retrievedCommands2.end());
 }
-/*
+
 BOOST_AUTO_TEST_CASE(TestLiveGame)
 {
     LiveGame& liveGame = LiveGame::getInstance();
@@ -102,18 +102,51 @@ BOOST_AUTO_TEST_CASE(TestLiveGame)
     std::string result = liveGame.handlePlayerJoin(playerName);
     BOOST_CHECK_EQUAL(result, "OK\r\n");
 
+    std::string result2 = liveGame.handlePlayerJoin(playerName);
+    BOOST_CHECK_EQUAL(result2, "You are already in the game\r\n");
+
+     std::string otherplayerName2 = "Boby";
+     liveGame.handlePlayerJoin(otherplayerName2);
+     std::string otherplayerName3 = "Bobo";
+     liveGame.handlePlayerJoin(otherplayerName3);
+     std::string otherplayerName4 = "Babu";
+    std::string result3 = liveGame.handlePlayerJoin(otherplayerName4);
+    BOOST_CHECK_EQUAL(result3, "OK, game is starting.\r\n");
+
+    std::string otherplayerName5 = "Nono";
+    std::string result4 = liveGame.handlePlayerJoin(otherplayerName5);
+    BOOST_CHECK_EQUAL(result4, "This game is full\r\n");
+
     // Test addCommand
-    liveGame.addCommand("SomeCommand");
+    // liveGame.addCommand("SomeCommand");
 
     // Test getState
     state::GameState* gameState = liveGame.getState();
     BOOST_CHECK(gameState != nullptr);
 
-    // Test retrieveCommands
-    std::string commandResult = liveGame.retrieveCommands(playerName);
-    BOOST_CHECK(commandResult.empty()); // Assuming no commands were added yet
+
 }
-*/
+
+BOOST_AUTO_TEST_CASE(HandlePostCommand) {
+    // Créez une instance de requestHandler
+    server::requestHandler handler;
+
+    // Créez une requête POST pour "/command"
+    http::request<http::string_body> request{http::verb::post, "/command", 11};
+    request.body() = "some_command_body";
+
+    // Créez une réponse
+    http::response<http::dynamic_body> response;
+
+
+    // Appelez la fonction à tester
+    //handler.handlePost(request, response);
+
+    // Vérifiez le contenu de la réponse
+    //BOOST_CHECK_EQUAL(response.result_int(), http::status::ok);
+    //BOOST_CHECK_EQUAL(response[http::field::content_type], "text/plain");
+    //BOOST_CHECK_EQUAL(response.body(), "Command registered\r\n");
+}
 
 
 
