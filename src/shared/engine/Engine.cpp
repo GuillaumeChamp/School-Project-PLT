@@ -17,6 +17,7 @@ namespace engine {
 
     void Engine::addCommand(Command *cmd) {
         listOfCommands.push_back(cmd);
+        executeAllCommands();
     }
 
     void Engine::executeAllCommands() {
@@ -38,13 +39,16 @@ namespace engine {
         return inst;
     }
 
-    void Engine::startThread(Engine& engine) {
-        std::thread thread1([&engine]() {
-            while (true) {
+    void Engine::startThread() {
+        std::thread thread1([this]() {
+            while (this->currentState.getGamePhase()!=state::END_GAME) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(500));
-                engine.executeAllCommands();
+                if (!this->listOfCommands.empty()){
+                    this->executeAllCommands();
+                }
             }
         });
+        thread1.detach();
     }
 
 }

@@ -38,11 +38,7 @@ namespace engine {
 
             //quand toutes les initialisations sont faites 
             //on peut passer à la choose characterPhase automatiquement
-
             state.setGamePhase(state::Phase::CHOOSE_CHARACTER);
-
-
-            
              
   } 
 

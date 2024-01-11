@@ -27,7 +27,6 @@ void VisualCard::zoomCard() {
 }
 
 void VisualCard::draw(sf::RenderWindow &window) {
-
     sf::Texture texture;
     std::string path = RES_DIR;
     path.append(name).append(".png");
