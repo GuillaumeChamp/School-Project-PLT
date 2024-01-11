@@ -397,10 +397,11 @@ void Scene::promptCharacterSelection(bool isPartial, sf::RenderWindow &window) {
 void Scene::DisplayDrawableCard(sf::RenderWindow &window) {
     std::vector<state::Card> drawableCards = state->getDrawableCards();
 
-    sf::RectangleShape characterChoiceBackground = sf::RectangleShape(
+    sf::RectangleShape background = sf::RectangleShape(
             sf::Vector2f(90 * (float) drawableCards.size() + 10, 134));
-    characterChoiceBackground.setFillColor(sf::Color(76, 68, 53));
-    window.draw(characterChoiceBackground);
+    background.setPosition(755, 386);
+    background.setFillColor(sf::Color(76, 68, 53));
+    window.draw(background);
     int i = 0;
     for (auto &card: drawableCards) {
         std::string cardName = card.Card::getNameOfCard();
