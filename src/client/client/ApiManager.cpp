@@ -1,8 +1,10 @@
 //
 // Created by guillaume on 1/9/24.
 //
-
 #include "ApiManager.h"
+
+#define DEMO true
+#define TEMP_DEST "/tmp/cit_api.txt"
 
 namespace beast = boost::beast;     // from <boost/beast.hpp>
 namespace http = beast::http;       // from <boost/beast/http.hpp>
@@ -16,13 +18,38 @@ void ApiManager::initNetwork(const char * hostName,const char * portString) {
     ApiManager::port = portString;
 }
 // Performs an HTTP GET and prints the response
-std::string ApiManager::sendMessage(const std::string& target,const std::string& content) {
+void ApiManager::sendMessage(const std::string& requestType, const std::string& target,const std::string& content) {
     if (ApiManager::host==nullptr){
-        return {"WARNING : network is not initialized"};
+        return;
     }
-    // The io_context is required for all I/O
-    net::io_context ioc;
-    std::make_shared<session>(ioc)->run(host,port, target, content, version);
-    ioc.run();
-    return {};
+    if (DEMO){
+        std::string cmd = "curl -X " + requestType + " ";
+        cmd.append(host);
+        cmd +=':';
+        cmd.append(port).append(target);
+        if (!content.empty()){
+            cmd.append(" -d ").append(content).append(" > ").append(TEMP_DEST);
+        }
+        system(cmd.c_str());
+    } else{
+        net::io_context ioc;
+        std::make_shared<session>(ioc)->run(host,port, target, content, version);
+        ioc.run();
+    }
+}
+
+std::string ApiManager::readAnswer() {
+    std::ifstream answerFile;
+    answerFile.open(TEMP_DEST);
+    std::string ans{};
+    std::string word{};
+    if (!answerFile.is_open()) {
+        return "ERROR";
+    }
+    while(answerFile){
+        answerFile >> word;
+        ans.append(" ").append(word);
+    }
+    answerFile >> ans;
+    return ans;
 }

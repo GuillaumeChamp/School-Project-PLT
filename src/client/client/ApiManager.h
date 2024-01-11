@@ -16,7 +16,8 @@ private:
     const static int version = 11;
 public:
     static void initNetwork(const char * hostName,const char * portString);
-    static std::string sendMessage(const std::string& target,const std::string& content);
+    static void sendMessage(const std::string& requestType,const std::string& target,const std::string& content);
+    static std::string readAnswer();
 };
 
 

@@ -47,9 +47,8 @@ string LiveGame::handlePlayerJoin(const std::string& playerName) {
         this->eng = std::addressof(engine::Engine::getInstance(*game));
         //TODO use start game command
         return "OK, game is starting.\r\n";
-
     }
-    return "OK\r\n";
+    return "OK/" + to_string(players.size()) +"\r\n";
 
 }
 

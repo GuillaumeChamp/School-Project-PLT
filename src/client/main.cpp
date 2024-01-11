@@ -11,45 +11,42 @@ using namespace state;
 using namespace engine;
 
 void test();
+
 void generateSampleState(state::GameState &gameStateSample);
 
-int main(int argc, char *argv[]) {
+void startRender(state::GameState state, bool& notifier);
 
+int main(int argc, char *argv[]) {
     if (argc >= 2) {
         if (std::strcmp(argv[1], "hello") == 0) {
             std::cout << "hello my dear" << std::endl;
         } else if (std::strcmp(argv[1], "state") == 0) {
             std::cout << "everything is fine" << std::endl;
         } else if (std::strcmp(argv[1], "render") == 0) {
-            sf::RenderWindow window(sf::VideoMode(1600, 900), "Citadelles");
-            window.setVerticalSyncEnabled(true);
             state::GameState gamestate("Simon", "Karl", "Nordine", "Guillaume");
-
             generateSampleState(gamestate);
-            render::Scene sceneA(render::SceneId::PlayerA, &gamestate);
-
-            while (window.isOpen()) {
-                sf::Event event{};
-                while (window.pollEvent(event)) {
-                    sceneA.handleEvent(event);
-                    if (event.type == sf::Event::Closed) {
-                        window.close();
-                    }
-                }
-                window.clear();
-
-                sceneA.draw(window);
-                window.display();
-            }
+            bool notif;
+            startRender(gamestate, notif);
         } else if (std::strcmp(argv[1], "engine") == 0) {
             state::GameState gameState("Simon", "Karl", "Nordine", "Guillaume");
             generateSampleState(gameState);
-        } else if (std::strcmp(argv[1], "network") == 0){
-            if (argc<4){
-                std::cout << "Invalid argument for target network, expected /client network ${host} ${port}"<<endl;
+        } else if (std::strcmp(argv[1], "network") == 0) {
+            if (argc < 4) {
+                std::cout << "Invalid argument for target network, expected /client network ${host} ${port}" << endl;
             }
-            ApiManager::initNetwork(argv[2],argv[3]);
-            std::cout << ApiManager::sendMessage("/player","Simon")<<endl;
+            ApiManager::initNetwork(argv[2], argv[3]);
+            ApiManager::sendMessage("POST", "/player", "Simon");
+            string registerString = ApiManager::readAnswer();
+            auto pos = registerString.find('/');
+            if (pos == string::npos) {
+                cout << "error joining the game : " << registerString << endl;
+                return -1;
+            }
+            auto id = static_cast<PlayerId>(registerString.at(pos + 1) - '0');
+            bool notifier = false;
+            ActiveGame game = ActiveGame(id, "Simon", notifier);
+            GameState *gameState = game.getGame();
+            startRender(*gameState, notifier);
         } else {
             // error if no argument
             std::cout << "Wrong command. the correct command is  ../bin/client X" << std::endl;
@@ -98,6 +95,21 @@ void generateSampleState(state::GameState &gameStateSample) {
     gameStateSample.setCrownOwner(PLAYER_B);
 }
 
+void startRender(state::GameState state, bool& notifier) {
+    render::Scene scene(render::SceneId::PlayerA, &state, notifier);
+    sf::RenderWindow window(sf::VideoMode(1600, 900), "Citadelles");
+    window.setVerticalSyncEnabled(true);
+    while (window.isOpen()) {
+        sf::Event event{};
+        while (window.pollEvent(event)) {
+            scene.handleEvent(event);
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+        }
+        window.clear();
 
-
-
+        scene.draw(window);
+        window.display();
+    }
+}
