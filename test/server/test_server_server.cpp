@@ -127,25 +127,31 @@ BOOST_AUTO_TEST_CASE(TestLiveGame)
 
 }
 
-BOOST_AUTO_TEST_CASE(HandlePostCommand) {
+BOOST_AUTO_TEST_CASE(ProcessRequestPost) {
+    // Créez une instance de LiveGame
+   //LiveGame& liveGame = LiveGame::getInstance();
+
     // Créez une instance de requestHandler
     server::requestHandler handler;
 
-    // Créez une requête POST pour "/command"
-    http::request<http::string_body> request{http::verb::post, "/command", 11};
-    request.body() = "some_command_body";
+    // Créez une requête POST
+    http::request<http::string_body> request{http::verb::post, "/some_path", 11};
 
     // Créez une réponse
     http::response<http::dynamic_body> response;
 
-
     // Appelez la fonction à tester
-    //handler.handlePost(request, response);
+    handler.process_request(request, response);
 
     // Vérifiez le contenu de la réponse
-    //BOOST_CHECK_EQUAL(response.result_int(), http::status::ok);
-    //BOOST_CHECK_EQUAL(response[http::field::content_type], "text/plain");
-    //BOOST_CHECK_EQUAL(response.body(), "Command registered\r\n");
+    BOOST_CHECK_EQUAL(response.version(), request.version());
+    BOOST_CHECK_EQUAL(response.keep_alive(), false);
+    BOOST_CHECK_EQUAL(response[http::field::server], "Citadel Main Server");
+    
+    // Ajoutez d'autres vérifications selon votre implémentation
+
+    // Nettoyez la mémoire
+    
 }
 
 
