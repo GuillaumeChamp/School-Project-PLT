@@ -35,7 +35,9 @@ namespace engine {
         std::thread thread1([this]() {
             while (true) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(500));
-                this->executeAllCommands();
+                if (!this->listOfCommands.empty()){
+                    this->executeAllCommands();
+                }
             }
         });
         thread1.detach();

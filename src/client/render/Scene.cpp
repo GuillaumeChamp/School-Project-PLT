@@ -261,7 +261,7 @@ void Scene::draw(sf::RenderWindow &window) {
     }
 
     //Draft, choix du personnage à bannir
-    if (state->getSubPhase() == 3 && isPlayingScene) {
+    if (state->getSubPhase() == 3 && isPlayingScene ) {
         promptCharacterSelection(true, window);
     }
 
@@ -395,6 +395,7 @@ void Scene::promptCharacterSelection(bool isPartial, sf::RenderWindow &window) {
     int indexFirstCharacterY = 388;
 
     sf::RectangleShape characterChoiceBackground;
+    characterChoiceBackground.setPosition(443,386);
 
     if (isPartial) {
         availableCharacter = state->getAvailableCharacter();
@@ -402,13 +403,15 @@ void Scene::promptCharacterSelection(bool isPartial, sf::RenderWindow &window) {
         characterChoiceBackground.setSize(sf::Vector2f(90 * (float) availableCharacter.size() + 10, 134));
     } else {
         characterChoiceBackground.setSize(sf::Vector2f(730, 134));
+        availableCharacter = {state::ASSASSIN,state::THIEF,state::MAGICIAN,state::KING,state::BISHOP,state::MERCHANT,state::ARCHITECT,state::WARLORD};
     }
 
     characterChoiceBackground.setFillColor(sf::Color(76, 68, 53));
     window.draw(characterChoiceBackground);
 
-    for (size_t i = 0; i < (isPartial ? availableCharacter.size() : 8); i++) {
-        std::string characterName = CharacterTypeString[i];
+    for (size_t i = 0; i < availableCharacter.size(); i++) {
+        int character = availableCharacter[i];
+        std::string characterName = CharacterTypeString[character];
 
         VisualCard characterCard = VisualCard(characterName,
                                               (float) indexFirstCharacterX + 90 * (float) i,
@@ -421,10 +424,11 @@ void Scene::promptCharacterSelection(bool isPartial, sf::RenderWindow &window) {
 void Scene::DisplayDrawableCard(sf::RenderWindow &window) {
     std::vector<state::Card> drawableCards = state->getDrawableCards();
 
-    sf::RectangleShape characterChoiceBackground = sf::RectangleShape(
+    sf::RectangleShape background = sf::RectangleShape(
             sf::Vector2f(90 * (float) drawableCards.size() + 10, 134));
-    characterChoiceBackground.setFillColor(sf::Color(76, 68, 53));
-    window.draw(characterChoiceBackground);
+    background.setPosition(755, 386);
+    background.setFillColor(sf::Color(76, 68, 53));
+    window.draw(background);
     int i = 0;
     for (auto &card: drawableCards) {
         std::string cardName = card.Card::getNameOfCard();

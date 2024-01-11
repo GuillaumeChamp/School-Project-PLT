@@ -6,6 +6,7 @@
 #include "render.h"
 #include "engine.h"
 #include "client.h"
+#include "thread"
 
 using namespace std;
 using namespace state;
@@ -16,6 +17,8 @@ void test();
 void generateSampleState(const std::shared_ptr<state::GameState>& gameStateSample);
 
 void startRender(std::shared_ptr<state::GameState> state, bool& notifier);
+
+void commandGenerator();
 
 int main(int argc, char *argv[]) {
     if (argc >= 2) {
@@ -31,6 +34,12 @@ int main(int argc, char *argv[]) {
         } else if (std::strcmp(argv[1], "engine") == 0) {
             std::shared_ptr<state::GameState> gameState= std::make_shared<GameState>("Simon", "Karl", "Nordine", "Guillaume");
             generateSampleState(gameState);
+            engine::Engine::init(gameState);
+            std::thread thread1([]() {
+                commandGenerator();
+            });
+            bool notif;
+            startRender(gameState, notif);
         } else if (std::strcmp(argv[1], "network") == 0) {
             if (argc < 4) {
                 std::cout << "Invalid argument for target network, expected /client network ${host} ${port}" << endl;
@@ -97,6 +106,27 @@ void generateSampleState(const shared_ptr<GameState>& gameStateSample) {
     gameStateSample->setPlaying(PLAYER_A);
     gameStateSample->setCrownOwner(PLAYER_B);
 }
+
+void commandGenerator(state::GameState &state) {
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new StartGameCommand(PLAYER_A));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new ChooseCharacterCommand(PLAYER_A, KING));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new ChooseCharacterCommand(PLAYER_B, THIEF));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new ChooseCharacterCommand(PLAYER_C, MAGICIAN));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new ChooseCharacterCommand(PLAYER_D, BISHOP));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new DrawCommand(PLAYER_B));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new ChooseCardCommand(PLAYER_B, state.getDrawableCards().front()));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    terminate();
+}
+
+
 
 void startRender(std::shared_ptr<state::GameState> state, bool& notifier) {
     render::Scene scene(render::SceneId::PlayerA, std::move(state), notifier);
