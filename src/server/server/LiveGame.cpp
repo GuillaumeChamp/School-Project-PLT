@@ -12,6 +12,7 @@ using namespace server;
 
 LiveGame::LiveGame() {
     this->game = nullptr;
+    this->eng = nullptr;
 }
 
 LiveGame &LiveGame::getInstance() {
@@ -21,11 +22,13 @@ LiveGame &LiveGame::getInstance() {
 
 void LiveGame::addCommand(const std::string& command) {
     distributedCommands.addCommand(command);
-    auto newCommand = engine::CommandCreator::createCommand(const_cast<string &>(command));
-    engine::Engine::getInstance().addCommand(newCommand);
+    //TODO : create command using an engine util method
+    auto *command1 = new engine::Command();
+    eng->addCommand(command1);
+    eng->executeAllCommands();
 }
 
-string LiveGame::handlePlayerJoin(const std::string& playerName) {
+std::string LiveGame::handlePlayerJoin(const std::string& playerName) {
     // handle game full
     if (players.size() >= 4) {
         return "This game is full\r\n";
@@ -41,13 +44,12 @@ string LiveGame::handlePlayerJoin(const std::string& playerName) {
     if (players.size() == 4) {
         this->game = new state::GameState{players[0].getClientName(), players[1].getClientName(),
                                           players[2].getClientName(), players[3].getClientName()};
-        engine::Engine::init(*game);
-        engine::Engine::getInstance().startThread();
-        string magicCommand = "1,0,1";
-        this->addCommand(magicCommand);
+        this->eng = std::addressof(engine::Engine::getInstance());
+        //TODO use start game command
         return "OK, game is starting.\r\n";
+
     }
-    return "OK/" + to_string(players.size()) +"\r\n";
+    return "OK\r\n";
 
 }
 
@@ -55,20 +57,20 @@ state::GameState *LiveGame::getState() {
     return game;
 }
 
-string LiveGame::retrieveCommands(const string& playerName) {
-    for (Client& p: players) {
+std::string LiveGame::retrieveCommands(const std::string& playerName) {
+    for (auto p: players) {
         if (p.getClientName() == playerName) {
             auto commandList = distributedCommands.retrieveCommands(p.getLastUpdate());
+            p.updateTimestamp(std::chrono::high_resolution_clock::now());
             std::ostringstream vts;
             if (commandList.empty()){
                 return {};
             }
             // Convert all but the last element to avoid a trailing
-            std::copy(commandList.begin(), commandList.end()-1,std::ostream_iterator<string>(vts, ";"));
+            std::copy(commandList.begin(), commandList.end()-1,std::ostream_iterator<std::string>(vts, ";"));
 
             // Now add the last element with no delimiter
             vts << commandList.back();
-            p.updateTimestamp(std::chrono::high_resolution_clock::now());
             return vts.str();
         }
     }

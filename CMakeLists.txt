@@ -3,6 +3,13 @@ project (plt)
 
 include_directories(${CMAKE_BINARY_DIR})
 
+find_package(Boost 1.70 REQUIRED COMPONENTS unit_test_framework system filesystem)
+message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
+message(STATUS "Boost include directory: ${Boost_INCLUDE_DIRS}")
+IF(Boost_FOUND)
+  include_directories(${Boost_INCLUDE_DIRS})
+ENDIF(Boost_FOUND)
+
 # CMP0074 policy enable find_* to use <PackageName>_ROOT variables to find
 # packages.
 if(POLICY CMP0074)

@@ -680,6 +680,7 @@ struct stdlib_includes {
    int stdint;
    int stdlib;
    int vector;
+   int deque;
    int memory;
    int limits;
    int map;
@@ -694,8 +695,10 @@ struct stdlib_includes {
    int thread;
    int mutex;
    int random;
+   int chrono;
    int sfmlGraphics;
    int jsoncpp;
+   int boost;
 };
 
 void print_include_stdlib(struct stdlib_includes* si,char* name) {
@@ -727,6 +730,10 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
        if (!si->vector && strstr(name,"std::vector")) {
            print ("#include <vector>\n");
            si->vector = 1;
+       }
+       if (!si->deque && strstr(name,"std::deque")) {
+           print ("#include <deque>\n");
+           si->deque = 1;
        }
        if (!si->map && strstr(name,"std::map")) {
            print ("#include <map>\n");
@@ -777,6 +784,7 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
        if (!si->memory 
        && (strstr(name,"std::unique_ptr")
        ||  strstr(name,"std::shared_ptr")
+       ||  strstr(name,"std::enable_shared_from_this")
        ||  strstr(name,"std::weak_ptr"))) {
            print ("#include <memory>\n");
            si->memory = 1;
@@ -787,6 +795,11 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
        ||  strstr(name,"std::uniform_int_distribution"))) {
            print ("#include <random>\n");
            si->random = 1;
+       }
+       if (!si->chrono 
+       && strstr(name,"std::chrono")) {
+           print ("#include <chrono>\n");
+           si->chrono = 1;
        }
        if (!si->sfmlGraphics 
        && (strstr(name,"sf::RenderWindow")
@@ -801,7 +814,15 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
            print ("#include <json/json.h>\n");
            si->jsoncpp = 1;
        }       
-    }
+       if (!si->boost
+       && (strstr(name,"boost::") == name)) {
+           print ("#include <boost/beast.hpp>\n");
+           print ("#include <boost/beast/http.hpp>\n");
+           print ("#include <boost/asio.hpp>\n");
+           print ("#include <boost/asio/ip/tcp.hpp>\n");
+           si->boost = 1;
+       }       
+   }
 }
 
 void
