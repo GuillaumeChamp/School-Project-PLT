@@ -38,11 +38,11 @@ namespace engine {
         return inst;
     }
 
-    void Engine::startThread(Engine& engine) {
-        std::thread thread1([&engine]() {
+    void Engine::startThread() {
+        std::thread thread1([this]() {
             while (true) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(500));
-                engine.executeAllCommands();
+                this->executeAllCommands();
             }
         });
     }
