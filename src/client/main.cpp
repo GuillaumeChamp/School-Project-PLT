@@ -18,7 +18,7 @@ void generateSampleState(const std::shared_ptr<state::GameState>& gameStateSampl
 
 void startRender(std::shared_ptr<state::GameState> state, bool& notifier);
 
-void commandGenerator();
+void commandGenerator(const std::shared_ptr<state::GameState>& state);
 
 int main(int argc, char *argv[]) {
     if (argc >= 2) {
@@ -34,9 +34,9 @@ int main(int argc, char *argv[]) {
         } else if (std::strcmp(argv[1], "engine") == 0) {
             std::shared_ptr<state::GameState> gameState= std::make_shared<GameState>("Simon", "Karl", "Nordine", "Guillaume");
             generateSampleState(gameState);
-            engine::Engine::init(gameState);
-            std::thread thread1([]() {
-                commandGenerator();
+            engine::Engine::init(*gameState);
+            std::thread thread1([gameState]() {
+                commandGenerator(gameState);
             });
             bool notif;
             startRender(gameState, notif);
@@ -107,7 +107,7 @@ void generateSampleState(const shared_ptr<GameState>& gameStateSample) {
     gameStateSample->setCrownOwner(PLAYER_B);
 }
 
-void commandGenerator(state::GameState &state) {
+void commandGenerator(const std::shared_ptr<state::GameState>& state) {
     std::this_thread::sleep_for(std::chrono::seconds(2));
     Engine::getInstance().addCommand(new StartGameCommand(PLAYER_A));
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -121,7 +121,7 @@ void commandGenerator(state::GameState &state) {
     std::this_thread::sleep_for(std::chrono::seconds(2));
     Engine::getInstance().addCommand(new DrawCommand(PLAYER_B));
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    Engine::getInstance().addCommand(new ChooseCardCommand(PLAYER_B, state.getDrawableCards().front()));
+    Engine::getInstance().addCommand(new ChooseCardCommand(PLAYER_B, state->getDrawableCards().front()));
     std::this_thread::sleep_for(std::chrono::seconds(2));
     terminate();
 }
