@@ -1,14 +1,18 @@
 #include <iostream>
 #include <cstring>
+#include <random>
+#include <iostream>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 #include "render.h"
 #include "engine.h"
+#include "ai.h"
 
 using namespace std;
 using namespace state;
 using namespace engine;
+using namespace ai;
 
 void test();
 void generateSampleState(state::GameState &gameStateSample);
@@ -45,6 +49,32 @@ int main(int argc, char *argv[]) {
         } else if (std::strcmp(argv[1], "engine") == 0) {
             state::GameState gameState("Simon", "Karl", "Nordine", "Guillaume");
             generateSampleState(gameState);
+        } else if (std::strcmp(argv[1], "random_ai") == 0) {
+            sf::RenderWindow window(sf::VideoMode(1600, 900), "Citadelles");
+            window.setVerticalSyncEnabled(true);
+
+            state::GameState gamestate("IA1", "IA2", "IA3", "IA4");
+            generateSampleState(gamestate);
+            render::Scene sceneA(render::SceneId::PlayerA, &gamestate);
+            
+            std::random_device rd;
+            int randomSeed = rd();
+            AI:RandomAI IA1(&gamestate, randomSeed);
+
+            while (window.isOpen()) {
+                sf::Event event{};
+                while (window.pollEvent(event)) {
+                    sceneA.handleEvent(event);
+                    if (event.type == sf::Event::Closed) {
+                        window.close();
+                    }
+                }
+                window.clear();
+
+
+                sceneA.draw(window);
+                window.display();
+            }
         } else {
             // error if no argument
             std::cout << "Wrong command. the correct command is  ../bin/client X" << std::endl;
