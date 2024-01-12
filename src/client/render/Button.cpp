@@ -7,7 +7,7 @@ using namespace render;
 Button::Button(ButtonType buttonType, float posX, float posY) : InteractiveElement(posX, posY) {
     this->name = buttonType;
     this->surface.setPosition(posX, posY);
-    this->surface.setSize(sf::Vector2f(50, 50));
+    this->surface.setSize(sf::Vector2f(70, 70));
 }
 
 Button::~Button() = default;
@@ -50,19 +50,19 @@ void Button::draw(sf::RenderWindow &render) {
             texture.loadFromFile(res + "chest.png");
             break;
         case ButtonType::draw :
-            texture.loadFromFile(res + "draw_icon.png");
+            texture.loadFromFile(res + "draw_icon.jpg");
             break;
         case endOfTurn:
             texture.loadFromFile(res + "end_of_turn_icon.png");
             break;
         case hand:
-            texture.loadFromFile(res + "dos.png");
+            texture.loadFromFile(res + "hand.jpg");
             break;
         case help:
             texture.loadFromFile(res + "help.png");
             break;
         case capacity:
-            texture.loadFromFile(res + "capacity.png");
+            texture.loadFromFile(res + "capacity.jpg");
             break;
     }
     this->surface.setTexture(&texture);
