@@ -1,6 +1,7 @@
 // BuildCommand.cpp
 #include "BuildCommand.h"
 #include <algorithm>
+#include <iostream>
 
 using namespace engine;
 
@@ -57,7 +58,7 @@ bool BuildCommand::check(state::GameState &state) {
     });
 
     return Command::check(state)
-           && indexOfCard != hand.end() //is player have the card in hand
-           && indexOfCardInBoard == board.end() // is the player not already built this building
-           && player.getNumberOfCoins() >= card.getCostOfCard(); //is the player can pay the card
+           && indexOfCard != hand.end() // does the player have the card in hand
+           && indexOfCardInBoard == board.end() // did the player not already build this building
+           && player.getNumberOfCoins() >= card.getCostOfCard(); // can the player pay the card
 }

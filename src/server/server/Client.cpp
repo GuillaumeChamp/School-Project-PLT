@@ -3,9 +3,11 @@
 //
 #include "Client.h"
 
+#include <utility>
+
 using namespace server;
 Client::Client(std::string name,state::PlayerId id) {
-    this->clientName = name;
+    this->clientName = std::move(name);
     this->playerId = id;
     this->lastUpdate = high_resolution_clock::now();
 }

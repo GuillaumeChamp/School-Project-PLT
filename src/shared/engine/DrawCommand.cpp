@@ -55,7 +55,7 @@ void DrawCommand::execute(state::GameState &state) {
         }
     }
 
-    if (hasLibrary == true)
+    if (hasLibrary)
     {
         // Adding the new cards to the player's hand
         for(state::Card card : drawnCards){
@@ -69,7 +69,7 @@ void DrawCommand::execute(state::GameState &state) {
         drawnCards.clear();
     }
     // And Checking if he is the Architect with his power available
-    else if ((player.getCharacter() == state::CharacterType::ARCHITECT) and (player.isCapacityAvailable() == true))
+    else if ((player.getCharacter() == state::CharacterType::ARCHITECT) and player.isCapacityAvailable())
     {
         // Adding the new cards to the player's hand
         for(state::Card card : drawnCards){
@@ -90,7 +90,7 @@ void DrawCommand::execute(state::GameState &state) {
 
     if (drawnCards.size()>0){
         // Switching to draft subphase to trigger a player's choice between the possible cards
-        state.setSubPhase(state::SubPhase::Draft);
+        state.setSubPhase(state::SubPhase::PreDraw);
     }
 }
 

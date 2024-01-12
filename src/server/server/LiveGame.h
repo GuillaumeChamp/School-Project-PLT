@@ -10,9 +10,7 @@ namespace server {
     class LiveGame {
     private:
         LiveGame();
-
         state::GameState *game;
-        engine::Engine *eng;
         CommandQueue distributedCommands;
         std::vector<Client> players;
     public:

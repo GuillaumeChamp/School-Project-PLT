@@ -1,5 +1,4 @@
 #include "Button.h"
-#include <iostream>
 #include <SFML/Graphics/Texture.hpp>
 #include "config.h"
 
@@ -13,36 +12,34 @@ Button::Button(ButtonType buttonType, float posX, float posY) : InteractiveEleme
 
 Button::~Button() = default;
 
-void Button::onHoverEvent() {
+std::string Button::onHoverEvent() {
     IHMState::getInstance()->hoverButton = this;
+    return {};
 }
 
-void Button::onClickEvent() {
-    std::string buttonText;
+std::string Button::onClickEvent() {
+    int commandIndex;
     switch (name) {
         case ButtonType::bank:
-            buttonText = "Recevez deux pièces d'or";
+            commandIndex = 2;
             break;
         case ButtonType::draw:
-            buttonText = "Piochez une carte parmis 2";
+            commandIndex = 1;
             break;
         case ButtonType::endOfTurn:
-            buttonText = "Fin du tour";
+            commandIndex = 8;
             break;
         case ButtonType::hand:
-            buttonText = "Ouvre la main du joueur";
             IHMState::getInstance()->isHandDisplayed = !IHMState::getInstance()->isHandDisplayed;
-            break;
+            return "";
         case ButtonType::help:
-            buttonText = "Ouvre le menu d'aide";
             IHMState::getInstance()->isHelpDisplayed = !IHMState::getInstance()->isHelpDisplayed;
-            break;
+            return "";
         case ButtonType::capacity:
             IHMState::getInstance()->isCapacityButtonPressed = !IHMState::getInstance()->isCapacityButtonPressed;
-
-            break;
+            return "";
     }
-    std::cout << "Clic sur le bouton : " << buttonText << std::endl;
+    return std::to_string(commandIndex);
 }
 
 void Button::draw(sf::RenderWindow &render) {
