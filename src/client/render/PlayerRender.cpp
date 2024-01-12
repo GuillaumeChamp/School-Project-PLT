@@ -38,7 +38,7 @@ std::vector<VisualCard> PlayerRender::drawPlayer(sf::RenderWindow &window, state
         crownTexture.loadFromFile(res.append("crown.png"));
         crown.setTexture(&crownTexture);
 
-        crown.setPosition(offBoardOffsetX, offBoardOffsetY);
+        crown.setPosition(offBoardOffsetX+40, offBoardOffsetY);
         window.draw(crown);
     }
 
@@ -75,6 +75,8 @@ std::vector<VisualCard> PlayerRender::drawPlayer(sf::RenderWindow &window, state
     nbOfCards.setFillColor(sf::Color::White);
     nbOfCards.setString(std::to_string(playerToRender->getNumberOfCards()));
     nbOfCards.setFont(font);
+    nbOfCards.setOutlineThickness(2.0f);
+    nbOfCards.setOutlineColor(sf::Color::Black);
     nbOfCards.setCharacterSize(35);
 
 
@@ -82,9 +84,11 @@ std::vector<VisualCard> PlayerRender::drawPlayer(sf::RenderWindow &window, state
     nbOfCoins.setString(std::to_string(playerToRender->getNumberOfCoins()));
     nbOfCoins.setFont(font);
     nbOfCoins.setCharacterSize(35);
+    nbOfCoins.setOutlineThickness(2.0f);
+    nbOfCoins.setOutlineColor(sf::Color::Black);
 
-    nbOfCards.setPosition(offBoardOffsetX, offBoardOffsetY + 50);
-    nbOfCoins.setPosition(offBoardOffsetX, offBoardOffsetY + 100);
+    nbOfCards.setPosition(offBoardOffsetX +10, offBoardOffsetY + 50 -5);
+    nbOfCoins.setPosition(offBoardOffsetX +10, offBoardOffsetY + 100 -5);
     window.draw(nbOfCards);
     window.draw(nbOfCoins);
 
