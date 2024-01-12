@@ -82,7 +82,10 @@ namespace engine {
         } else if (character == state::CharacterType::ARCHITECT) {
             // Creating a DrawCommand to draw two cards
             auto *command = new DrawCommand(authorPlayer);
-            Engine::getInstance().addCommand(command);
+            if (command->check(state)){
+                command->execute(state);
+            }
+            delete command;
         } else if (character == state::CharacterType::WARLORD) {
             // Getting the targeted player's board
             auto targeted =  state.getPlayer(targetPlayer);
@@ -111,14 +114,13 @@ namespace engine {
     // Check method
     bool UseCharacterAbilityCommand::check(state::GameState &state) {
         state::Player player = state.getPlayer(this->authorPlayer);
-        state::Player targeted = state.getPlayer(targetPlayer);
         state::CharacterType character = player.getCharacter();
-        state::CharacterType targetCharacter = targeted.getCharacter();
 
         bool notdead = true;
         bool enoughcoins = true;
         // Checking that the thief isn't robbing the Assassin or his victim        
         if (character == state::CharacterType::THIEF) {
+            state::Player targeted = state.getPlayer(state.getPlayerIdByCharacter(targetCharacter));
             notdead = (targetCharacter!=state.getKilledCharacter()) && (targetCharacter!=state::ASSASSIN);
         }
         // Checking that the Warlord has enough coins to destroy the building he's targeting

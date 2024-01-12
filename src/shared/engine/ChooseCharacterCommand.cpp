@@ -33,7 +33,10 @@ void ChooseCharacterCommand::execute(state::GameState &state) {
     state.setAvailableCharacter(availableCharacters);
     state.updatePlayer(player);
     auto *command = new EndOfTurnCommand(authorPlayer);
-    command->execute(state);
+    if (command->check(state)){
+        command->execute(state);
+    }
+    delete command;
 }
 
 // Check method

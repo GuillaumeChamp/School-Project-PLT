@@ -23,7 +23,10 @@ void ChooseCardCommand::execute(state::GameState &state) {
     if (nbOfDrawableCards == 3) // If there are 3 possible cards to draw from, it means the player has an Observatory
     {
         auto* command = new GetCardCommand(authorPlayer, card);
-        Engine::getInstance().addCommand(command);
+        if (command->check(state)){
+            command->execute(state);
+        }
+        delete command;
         // Removing the card from the drawableCards
         long unsigned int i = 0;
         for(; i<drawableCards.size(); i++){
@@ -34,22 +37,30 @@ void ChooseCardCommand::execute(state::GameState &state) {
         drawableCards.erase(drawableCards.begin()+i);
         state.setDrawableCards(drawableCards);
         // The player has another card to choose after this one so we stay in Draft subphase
+        return;
     }
-    else if (nbOfDrawableCards == 2) // If it's a simple draw of 1 card out of 2 (normal draw or 2nd card of Observatory case)
+    if (nbOfDrawableCards == 2) // If it's a simple draw of 1 card out of 2 (normal draw or 2nd card of Observatory case)
     {
         auto* command = new GetCardCommand(authorPlayer, card);
-        Engine::getInstance().addCommand(command);
+        if (command->check(state)){
+            command->execute(state);
+        }
+        delete command;
         // Emptying the drawableCards and changing subphase
         std::vector<state::Card> newDrawableCards;
         state.setDrawableCards(newDrawableCards);
         state.setSubPhase(state::SubPhase::Default);
         player.setDrawAvailability(false);
         state.updatePlayer(player);
+        return;
     }
-    else if (nbOfDrawableCards == 0) // If there are no cards to draw, it means the player just chose a card to build
+    if (nbOfDrawableCards == 0) // If there are no cards to draw, it means the player just chose a card to build
     {
         auto* command = new BuildCommand(authorPlayer, card);
-        Engine::getInstance().addCommand(command);
+        if (command->check(state)){
+            command->execute(state);
+        }
+        delete command;
         // Changing the subphase
         state.setSubPhase(state::SubPhase::Default);
     }

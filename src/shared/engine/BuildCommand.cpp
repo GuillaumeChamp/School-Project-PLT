@@ -1,7 +1,6 @@
 // BuildCommand.cpp
 #include "BuildCommand.h"
 #include <algorithm>
-#include <iostream>
 
 using namespace engine;
 
