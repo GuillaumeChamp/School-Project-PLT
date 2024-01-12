@@ -22,9 +22,9 @@ bool InteractiveElement::checkHover(float x, float y) {
     return surface.getGlobalBounds().contains(x, y);
 }
 
-void InteractiveElement::onClickEvent() {
+std::string InteractiveElement::onClickEvent() {
 }
 
-void InteractiveElement::onHoverEvent() {
+std::string InteractiveElement::onHoverEvent() {
 }
 

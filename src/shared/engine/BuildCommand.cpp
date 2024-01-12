@@ -17,7 +17,6 @@ BuildCommand::~BuildCommand() = default; //no need to delete card (cause double 
 
 // Execute method
 void BuildCommand::execute(state::GameState &state) {
-    std::cout<<"test"<<std::endl;
     // Getting the player to execute the command on
     state::Player player = state.getPlayer(authorPlayer);
 

@@ -1,6 +1,10 @@
 #include "Scene.h"
 #include <iostream>
 #include "config.h"
+#include <fstream>
+#include <utility>
+
+#define PATH "/tmp/cit_ihm.txt"
 
 using namespace render;
 
@@ -16,11 +20,11 @@ const char *CharacterTypeString[] = {
         "Warlord",
 };
 
-Scene::Scene(SceneId sceneId, state::GameState *state) {
+Scene::Scene(SceneId sceneId, std::shared_ptr<state::GameState> state,bool & notifier) : notifier(notifier) {
     std::string res = RES_DIR;
     this->isPlayingScene = false;
     this->sceneId = sceneId;
-    this->state = state;
+    this->state = std::move(state);
     this->height = 900;
     this->width = 1600;
     this->fontText.loadFromFile(res + "Garet-Book.ttf");
@@ -267,7 +271,6 @@ void Scene::draw(sf::RenderWindow &window) {
         (*cardToZoom).zoomCard();
         (*cardToZoom).draw(window);
     }
-
 }
 
 
@@ -289,29 +292,32 @@ void Scene::handleEvent(sf::Event event) {
         }
     }
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-        for (auto &cards: displayedCard) {
-            if (cards.checkClick((float) event.mouseButton.x, (float) event.mouseButton.y)) {
-                // Pour les capacités qui ciblent des personnages ou batiments, les cibles disponibles sont des cards donc la cible est renvoyée normalement, et est ignorée par l'engine si elle n'est pas valable
-                // Pour la Draft de même, un personnages disponible pour etre choisi ou banni est une cards
-                cards.onClickEvent();
-                break;
-            }
-        }
-        for (auto &button: listOfButtons) {
-            if (button.checkClick((float) event.mouseButton.x, (float) event.mouseButton.y)) {
-                button.onClickEvent();
+        //Get the board owner of the click region
+        sf::Vector2i boardsPos[4] = {
+                {615,  622}, // en bas
+                {0,    311},   // à gauche
+                {615,  0},   // en haut
+                {1240, 311} // à droite
+        };
+        int target = this->sceneId;
+        for (int i = 0; i < 4; ++i) {
+            if (event.mouseButton.x >= boardsPos[i].x &&
+                event.mouseButton.y >= boardsPos[i].y &&
+                event.mouseButton.x < boardsPos[i].x + 360 &&
+                event.mouseButton.y < boardsPos[i].y + 278) {
+                // Le clic est dans la zone i
+                target = target + i;
+                if (target>4){
+                    target= target-4;
+                }
                 break;
             }
         }
         //Capacity
         if (state->getSubPhase() == 2) {
             if (state->getCurrentCharacter() == 2) { //Si le choix de la cible est un joueur (Magicien)
-                sf::Vector2i boardsPos[4] = {
-                        {615,  622}, // en bas
-                        {0,    311},   // à gauche
-                        {615,  0},   // en haut
-                        {1240, 311} // à droite
-                };
+                auto commandContent = std::to_string(target);
+                sendData(commandContent);
                 for (int i = 0; i < 4; ++i) {
                     if (event.mouseButton.x >= boardsPos[i].x &&
                         event.mouseButton.y >= boardsPos[i].y &&
@@ -319,9 +325,36 @@ void Scene::handleEvent(sf::Event event) {
                         event.mouseButton.y < boardsPos[i].y + 278) {
                         // Le clic est dans la zone i
                         std::cout << "Capacité effectuée sur le joueur " << i + 1 << std::endl;
+                        return;
+                    }
+                }
+            }
+        }
+        for (auto &button: listOfButtons) {
+            if (button.checkClick((float) event.mouseButton.x, (float) event.mouseButton.y)) {
+                std::string payload = button.onClickEvent();
+                if (payload.empty()){
+                    return;
+                }
+                payload.append(",").append(std::to_string(target));
+                sendData(payload);
+                return;
+            }
+        }
+        for (auto &cards: displayedCard) {
+            if (cards.checkClick((float) event.mouseButton.x, (float) event.mouseButton.y)) {
+                // Pour les capacités qui ciblent des personnages ou batiments, les cibles disponibles sont des cards donc la cible est renvoyée normalement, et est ignorée par l'engine si elle n'est pas valable
+                // Pour la Draft de même, un personnages disponible pour etre choisi ou banni est une cards
+                std::string cardName = cards.onClickEvent();
+                std::string payload = cardName +","+ std::to_string(target);
+                for (int i=0;i< 9;i++){
+                    if (cardName==CharacterTypeString[i]){
+                        payload = "3,"+std::to_string(sceneId)+','+std::to_string(i);
                         break;
                     }
                 }
+                sendData(payload);
+                return;
             }
         }
     }
@@ -351,7 +384,6 @@ void Scene::drawPlayerHand(sf::RenderWindow &window) {
 }
 
 void Scene::drawHelp(sf::RenderWindow &window) {
-    //Affiche le menu d'aide du jeu avec un résumé des règles du jeu
     sf::RectangleShape helpMenu(sf::Vector2f(900, 500));
     helpMenu.setPosition(350, 200);
     helpMenu.setFillColor(sf::Color(238, 225, 208));
@@ -410,4 +442,10 @@ void Scene::DisplayDrawableCard(sf::RenderWindow &window) {
         drawableCard.draw(window);
         displayedCard.push_back(drawableCard);
     }
+}
+
+void Scene::sendData (std::string& content) {
+    this->notifier= true;
+    std::ofstream MyFile(PATH);
+    MyFile << content;
 }
