@@ -17,7 +17,6 @@ namespace engine {
     void UseCharacterAbilityCommand::execute(state::GameState &state) {
         // Getting the players corresponding to the Ids
         state::Player player = state.getPlayer(authorPlayer);
-        state::Player targeted = state.getPlayer(targetPlayer);
 
         // Getting the character of the author player to know which power to apply
         state::CharacterType character = player.getCharacter();
@@ -34,6 +33,8 @@ namespace engine {
             // He either targets a player to switch his cards with
             if (targetPlayer != state::PlayerId::NO_PLAYER) {
                 // Getting the target player's hand
+                state::Player targeted = state.getPlayer(targetPlayer);
+
                 std::vector<state::Card> targetHand = targeted.getHand();
 
                 // Inverting their hands
@@ -85,6 +86,7 @@ namespace engine {
             Engine::getInstance(state).addCommand(command);
         } else if (character == state::CharacterType::WARLORD) {
             // Getting the targeted player's board
+            state::Player targeted = state.getPlayer(targetPlayer);
             std::vector<state::Card> targetBoard = targeted.getBoardOfPlayer();
 
             // Destroying the building
@@ -110,14 +112,14 @@ namespace engine {
     // Check method
     bool UseCharacterAbilityCommand::check(state::GameState &state) {
         state::Player player = state.getPlayer(this->authorPlayer);
-        state::Player targeted = state.getPlayer(targetPlayer);
         state::CharacterType character = player.getCharacter();
-        state::CharacterType targetCharacter = targeted.getCharacter();
+
 
         bool notdead = true;
         bool enoughcoins = true;
         // Checking that the thief isn't robbing the Assassin or his victim        
         if (character == state::CharacterType::THIEF) {
+            state::Player targeted = state.getPlayer(state.getPlayerIdByCharacter(targetCharacter));
             notdead = (targetCharacter!=state.getKilledCharacter()) && (targetCharacter!=state::ASSASSIN);
         }
         // Checking that the Warlord has enough coins to destroy the building he's targeting
