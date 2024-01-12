@@ -1,16 +1,19 @@
 #include <iostream>
 #include <cstring>
 #include <utility>
+#include <random>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include "render.h"
 #include "engine.h"
 #include "client.h"
 #include "thread"
+#include "ai.h"
 
 using namespace std;
 using namespace state;
 using namespace engine;
+using namespace ai;
 
 void test();
 
@@ -59,6 +62,33 @@ int main(int argc, char *argv[]) {
             auto gameState = game.getGame();
             Engine::getInstance().startThread();
             startRender(gameState, notifier);
+        } else if (std::strcmp(argv[1], "random_ai") == 0) {
+            std::shared_ptr<state::GameState> gameState= std::make_shared<GameState>("Simon", "Karl", "Nordine", "Guillaume");
+            bool notifier = false;
+            render::Scene sceneA(render::SceneId::PlayerA, gameState,notifier);
+            
+            std::random_device rd;
+            int randomSeed = rd();
+            ai::RandomAI IA1(gameState,PLAYER_A, randomSeed);
+            ai::RandomAI IA2(gameState,PLAYER_B, randomSeed);
+            ai::RandomAI IA3(gameState,PLAYER_C, randomSeed);
+            ai::RandomAI IA4(gameState,PLAYER_D, randomSeed);
+
+            engine::Engine::init(*gameState);
+            engine::Engine::getInstance().addCommand(new engine::StartGameCommand(PLAYER_A));
+            engine::Engine::getInstance().startThread();
+            std::thread thread1([&IA1,&IA2,&IA3,&IA4,&gameState]() {
+                while (gameState->getGamePhase()!=state::END_GAME){
+                    IA1.run();
+                    std::this_thread::sleep_for(std::chrono::seconds (2));
+                    IA2.run();
+                    std::this_thread::sleep_for(std::chrono::seconds (2));
+                    IA3.run();
+                    std::this_thread::sleep_for(std::chrono::seconds (2));
+                    IA4.run();
+                }
+            });
+            startRender(gameState,notifier);
         } else {
             // error if no argument
             std::cout << "Wrong command. the correct command is  ../bin/client X" << std::endl;
