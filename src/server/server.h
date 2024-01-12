@@ -3,7 +3,8 @@
 #define __SERVER__H
 
 #include "server/Client.h"
-#include "server/http_connection.h"
-#include "server/LiveGame.h"
 #include "server/CommandQueue.h"
+#include "server/LiveGame.h"
+#include "server/requestHandler.h"
+#include "server/http_connection.h"
 #endif

@@ -9,7 +9,7 @@ using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 // "Loop" forever accepting new connections.
 void http_server(tcp::acceptor &acceptor, tcp::socket &socket) {
     acceptor.async_accept(socket,
-                          [&](beast::error_code ec) {
+                          [&](boost::beast::error_code ec) {
                               if (!ec) {
                                   std::make_shared<http_connection>(std::move(socket))->start();
                               }
@@ -45,3 +45,4 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 }
+

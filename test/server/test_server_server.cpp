@@ -2,13 +2,13 @@
 #include <chrono>
 #include <thread>
 
-#include "../../PLT/src/server/server/Client.h"
-#include "../../PLT/src/server/server/CommandQueue.h"
-#include "../../PLT/src/server/server/requestHandler.h"
+#include "../../src/server/server/Client.h"
+#include "../../src/server/server/CommandQueue.h"
+#include "../../src/server/server/requestHandler.h"
 
 using namespace server;
 using namespace std::chrono;
-
+using namespace boost::beast;
 
 BOOST_AUTO_TEST_CASE(TestClientConstructor)
 {
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(TestAddCommand)
     //Timestamp ou on regarde
     auto Timestamp = high_resolution_clock::now();
     // Ajouter une commande à la file d'attente
-    string commandContent = "TestCommand";
+    std::string commandContent = "TestCommand";
     commandQueue.addCommand(commandContent);
 
     // Récupérer les commandes et vérifier que la commande ajoutée est présente

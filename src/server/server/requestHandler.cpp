@@ -3,55 +3,53 @@
 //
 
 #include "requestHandler.h"
-#include "iostream"
-
+#include "../../shared/state/StateSerializer.h"
 using namespace server;
 
 void
-requestHandler::handlePost(http::request<http::string_body> &request, http::response<http::dynamic_body> &response) {
-    std::string requestTarget = (string) request.target();
-    response.set(http::field::content_type, "text/plain");
+requestHandler::handlePost(boost::beast::http::request<boost::beast::http::string_body> &request, boost::beast::http::response<boost::beast::http::dynamic_body> &response) {
+    std::string requestTarget = (std::string) request.target();
+    response.set(boost::beast::http::field::content_type, "text/plain");
     if (requestTarget == "/command") {
         if (LiveGame::getInstance().getState() == nullptr) {
-            beast::ostream(response.body()) << "Game is not started yet\r\n";
+            boost::beast::ostream(response.body()) << "Game is not started yet\r\n";
             return;
         }
-        string content = request.body();
+        std::string content = request.body();
         LiveGame::getInstance().addCommand(content);
-        beast::ostream(response.body()) << "Command registered\r\n";
+        boost::beast::ostream(response.body()) << "Command registered\r\n";
         return;
     }
     if (requestTarget == "/player") {
         std::string playerName = request.body();
-        beast::ostream(response.body()) << LiveGame::getInstance().handlePlayerJoin(playerName);
+        boost::beast::ostream(response.body()) << LiveGame::getInstance().handlePlayerJoin(playerName);
         return;
     }
-    response.result(http::status::not_found);
-    beast::ostream(response.body()) << "File not found\r\n";
+    response.result(boost::beast::http::status::not_found);
+    boost::beast::ostream(response.body()) << "File not found\r\n";
 }
 
 // Determine what needs to be done with the request message.
-void requestHandler::process_request(http::request<http::string_body> &request,
-                                     http::response<http::dynamic_body> &response) {
+void requestHandler::process_request(boost::beast::http::request<boost::beast::http::string_body> &request,
+                                     boost::beast::http::response<boost::beast::http::dynamic_body> &response) {
     response.version(request.version());
     response.keep_alive(false);
-    response.set(http::field::server, "Citadel Main Server");
+    response.set(boost::beast::http::field::server, "Citadel Main Server");
     switch (request.method()) {
-        case http::verb::get:
-            response.result(http::status::ok);
+        case boost::beast::http::verb::get:
+            response.result(boost::beast::http::status::ok);
             requestHandler::handleGet(request, response);
             break;
-        case http::verb::post:
-            response.result(http::status::ok);
-            std::cout<< request.body() <<std::endl;
+        case boost::beast::http::verb::post:
+            response.result(boost::beast::http::status::ok);
             requestHandler::handlePost(request, response);
             break;
         default:
             // We return responses indicating an error if
             // we do not recognize the request method.
-            response.result(http::status::bad_request);
-            response.set(http::field::content_type, "text/plain");
-            beast::ostream(response.body())
+            response.result(boost::beast::http::status::bad_request);
+            response.set(boost::beast::http::field::content_type, "text/plain");
+            boost::beast::ostream(response.body())
                     << "Invalid request-method '"
                     << std::string(request.method_string())
                     << "'";
@@ -61,28 +59,28 @@ void requestHandler::process_request(http::request<http::string_body> &request,
 
 // Construct a response message based on the program state.
 void
-requestHandler::handleGet(http::request<http::string_body> &request, http::response<http::dynamic_body> &response) {
+requestHandler::handleGet(boost::beast::http::request<boost::beast::http::string_body> &request, boost::beast::http::response<boost::beast::http::dynamic_body> &response) {
     if (request.body().empty()){
-        beast::ostream(response.body()) << "No content ! Did you forget to include playerName ? \r\n";
+        boost::beast::ostream(response.body()) << "No content ! Did you forget to include playerName ? \r\n";
         return;
     }
-    std::string requestTarget = (string) request.target();
+    std::string requestTarget = (std::string) request.target();
     if (LiveGame::getInstance().getState() == nullptr) {
-        //beast::ostream(response.body()) << "Game is not started yet \r\n"; Empty body else the process will fail in client
+        boost::beast::ostream(response.body()) << "Game is not started yet \r\n";
         return;
     }
     if (requestTarget == "/state") {
-        response.set(http::field::content_type, "application/json");
-        beast::ostream(response.body()) << state::StateSerializer::serialize(*LiveGame::getInstance().getState());
+        response.set(boost::beast::http::field::content_type, "application/json");
+        boost::beast::ostream(response.body()) << state::StateSerializer::serialize(*LiveGame::getInstance().getState());
         return;
     }
     if (requestTarget == "/command") {
         std::string playerName = request.body();
         auto strings = LiveGame::getInstance().retrieveCommands(playerName);
-        beast::ostream(response.body()) << strings;
+        boost::beast::ostream(response.body()) << strings;
         return;
     }
-    response.result(http::status::not_found);
-    response.set(http::field::content_type, "text/plain");
-    beast::ostream(response.body()) << "Invalid endpoint \r\n";
+    response.result(boost::beast::http::status::not_found);
+    response.set(boost::beast::http::field::content_type, "text/plain");
+    boost::beast::ostream(response.body()) << "Invalid endpoint \r\n";
 }
