@@ -2,16 +2,15 @@
 
 namespace ai {
     
-    AI::AI (state::GameState* state){
-        this->state = state;
-        listOfCommand = std::vector<std::unique_ptr<engine::Command>>();
-        
+    AI::AI (std::shared_ptr<state::GameState> state,state::PlayerId playerId){
+        this->state = std::move(state);
+        this->playerId = playerId;
+    }
+
+    void AI::run() {
+
     }
 
     AI::~AI()= default;
-
-    void run (state::GameState* state, state::PlayerId playerId){
-        
-    }
 
 }

@@ -17,7 +17,6 @@ namespace engine {
     void UseCharacterAbilityCommand::execute(state::GameState &state) {
         // Getting the players corresponding to the Ids
         state::Player player = state.getPlayer(authorPlayer);
-        state::Player targeted = state.getPlayer(targetPlayer);
 
         // Getting the character of the author player to know which power to apply
         state::CharacterType character = player.getCharacter();
@@ -34,6 +33,7 @@ namespace engine {
             // He either targets a player to switch his cards with
             if (targetPlayer != state::PlayerId::NO_PLAYER) {
                 // Getting the target player's hand
+                auto targeted =  state.getPlayer(targetPlayer);
                 std::vector<state::Card> targetHand = targeted.getHand();
 
                 // Inverting their hands
@@ -85,6 +85,7 @@ namespace engine {
             Engine::getInstance().addCommand(command);
         } else if (character == state::CharacterType::WARLORD) {
             // Getting the targeted player's board
+            auto targeted =  state.getPlayer(targetPlayer);
             std::vector<state::Card> targetBoard = targeted.getBoardOfPlayer();
 
             // Destroying the building
