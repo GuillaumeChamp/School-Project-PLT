@@ -1,7 +1,6 @@
 // BuildCommand.cpp
 #include "BuildCommand.h"
 #include <algorithm>
-#include <iostream>
 
 using namespace engine;
 
@@ -45,13 +44,13 @@ void BuildCommand::execute(state::GameState &state) {
 bool BuildCommand::check(state::GameState &state) {
     state::Player player = state.getPlayer(authorPlayer);
 
-    // find the card in player hand
+    // check if the player has the card in his hand
     std::vector<state::Card> hand = player.getHand();
     auto indexOfCard = std::find_if(hand.begin(), hand.end(), [this](const state::Card &c) {
         return c.getNameOfCard() == this->card.getNameOfCard();
     });
 
-    //  find the card in player board (using name)
+    // check if the player has already built this card (using name)
     std::vector<state::Card> board = player.getBoardOfPlayer();
     auto indexOfCardInBoard = std::find_if(board.begin(), board.end(), [this](const state::Card &c) {
         return c.getNameOfCard() == this->card.getNameOfCard();

@@ -23,8 +23,10 @@ bool InteractiveElement::checkHover(float x, float y) {
 }
 
 std::string InteractiveElement::onClickEvent() {
+    return {};
 }
 
 std::string InteractiveElement::onHoverEvent() {
+    return {};
 }
 
