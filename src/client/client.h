@@ -2,7 +2,6 @@
 #ifndef __CLIENT__H
 #define __CLIENT__H
 
-#include "client/Exemple.h"
 #include "client/ApiManager.h"
 #include "client/ActiveGame.h"
 #endif
