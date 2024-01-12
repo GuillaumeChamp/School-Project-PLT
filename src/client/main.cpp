@@ -1,12 +1,14 @@
 #include <iostream>
 #include <cstring>
+#include <utility>
 #include <random>
 #include <iostream>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
-#include <SFML/Graphics.hpp>
 #include "render.h"
 #include "engine.h"
+#include "client.h"
+#include "thread"
 #include "ai.h"
 
 using namespace std;
@@ -15,40 +17,52 @@ using namespace engine;
 using namespace ai;
 
 void test();
-void generateSampleState(state::GameState &gameStateSample);
+
+void generateSampleState(const std::shared_ptr<state::GameState>& gameStateSample);
+
+void startRender(std::shared_ptr<state::GameState> state, bool& notifier);
+
+void commandGenerator(const std::shared_ptr<state::GameState>& state);
 
 int main(int argc, char *argv[]) {
-
     if (argc >= 2) {
         if (std::strcmp(argv[1], "hello") == 0) {
             std::cout << "hello my dear" << std::endl;
         } else if (std::strcmp(argv[1], "state") == 0) {
-            std::cout << "lancement des tests" << std::endl;
             std::cout << "everything is fine" << std::endl;
         } else if (std::strcmp(argv[1], "render") == 0) {
-            sf::RenderWindow window(sf::VideoMode(1600, 900), "Citadelles");
-            window.setVerticalSyncEnabled(true);
-            state::GameState gamestate("Simon", "Karl", "Nordine", "Guillaume");
-
-            generateSampleState(gamestate);
-            render::Scene sceneA(render::SceneId::PlayerA, &gamestate);
-
-            while (window.isOpen()) {
-                sf::Event event{};
-                while (window.pollEvent(event)) {
-                    sceneA.handleEvent(event);
-                    if (event.type == sf::Event::Closed) {
-                        window.close();
-                    }
-                }
-                window.clear();
-
-                sceneA.draw(window);
-                window.display();
-            }
-        } else if (std::strcmp(argv[1], "engine") == 0) {
-            state::GameState gameState("Simon", "Karl", "Nordine", "Guillaume");
+            std::shared_ptr<state::GameState> gameState= std::make_shared<GameState>("Simon", "Karl", "Nordine", "Guillaume");
             generateSampleState(gameState);
+            bool notif;
+            startRender(gameState, notif);
+        } else if (std::strcmp(argv[1], "engine") == 0) {
+            std::shared_ptr<state::GameState> gameState= std::make_shared<GameState>("Simon", "Karl", "Nordine", "Guillaume");
+            generateSampleState(gameState);
+            engine::Engine::init(*gameState);
+            std::thread thread1([gameState]() {
+                commandGenerator(gameState);
+            });
+            bool notif;
+            startRender(gameState, notif);
+        } else if (std::strcmp(argv[1], "network") == 0) {
+            if (argc < 4) {
+                std::cout << "Invalid argument for target network, expected /client network ${host} ${port}" << endl;
+            }
+            ApiManager::initNetwork(argv[2], argv[3]);
+            string myName = argc > 4 ? argv[4] : "Me";
+            ApiManager::sendMessage("POST", "/player", myName);
+            string registerString = ApiManager::readAnswer();
+            auto pos = registerString.find('/');
+            if (pos == string::npos) {
+                cout << "error joining the game : " << registerString << endl;
+                return -1;
+            }
+            auto id = static_cast<PlayerId>(registerString.at(pos + 1) - '0');
+            bool notifier = false;
+            ActiveGame game = ActiveGame(id, myName, notifier);
+            auto gameState = game.getGame();
+            Engine::getInstance().startThread();
+            startRender(gameState, notifier);
         } else if (std::strcmp(argv[1], "random_ai") == 0) {
             sf::RenderWindow window(sf::VideoMode(1600, 900), "Citadelles");
             window.setVerticalSyncEnabled(true);
@@ -84,16 +98,16 @@ int main(int argc, char *argv[]) {
     return 1;
 }
 
-void generateSampleState(state::GameState &gameStateSample) {
+void generateSampleState(const shared_ptr<GameState>& gameStateSample) {
 
     Card card1{"1", CardType::COMMERCIAL, 2};
     Card card2{"2", CardType::COMMERCIAL, 2};
     Card card3{"25", CardType::COMMERCIAL, 2};
 
-    Player playerA = gameStateSample.getPlayer(PlayerId::PLAYER_A);
-    Player playerB = gameStateSample.getPlayer(PlayerId::PLAYER_B);
-    Player playerC = gameStateSample.getPlayer(PlayerId::PLAYER_C);
-    Player playerD = gameStateSample.getPlayer(PlayerId::PLAYER_D);
+    Player playerA = gameStateSample->getPlayer(PlayerId::PLAYER_A);
+    Player playerB = gameStateSample->getPlayer(PlayerId::PLAYER_B);
+    Player playerC = gameStateSample->getPlayer(PlayerId::PLAYER_C);
+    Player playerD = gameStateSample->getPlayer(PlayerId::PLAYER_D);
 
     playerA.setCharacter(CharacterType::KING);
     playerA.setCapacityAvailability(true);
@@ -111,18 +125,61 @@ void generateSampleState(state::GameState &gameStateSample) {
     playerC.setBoardOfPlayer(playerCBoard);
     playerD.setBoardOfPlayer(playerDBoard);
 
-    gameStateSample.updatePlayer(playerA);
-    gameStateSample.updatePlayer(playerB);
-    gameStateSample.updatePlayer(playerC);
-    gameStateSample.updatePlayer(playerD);
+    gameStateSample->updatePlayer(playerA);
+    gameStateSample->updatePlayer(playerB);
+    gameStateSample->updatePlayer(playerC);
+    gameStateSample->updatePlayer(playerD);
 
-    gameStateSample.setCurrentCharacter(KING);
-    gameStateSample.setGamePhase(CALL_CHARACTER);
-    gameStateSample.setSubPhase(Default);
-    gameStateSample.setPlaying(PLAYER_A);
-    gameStateSample.setCrownOwner(PLAYER_B);
+    gameStateSample->setCurrentCharacter(KING);
+    gameStateSample->setGamePhase(CALL_CHARACTER);
+    gameStateSample->setSubPhase(Default);
+    gameStateSample->setPlaying(PLAYER_A);
+    gameStateSample->setCrownOwner(PLAYER_B);
+}
+
+void commandGenerator(const std::shared_ptr<state::GameState>& state) {
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new StartGameCommand(PLAYER_A));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new ChooseCharacterCommand(PLAYER_A, KING));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new ChooseCharacterCommand(PLAYER_B, THIEF));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new ChooseCharacterCommand(PLAYER_C, MAGICIAN));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new ChooseCharacterCommand(PLAYER_D, BISHOP));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new DrawCommand(PLAYER_B));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new ChooseCardCommand(PLAYER_B, state->getDrawableCards().front()));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new ChooseCardCommand(PLAYER_B, state->getPlayer(PLAYER_B).getHand().front()));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new UseCharacterAbilityCommand(PLAYER_B, NO_PLAYER, KING));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new EndOfTurnCommand(PLAYER_B));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    Engine::getInstance().addCommand(new DrawCommand(PLAYER_C));
+    std::this_thread::sleep_for(std::chrono::seconds(1));terminate();
 }
 
 
 
+void startRender(std::shared_ptr<state::GameState> state, bool& notifier) {
+    render::Scene scene(render::SceneId::PlayerA, std::move(state), notifier);
+    sf::RenderWindow window(sf::VideoMode(1600, 900), "Citadelles");
+    window.setVerticalSyncEnabled(true);
+    while (window.isOpen()) {
+        sf::Event event{};
+        while (window.pollEvent(event)) {
+            scene.handleEvent(event);
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+        }
+        window.clear();
 
+        scene.draw(window);
+        window.display();
+    }
+}

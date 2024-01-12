@@ -13,12 +13,12 @@ VisualCard::VisualCard(std::string filename, float posX, float posY) : Interacti
 
 VisualCard::~VisualCard() = default;
 
-void VisualCard::onHoverEvent() {
+std::string VisualCard::onHoverEvent() {
     IHMState::getInstance()->hoverCard = this;
 }
 
-void VisualCard::onClickEvent() {
-    std::cout << "Clic sur la carte : " << name << std::endl;
+std::string VisualCard::onClickEvent() {
+    return name;
 }
 
 void VisualCard::zoomCard() {
@@ -27,7 +27,6 @@ void VisualCard::zoomCard() {
 }
 
 void VisualCard::draw(sf::RenderWindow &window) {
-
     sf::Texture texture;
     std::string path = RES_DIR;
     path.append(name).append(".png");

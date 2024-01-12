@@ -3,8 +3,8 @@
 namespace engine {
 
     UseCharacterAbilityCommand::UseCharacterAbilityCommand(state::PlayerId authorPlayer,
-                                                           state::PlayerId targetPlayer = state::NO_PLAYER,
-                                                           state::CharacterType targetCharacter = state::NO_CHARACTER,
+                                                           state::PlayerId targetPlayer,
+                                                           state::CharacterType targetCharacter,
                                                            state::Card *targetCard) {
         this->authorPlayer = authorPlayer;
         this->targetPlayer = targetPlayer;
@@ -82,7 +82,7 @@ namespace engine {
         } else if (character == state::CharacterType::ARCHITECT) {
             // Creating a DrawCommand of two cards
             auto *command = new DrawCommand(authorPlayer);
-            Engine::getInstance(state).addCommand(command);
+            Engine::getInstance().addCommand(command);
         } else if (character == state::CharacterType::WARLORD) {
             // Getting the targeted player's board
             std::vector<state::Card> targetBoard = targeted.getBoardOfPlayer();

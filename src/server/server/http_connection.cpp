@@ -1,3 +1,4 @@
+#include <iostream>
 #include "http_connection.h"
 
 using namespace server;
@@ -9,17 +10,13 @@ void http_connection::start() {
 
 void http_connection::read_request() {
     auto self = shared_from_this();
-    http::async_read(
-            socket_,
-            buffer_,
-            request_,
-            [self](beast::error_code ec,
-                   std::size_t bytes_transferred) {
-                boost::ignore_unused(bytes_transferred);
-                if (!ec)
-                    requestHandler::process_request(self->request_, self->response_);
-                self->write_response();
-            });
+    http::async_read(socket_, buffer_, request_,
+                     [self](beast::error_code ec, std::size_t bytes_transferred) {
+                         boost::ignore_unused(bytes_transferred);
+                         if (!ec)
+                             requestHandler::process_request(self->request_, self->response_);
+                         self->write_response();
+                     });
 }
 
 

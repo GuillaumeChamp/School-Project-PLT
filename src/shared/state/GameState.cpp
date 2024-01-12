@@ -12,6 +12,7 @@ GameState::GameState(std::vector<Player> players) {
     this->crownOwner = NO_PLAYER;
     this->killedCharacter = NO_CHARACTER;
     this->robbedCharacter = NO_CHARACTER;
+    this->subPhase = Default;
 }
 
 GameState::GameState(std::string Name1, std::string Name2, std::string Name3, std::string Name4) {
@@ -27,6 +28,7 @@ GameState::GameState(std::string Name1, std::string Name2, std::string Name3, st
     this->playing = NO_PLAYER;
     this->killedCharacter = NO_CHARACTER;
     this->robbedCharacter = NO_CHARACTER;
+    this->subPhase = Default;
 }
 
 std::vector<Player> GameState::getListOfPlayer() const {

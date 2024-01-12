@@ -3,6 +3,7 @@
 //
 
 #include "requestHandler.h"
+#include "iostream"
 
 using namespace server;
 
@@ -42,6 +43,7 @@ void requestHandler::process_request(http::request<http::string_body> &request,
             break;
         case http::verb::post:
             response.result(http::status::ok);
+            std::cout<< request.body() <<std::endl;
             requestHandler::handlePost(request, response);
             break;
         default:
@@ -66,7 +68,7 @@ requestHandler::handleGet(http::request<http::string_body> &request, http::respo
     }
     std::string requestTarget = (string) request.target();
     if (LiveGame::getInstance().getState() == nullptr) {
-        beast::ostream(response.body()) << "Game is not started yet \r\n";
+        //beast::ostream(response.body()) << "Game is not started yet \r\n"; Empty body else the process will fail in client
         return;
     }
     if (requestTarget == "/state") {
