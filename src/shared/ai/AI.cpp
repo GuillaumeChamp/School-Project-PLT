@@ -4,7 +4,8 @@ namespace ai {
     
     AI::AI (state::GameState* state){
         this->state = state;
-        this->listOfCommand = new std::vector<engine::Command> ;
+        listOfCommand = std::vector<std::unique_ptr<engine::Command>>();
+        
     }
 
     AI::~AI()= default;

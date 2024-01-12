@@ -1,6 +1,8 @@
 #include "RandomAI.h"
 #include "engine.h"
 #include <utility>
+#include <algorithm>
+
 namespace ai{
 
     RandomAI::RandomAI(state::GameState *state, int randomSeed) : AI(state) {
@@ -19,53 +21,49 @@ namespace ai{
 
         //Phase de Choix du character
         if (state->getGamePhase()==state::Phase::CHOOSE_CHARACTER && isPlaying){
-            for(auto &character: state->getAvailableCharacter()){
-                auto command = std::make_unique<engine::ChooseCharacterCommand>(playerId, character);
-                listOfCommand.push_back(command);
-            }
+            auto characters = state->getAvailableCharacter();
+            std::uniform_int_distribution<int> distribution(0, characters.size() - 1);
+            int index = distribution(randgen);
+            std::unique_ptr<engine::ChooseCharacterCommand> command(new engine::ChooseCharacterCommand(playerId, characters[index]));
+            listOfCommand.push_back(std::move(command));
         }
 
         //Phase de call character.
         //Cas ou on demande au joueur de chosir une carte
         if(state->getGamePhase()==state::Phase::CALL_CHARACTER && isPlaying && !(state->getDrawableCards()).empty()){
-            for (auto &card: state->getDrawableCards()){
-                auto* command = new engine::ChooseCardCommand(playerId, card);
-                listOfCommand.push_back(command);
-            }
+            auto cards = state->getDrawableCards();
+            std::uniform_int_distribution<int> distribution(0, cards.size() - 1);
+            int index = distribution(randgen);
+            std::unique_ptr<engine::ChooseCardCommand> command(new engine::ChooseCardCommand(playerId, cards[index]));
+            listOfCommand.push_back(std::move(command));
         }
 
         //Cas général
         else if(state->getGamePhase()==state::Phase::CALL_CHARACTER && isPlaying){
-            
             //Gold et draw
             std::uniform_int_distribution<> distribution(0, 1);
             int randomValue = distribution(randgen);
             if (randomValue == 0) {
-                auto command = std::make_unique<engine::GainGoldCommand>(playerId, 2);
-                listOfCommand.push_back(command);
+                std::unique_ptr<engine::GainGoldCommand> command(new engine::GainGoldCommand(playerId, 2));
+                listOfCommand.push_back(std::move(command));
             } else {
-                auto command = std::make_unique<engine::DrawCommand>(playerId);
-                listOfCommand.push_back(command);
+                std::unique_ptr<engine::DrawCommand> command(new engine::DrawCommand(playerId));
+                listOfCommand.push_back(std::move(command));
             }
             
 
             //Claim Building Gold
-            auto command = std::make_unique<engine::ClaimBuildingCommand>(playerId);
-            listOfCommand.push_back(command);
+            std::unique_ptr<engine::ClaimBuildingGold> command(new engine::ClaimBuildingGold(playerId));
+            listOfCommand.push_back(std::move(command));
 
             //Build
-            std::vector<engine::BuildCommand> tempBuild;
-            building = player.getHand();
-            std::uniform_int_distribution<std::size_t> distribution(0, building.size() - 1);
-
-            for (auto &buidling: player.getHand()){
-                std::uniform_int_distribution<std::size_t> distribution(0, listOfCommand.size() - 1);
-        std::size_t randomIndex = distribution(randgen);
-//on choisi un building aleatoire a chaque fois on essaye pui break
-        command = listOfCommand[randomIndex];
-                command= std::make_unique<engine::BuildCommand>(playerId, building);
-                if command.check(state){
-                    listOfCommand.push_back(command);
+            auto hand = player.getHand();
+            std::shuffle(hand.begin(), hand.end(), randgen);
+            for (auto &buidling: hand){
+                std::unique_ptr<engine::BuildCommand> command(new engine::BuildCommand(playerId, buidling));
+                if(command->check(*state)){
+                    listOfCommand.push_back(std::move(command));
+                    break;
                 }
             }
 
@@ -89,6 +87,8 @@ namespace ai{
                     case state::CharacterType::WARLORD :
                         needTargetPlayer=true;
                         needTargetCard = true;
+                        break;
+                    default :
                         break;
                 }
 
@@ -115,26 +115,22 @@ namespace ai{
                         std::uniform_int_distribution<int> distribution(0, board.size() - 1);
                         int index = distribution(randgen);
                         targetCard= &board[index];
+                        }
                     }
                 }
-                }
-
-                
-                listOfCommand.push_back(std::make_unique<engine::UseCharacterAbilityCommand>(playerId, targetPlayer, targetCharacter, targetCard));
+                std::unique_ptr<engine::UseCharacterAbilityCommand> command(new engine::UseCharacterAbilityCommand(playerId, targetPlayer, targetCharacter, const_cast<state::Card*>(targetCard)));
+                listOfCommand.push_back(std::move(command));
             }
 
             //End of turn
-            auto command = std::make_unique<engine::EndOfTurnCommand>(playerId);
-            listOfCommand.push_back(command);
+            std::unique_ptr<engine::EndOfTurnCommand> endOfTurnCommand(new engine::EndOfTurnCommand(playerId));
+            listOfCommand.push_back(std::move(endOfTurnCommand));
         }
-            
-    
 
-        // Retourne l'élément choisi aléatoirement
-        std::uniform_int_distribution<std::size_t> distribution(0, listOfCommand.size() - 1);
-        std::size_t randomIndex = distribution(randgen);
-
-        command = listOfCommand[randomIndex];
+        // Envoie les commandes choisies aléatoirement a l'engine
+        for (auto& command : listOfCommand) {
+            engine->addCommand(command.get());
+        }
         listOfCommand.clear();
     }
 }
