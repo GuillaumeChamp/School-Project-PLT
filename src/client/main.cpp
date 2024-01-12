@@ -36,9 +36,9 @@ int main(int argc, char *argv[]) {
             startRender(gameState, notif);
         } else if (std::strcmp(argv[1], "engine") == 0) {
             std::shared_ptr<state::GameState> gameState= std::make_shared<GameState>("Simon", "Karl", "Nordine", "Guillaume");
-            generateSampleState(gameState);
             engine::Engine::init(*gameState);
-            std::thread thread1([gameState]() {
+            engine::Engine::getInstance().startThread();
+            std::thread thread1([&gameState]() {
                 commandGenerator(gameState);
             });
             bool notif;
@@ -160,13 +160,14 @@ void commandGenerator(const std::shared_ptr<state::GameState>& state) {
     Engine::getInstance().addCommand(new EndOfTurnCommand(PLAYER_B));
     std::this_thread::sleep_for(std::chrono::seconds(2));
     Engine::getInstance().addCommand(new DrawCommand(PLAYER_C));
-    std::this_thread::sleep_for(std::chrono::seconds(1));terminate();
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    terminate();
 }
 
 
 
 void startRender(std::shared_ptr<state::GameState> state, bool& notifier) {
-    render::Scene scene(render::SceneId::PlayerA, std::move(state), notifier);
+    render::Scene scene(render::SceneId::PlayerB, std::move(state), notifier);
     sf::RenderWindow window(sf::VideoMode(1600, 900), "Citadelles");
     window.setVerticalSyncEnabled(true);
     while (window.isOpen()) {

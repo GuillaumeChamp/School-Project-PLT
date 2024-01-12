@@ -45,7 +45,7 @@ namespace engine {
 
     // Check method
     bool UseWonderAbilityCommand::check(state::GameState& state) {
-        return true;
+        return Command::check(state);
     }
 
 } // namespace engine

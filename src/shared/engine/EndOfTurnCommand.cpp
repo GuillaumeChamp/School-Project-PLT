@@ -26,7 +26,10 @@ void EndOfTurnCommand::execute(GameState &state) {
         //Change phase if current player is the last player
         if (currentPlayer == lastPlayer) {
             auto *command = new ChangePhaseCommand(authorPlayer, state.getGamePhase());
-            command->execute(state);
+            if (command->check(state)){
+                command->execute(state);
+            }
+            delete command;
         }
     }
     //In call character phase, the next player is resolved by character
@@ -46,7 +49,10 @@ void EndOfTurnCommand::execute(GameState &state) {
         if (calledCharacterId == 9) {
             //All characters have been called, change phase
             auto *command = new ChangePhaseCommand(authorPlayer, state.getGamePhase());
-            command->execute(state);
+            if (command->check(state)){
+                command->execute(state);
+            }
+            delete command;
             state.setPlaying(state.getCrownOwner());
             return;
         }
@@ -66,6 +72,11 @@ void EndOfTurnCommand::execute(GameState &state) {
         //Update state
         state.setPlaying(nextPlayer);
         state.setCurrentCharacter(calledCharacterId);
+        auto* command = new ClaimBuildingGold(authorPlayer);
+        if (command->check(state)){
+            command->execute(state);
+        }
+        delete command;
     }
 }
 

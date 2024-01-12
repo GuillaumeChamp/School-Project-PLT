@@ -39,13 +39,16 @@ Scene::Scene(SceneId sceneId, std::shared_ptr<state::GameState> state,bool & not
     //Background
     this->background = sf::RectangleShape();
     background.setSize(sf::Vector2f(width, height));
-    background.setFillColor(sf::Color(21, 25, 29));
+    //background.setFillColor(sf::Color(21, 25, 29));
+    sf::Texture* backgroundTexture = new sf::Texture();
+    backgroundTexture->loadFromFile(res + "background.png");
+    background.setTexture(backgroundTexture);
 
     //logo crown + gold + cartes
     sf::Texture crown, gold, card;
     crown.loadFromFile(res + "noCrown.png");
     gold.loadFromFile(res + "coin.png");
-    card.loadFromFile(res + "coin.png");
+    card.loadFromFile(res + "draw_icon.jpg");
     this->crownTexture = crown;
     this->goldTexture = gold;
     this->cardTexture = card;
@@ -126,7 +129,7 @@ void Scene::draw(sf::RenderWindow &window) {
         goldIcon.setSize(sf::Vector2f(40, 40));
         cardIcon.setSize(sf::Vector2f(40, 40));
 
-        crownIcon.setPosition(pos_x, pos_y);
+        crownIcon.setPosition(pos_x +40, pos_y);
         crownIcon.setTexture(&crownTexture);
         goldIcon.setPosition(pos_x + 40, pos_y + 50);     //Emplacement réfléchis pour garder la place pour le texte
         goldIcon.setTexture(&goldTexture);
@@ -188,7 +191,7 @@ void Scene::draw(sf::RenderWindow &window) {
     }
 
     if (currentPlayer.isCapacityAvailable() && !found) {
-        listOfButtons.emplace_back(ButtonType::capacity, 1500, 700);
+        listOfButtons.emplace_back(ButtonType::capacity, 1450, 700);
     }
 
     if (!currentPlayer.isCapacityAvailable() && found) {
@@ -345,7 +348,14 @@ void Scene::handleEvent(sf::Event event) {
             if (cards.checkClick((float) event.mouseButton.x, (float) event.mouseButton.y)) {
                 // Pour les capacités qui ciblent des personnages ou batiments, les cibles disponibles sont des cards donc la cible est renvoyée normalement, et est ignorée par l'engine si elle n'est pas valable
                 // Pour la Draft de même, un personnages disponible pour etre choisi ou banni est une cards
-                std::string payload = cards.onClickEvent() +","+ std::to_string(target);
+                std::string cardName = cards.onClickEvent();
+                std::string payload = cardName +","+ std::to_string(target);
+                for (int i=0;i< 9;i++){
+                    if (cardName==CharacterTypeString[i]){
+                        payload = "3,"+std::to_string(sceneId)+','+std::to_string(i);
+                        break;
+                    }
+                }
                 sendData(payload);
                 return;
             }
@@ -422,11 +432,11 @@ void Scene::promptCharacterSelection(bool isPartial, sf::RenderWindow &window) {
 void Scene::DisplayDrawableCard(sf::RenderWindow &window) {
     std::vector<state::Card> drawableCards = state->getDrawableCards();
 
-    sf::RectangleShape background = sf::RectangleShape(
+    sf::RectangleShape backgroundCard = sf::RectangleShape(
             sf::Vector2f(90 * (float) drawableCards.size() + 10, 134));
-    background.setPosition(755, 386);
-    background.setFillColor(sf::Color(76, 68, 53));
-    window.draw(background);
+    backgroundCard.setPosition(755, 386);
+    backgroundCard.setFillColor(sf::Color(76, 68, 53));
+    window.draw(backgroundCard);
     int i = 0;
     for (auto &card: drawableCards) {
         std::string cardName = card.Card::getNameOfCard();
