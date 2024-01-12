@@ -80,7 +80,7 @@ namespace engine {
             player.setNumberOfCoins(coins);
             state.updatePlayer(player);
         } else if (character == state::CharacterType::ARCHITECT) {
-            // Creating a DrawCommand of two cards
+            // Creating a DrawCommand to draw two cards
             auto *command = new DrawCommand(authorPlayer);
             Engine::getInstance(state).addCommand(command);
         } else if (character == state::CharacterType::WARLORD) {
@@ -109,6 +109,21 @@ namespace engine {
 
     // Check method
     bool UseCharacterAbilityCommand::check(state::GameState &state) {
-        return Command::check(state);
+        state::Player player = state.getPlayer(this->authorPlayer);
+        state::Player targeted = state.getPlayer(targetPlayer);
+        state::CharacterType character = player.getCharacter();
+        state::CharacterType targetCharacter = targeted.getCharacter();
+
+        bool notdead = true;
+        bool enoughcoins = true;
+        // Checking that the thief isn't robbing the Assassin or his victim        
+        if (character == state::CharacterType::THIEF) {
+            notdead = (targetCharacter!=state.getKilledCharacter()) && (targetCharacter!=state::ASSASSIN);
+        }
+        // Checking that the Warlord has enough coins to destroy the building he's targeting
+        else if (character == state::CharacterType::WARLORD) { 
+            enoughcoins = (player.getNumberOfCoins() >= targetCard->getCostOfCard());
+        }
+        return Command::check(state) && player.isCapacityAvailable() && notdead && enoughcoins;
     }
 } // namespace engine

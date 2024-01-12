@@ -66,6 +66,8 @@ void EndOfTurnCommand::execute(GameState &state) {
         //Update state
         state.setPlaying(nextPlayer);
         state.setCurrentCharacter(calledCharacterId);
+        auto* command = new ClaimBuildingGold(authorPlayer);
+        Engine::getInstance(state).addCommand(command);
     }
 }
 

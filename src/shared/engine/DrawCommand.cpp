@@ -55,21 +55,8 @@ void DrawCommand::execute(state::GameState &state) {
         }
     }
 
-    if (hasLibrary)
-    {
-        // Adding the new cards to the player's hand
-        for(state::Card card : drawnCards){
-            hand.insert(hand.end(), card);
-        }
-        
-        // Setting the player's new hand, his draw availability and updating the state
-        player.setHand(hand);
-        player.setDrawAvailability(false);
-        state.updatePlayer(player);
-        drawnCards.clear();
-    }
     // And Checking if he is the Architect with his power available
-    else if ((player.getCharacter() == state::CharacterType::ARCHITECT) and player.isCapacityAvailable())
+    if ((player.getCharacter() == state::CharacterType::ARCHITECT) and player.isCapacityAvailable())
     {
         // Adding the new cards to the player's hand
         for(state::Card card : drawnCards){
@@ -83,12 +70,25 @@ void DrawCommand::execute(state::GameState &state) {
         // In the case of the Architect, he keeps his drawing availability
         drawnCards.clear();
     }
+    else if (hasLibrary) // Checking the library after in case an Architect has it
+    {
+        // Adding the new cards to the player's hand
+        for(state::Card card : drawnCards){
+            hand.insert(hand.end(), card);
+        }
+        
+        // Setting the player's new hand, his draw availability and updating the state
+        player.setHand(hand);
+        player.setDrawAvailability(false);
+        state.updatePlayer(player);
+        drawnCards.clear();
+    }
 
     // Updating the state
     state.setDrawableCards(drawnCards);
     state.setStack(stack);
 
-    if (drawnCards.size()>0){
+    if (drawnCards.size()>0){ // If there is a choice to make (ie : not Architect or library cases) :
         // Switching to draft subphase to trigger a player's choice between the possible cards
         state.setSubPhase(state::SubPhase::PreDraw);
     }

@@ -26,7 +26,7 @@ void ChooseCardCommand::execute(state::GameState &state) {
         auto* command = new GetCardCommand(authorPlayer, card);
         Engine::getInstance(state).addCommand(command);
         // Removing the card from the drawableCards
-        int i = 0;
+        long unsigned int i = 0;
         for(; i<drawableCards.size(); i++){
             if  (drawableCards[i].getNameOfCard() == card.getNameOfCard()) {
                 break;
